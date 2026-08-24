@@ -23,7 +23,7 @@ pip install pandas ib_async openpyxl
 Put the folder wherever you like and always run from inside it:
 
 ```bash
-cd ~/portfolio-tool
+cd ~/portfolio          # or wherever you keep it - no paths are hardcoded
 ```
 
 ## 2. IB Gateway (or TWS)

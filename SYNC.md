@@ -17,7 +17,7 @@ never overwrite your portfolio's memory or your last run's results.
 ## One-time: Giovanni publishes
 
 ```bash
-cd ~/portfolio
+cd ~/Desktop/Finance/portfolio
 git init
 git add .
 git commit -m "Portfolio rebalancer"
@@ -48,13 +48,16 @@ cd portfolio
 pip install ib_async pandas openpyxl
 ```
 
+(Giulio can put the folder wherever he likes — the tool has no hardcoded
+paths. Giovanni keeps his under `~/Desktop/Finance/`.)
+
 If he already has a working folder with his own `state.json`, keep it:
 
 ```bash
 cp ~/Investment\ package/state.json ~/portfolio/state.json   # if it exists
 ```
 
-Then he works only in `~/portfolio` and deletes the old folder.
+Then he works only in the cloned folder and deletes the old one.
 
 ---
 
@@ -63,7 +66,7 @@ Then he works only in `~/portfolio` and deletes the old folder.
 **Giovanni, after Claude changes something:**
 
 ```bash
-cd ~/portfolio
+cd ~/Desktop/Finance/portfolio
 git add -A
 git commit -m "fix: round limit prices to the contract's minTick (IBKR 110)"
 git push
@@ -72,7 +75,7 @@ git push
 **Giulio, to get it:**
 
 ```bash
-cd ~/portfolio
+cd ~/Desktop/Finance/portfolio
 git pull
 ```
 

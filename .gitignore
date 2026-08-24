@@ -1,0 +1,40 @@
+# ---------------------------------------------------------------------------
+# Personal / per-account data - NEVER shared. Each person's copy is their own.
+# This is what makes "git pull" safe: updating the code cannot touch these.
+# ---------------------------------------------------------------------------
+
+# portfolio memory: units, all-time high, ladder state, drift tracking
+state.json
+state.undo.json
+state.pending
+
+# staged / approved / executed orders of a single run
+orders.json
+orders_approved.json
+orders_result.json
+
+# generated output of a single run
+prep_report.md
+report.html
+xray_report.xlsx
+
+# price cache - regenerated any time by: python fetch_prices.py
+prices.csv
+
+# offline position fixtures someone may keep locally
+positions*.csv
+pos*.csv
+
+# ---------------------------------------------------------------------------
+# Junk
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.DS_Store
+.~lock.*#
+*.zip
+.venv/
+venv/
+
+# local convenience copies
+state.backup.json

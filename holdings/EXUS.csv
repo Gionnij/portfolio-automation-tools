@@ -1,0 +1,775 @@
+﻿,Name,ISIN,Country,Currency,Exchange,Type of Security,Rating,Primary Listing,Industry Classification,Weighting
+1,ASML HOLDING NV,NL0010273215,Netherlands,EUR,Euronext Amsterdam,Equities,Baa2,Amsterdam Exchanges Index,Information Technology,2.91%
+2,HSBC HOLDINGS PLC,GB0005405286,United Kingdom,GBP,London Stock Exchange,Equities,Aa3,FTSE 100 Index,Financials,1.32%
+3,ROCHE PS PAR AG,CH1499059983,Switzerland,CHF,-,Equities,-,Swiss Market Index,Health Care,1.20%
+4,ASTRAZENECA PLC,GB0009895292,United Kingdom,GBP,London Stock Exchange,Equities,A2,FTSE 100 Index,Health Care,1.16%
+5,ROYAL BANK OF CANADA,CA7800871021,Canada,CAD,Toronto Stock Exchange,Equities,Aa3,S&P/TSX COMPOSITE Index,Financials,1.16%
+6,NOVARTIS AG,CH0012005267,Switzerland,CHF,Scoach Switzerland,Equities,Aa3,Swiss Market Index,Health Care,1.16%
+7,NESTLE SA,CH0038863350,Switzerland,CHF,Scoach Switzerland,Equities,Aa2,Swiss Market Index,Consumer Staples,1.09%
+8,SIEMENS N AG,DE0007236101,Germany,EUR,XETRA,Equities,Aa3,DAX Index,Industrials,0.93%
+9,SHELL PLC,GB00BP6MXD84,Netherlands,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Energy,0.88%
+10,MITSUBISHI UFJ FINANCIAL GROUP INC,JP3902900004,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Financials,0.86%
+11,BHP GROUP LTD,AU000000BHP4,Australia,AUD,Australian Stock Exchange,Equities,A1,ASX All Ordinaries Index,Materials,0.85%
+12,TOKYO ELECTRON LTD,JP3571400005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.84%
+13,TORONTO DOMINION,CA8911605092,Canada,CAD,Toronto Stock Exchange,Equities,Aa1,S&P/TSX COMPOSITE Index,Financials,0.81%
+14,BANCO SANTANDER SA,ES0113900J37,Spain,EUR,Mercado Continuo Espana,Equities,Baa1,IBEX 35 Index,Financials,0.79%
+15,COMMONWEALTH BANK OF AUSTRALIA,AU000000CBA7,Australia,AUD,Australian Stock Exchange,Equities,Aa2,ASX All Ordinaries Index,Financials,0.77%
+16,ALLIANZ,DE0008404005,Germany,EUR,XETRA,Equities,Aa3,DAX Index,Financials,0.72%
+17,SCHNEIDER ELECTRIC,FR0000121972,France,EUR,Euronext Paris,Equities,A3,CAC 40 Index,Industrials,0.71%
+18,KIOXIA HOLDINGS CORP,JP3236330001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.70%
+19,0,IE00BYQNZ507,-,USD,-,Equities,-,-,unknown,0.69%
+20,ABB LTD,CH0012221716,Switzerland,CHF,Scoach Switzerland,Equities,A2,Swiss Market Index,Industrials,0.67%
+21,SAP,DE0007164600,Germany,EUR,XETRA,Equities,-,DAX Index,Information Technology,0.66%
+22,TOYOTA MOTOR CORP,JP3633400001,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Consumer Discretionary,0.66%
+23,ROLLS-ROYCE HOLDINGS PLC,GB00B63H8491,United Kingdom,GBP,London Stock Exchange,Equities,A2,FTSE 100 Index,Industrials,0.64%
+24,UBS GROUP AG,CH0244767585,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Financials,0.64%
+25,TOTALENERGIES,FR0000120271,France,EUR,Euronext Paris,Equities,Aa1,CAC 40 Index,Energy,0.63%
+26,NOVO NORDISK CLASS B,DK0062498333,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,-,Health Care,0.63%
+27,IBERDROLA SA,ES0144580Y14,Spain,EUR,Mercado Continuo Espana,Equities,Baa1,IBEX 35 Index,Utilities,0.62%
+28,ADVANTEST CORP,JP3122400009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.59%
+29,SUMITOMO MITSUI FINANCIAL GROUP IN,JP3890350006,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Financials,0.58%
+30,SHOPIFY SUBORDINATE VOTING INC CLA,CA82509L1076,Canada,CAD,New York Stock Exchange,Equities,-,S&P 500 Index,Information Technology,0.57%
+31,LVMH,FR0000121014,France,EUR,Euronext Paris,Equities,A1,CAC 40 Index,Consumer Discretionary,0.57%
+32,SIEMENS ENERGY N AG,DE000ENER6Y0,Germany,EUR,-,Equities,-,DAX Index,Industrials,0.57%
+33,BANCO BILBAO VIZCAYA ARGENTARIA SA,ES0113211835,Spain,EUR,Mercado Continuo Espana,Equities,Baa2,IBEX 35 Index,Financials,0.56%
+34,SOFTBANK GROUP CORP,JP3436100006,Japan,JPY,Tokyo Stock Exchange,Equities,Ba1,TOPIX Index,Communication Services,0.55%
+35,SAFRAN SA,FR0000073272,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Industrials,0.54%
+36,UNILEVER PLC,GB00BVZK7T90,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Consumer Staples,0.54%
+37,AIRBUS,NL0000235190,France,EUR,Euronext Paris,Equities,A2,CAC 40 Index,Industrials,0.53%
+38,COMPAGNIE FINANCIERE RICHEMONT SA,CH0210483332,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Consumer Discretionary,0.51%
+39,LAIR LIQUIDE SOCIETE ANONYME POUR,FR0000120073,France,EUR,Euronext Paris,Equities,A1,CAC 40 Index,Materials,0.51%
+40,BRITISH AMERICAN TOBACCO,GB0002875804,United Kingdom,GBP,London Stock Exchange,Equities,A3,FTSE 100 Index,Consumer Staples,0.51%
+41,HITACHI LTD,JP3788600009,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Industrials,0.50%
+42,BANK OF MONTREAL,CA0636711016,Canada,CAD,Toronto Stock Exchange,Equities,Aa3,S&P/TSX COMPOSITE Index,Financials,0.49%
+43,ENBRIDGE INC,CA29250N1050,Canada,CAD,Toronto Stock Exchange,Equities,Baa1,S&P/TSX COMPOSITE Index,Energy,0.49%
+44,SONY GROUP CORP,JP3435000009,Japan,JPY,Tokyo Stock Exchange,Equities,Ba1,TOPIX Index,Consumer Discretionary,0.48%
+45,UNICREDIT,IT0005239360,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Financials,0.48%
+46,INFINEON TECHNOLOGIES AG,DE0006231004,Germany,EUR,XETRA,Equities,-,DAX Index,Information Technology,0.47%
+47,BNP PARIBAS SA,FR0000131104,France,EUR,Euronext Paris,Equities,Baa2,CAC 40 Index,Financials,0.46%
+48,MIZUHO FINANCIAL GROUP INC,JP3885780001,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Financials,0.45%
+49,ZURICH INSURANCE GROUP AG,CH0011075394,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Financials,0.45%
+50,MURATA MANUFACTURING LTD,JP3914400001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.44%
+51,BANK OF NOVA SCOTIA,CA0641491075,Canada,CAD,Toronto Stock Exchange,Equities,Aa2,S&P/TSX COMPOSITE Index,Financials,0.43%
+52,GLAXOSMITHKLINE,GB00BN7SWP63,United Kingdom,GBP,-,Equities,-,-,Health Care,0.43%
+53,LOREAL SA,FR0000120321,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Consumer Staples,0.43%
+54,DBS GROUP HOLDINGS LTD,SG1L01001701,Singapore,SGD,-,Equities,-,-,Financials,0.43%
+55,CANADIAN IMPERIAL BANK OF COMMERCE,CA1360691010,Canada,CAD,Toronto Stock Exchange,Equities,Aa3,S&P/TSX COMPOSITE Index,Financials,0.42%
+56,RIO TINTO PLC,GB0007188757,Australia,GBP,London Stock Exchange,Equities,A3,FTSE 100 Index,Materials,0.41%
+57,FAST RETAILING LTD,JP3802300008,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Consumer Discretionary,0.40%
+58,BP PLC,GB0007980591,United Kingdom,GBP,London Stock Exchange,Equities,A2,FTSE 100 Index,Energy,0.40%
+59,DEUTSCHE TELEKOM N AG,DE0005557508,Germany,EUR,XETRA,Equities,Baa1,DAX Index,Communication Services,0.40%
+60,AIA GROUP LTD,HK0000069689,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Financials,0.39%
+61,SANOFI SA,FR0000120578,France,EUR,Euronext Paris,Equities,A1,CAC 40 Index,Health Care,0.38%
+62,INTESA SANPAOLO,IT0000072618,Italy,EUR,Milan Stock Exchange,Equities,Baa2,FTSE Italia All-Share Index,Financials,0.38%
+63,RECRUIT HOLDINGS LTD,JP3970300004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.37%
+64,BARCLAYS PLC,GB0031348658,United Kingdom,GBP,London Stock Exchange,Equities,A3,FTSE 100 Index,Financials,0.37%
+65,KEYENCE CORP,JP3236200006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.37%
+66,ING GROEP NV,NL0011821202,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Financials,0.37%
+67,ENEL,IT0003128367,Italy,EUR,Milan Stock Exchange,Equities,Baa2,FTSE Italia All-Share Index,Utilities,0.36%
+68,LLOYDS BANKING GROUP PLC,GB0008706128,United Kingdom,GBP,London Stock Exchange,Equities,A2,FTSE 100 Index,Financials,0.34%
+69,BROOKFIELD CORP CLASS A,CA11271J1075,Canada,CAD,-,Equities,-,-,Financials,0.34%
+70,WESTPAC BANKING CORPORATION CORP,AU000000WBC1,Australia,AUD,Australian Stock Exchange,Equities,Aa2,ASX All Ordinaries Index,Financials,0.34%
+71,NATIONAL GRID PLC,GB00BDR05C01,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Utilities,0.34%
+72,MITSUBISHI CORP,JP3898400001,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Industrials,0.33%
+73,CANADIAN NATURAL RESOURCES LTD,CA1363851017,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Energy,0.33%
+74,NATIONAL AUSTRALIA BANK LTD,AU000000NAB4,Australia,AUD,Australian Stock Exchange,Equities,Aa2,ASX All Ordinaries Index,Financials,0.32%
+75,TOKIO MARINE HOLDINGS INC,JP3910660004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.32%
+76,AGNICO EAGLE MINES LTD,CA0084741085,Canada,CAD,Toronto Stock Exchange,Equities,B1,S&P/TSX COMPOSITE Index,Materials,0.32%
+77,AXA SA,FR0000120628,France,EUR,Euronext Paris,Equities,A2,CAC 40 Index,Financials,0.32%
+78,CANADIAN PACIFIC KANSAS CITY LTD,CA13646K1084,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Industrials,0.31%
+79,ANHEUSER-BUSCH INBEV SA,BE0974293251,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Consumer Staples,0.31%
+80,ANZ GROUP HOLDINGS LTD,AU000000ANZ3,Australia,AUD,Australian Stock Exchange,Equities,Aa2,ASX All Ordinaries Index,Financials,0.30%
+81,MUENCHENER RUECKVERSICHERUNGS-GESE,DE0008430026,Germany,EUR,XETRA,Equities,Aa3,DAX Index,Financials,0.29%
+82,MITSUBISHI HEAVY INDUSTRIES LTD,JP3900000005,Japan,JPY,Tokyo Stock Exchange,Equities,Baa1,TOPIX Index,Industrials,0.29%
+83,TC ENERGY CORP,CA87807B1076,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Energy,0.29%
+84,INVESTOR CLASS B,SE0015811963,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Financials,0.29%
+85,WESFARMERS LTD,AU000000WES1,Australia,AUD,Australian Stock Exchange,Equities,A3,ASX All Ordinaries Index,Consumer Discretionary,0.29%
+86,BAE SYSTEMS PLC,GB0002634946,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Industrials,0.29%
+87,SHIN ETSU CHEMICAL LTD,JP3371200001,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Materials,0.28%
+88,NATWEST GROUP PLC,GB00BM8PJY71,United Kingdom,GBP,-,Equities,-,-,Financials,0.28%
+89,INDUSTRIA DE DISENO TEXTIL SA,ES0148396007,Spain,EUR,Mercado Continuo Espana,Equities,-,IBEX 35 Index,Consumer Discretionary,0.28%
+90,MITSUBISHI ELECTRIC CORP,JP3902400005,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Industrials,0.28%
+91,MANULIFE FINANCIAL CORP,CA56501R1064,Canada,CAD,Toronto Stock Exchange,Equities,A2,S&P/TSX COMPOSITE Index,Financials,0.28%
+92,SPOTIFY TECHNOLOGY SA,LU1778762911,Luxembourg,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Communication Services,0.28%
+93,VINCI SA,FR0000125486,France,EUR,Euronext Paris,Equities,Baa1,CAC 40 Index,Industrials,0.27%
+94,MITSUI LTD,JP3893600001,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Industrials,0.27%
+95,NOKIA,FI0009000681,Finland,EUR,Helsinki Stock Exchange,Equities,B1,OMX Helsinki Index,Information Technology,0.26%
+96,GLENCORE PLC,JE00B4T3BW64,Australia,GBP,London Stock Exchange,Equities,Aa3,FTSE 100 Index,Materials,0.26%
+97,SUNCOR ENERGY INC (CANADA),CA8672241079,Canada,CAD,Toronto Stock Exchange,Equities,Baa1,S&P/TSX COMPOSITE Index,Energy,0.26%
+98,ITOCHU CORP,JP3143600009,Japan,JPY,Tokyo Stock Exchange,Equities,Baa1,TOPIX Index,Industrials,0.26%
+99,PANASONIC HOLDINGS CORP,JP3866800000,Japan,JPY,Tokyo Stock Exchange,Equities,Baa3,TOPIX Index,Consumer Discretionary,0.26%
+100,OVERSEA-CHINESE BANKING LTD,SG1S04926220,Singapore,SGD,-,Equities,-,-,Financials,0.26%
+101,CANADIAN NATIONAL RAILWAY,CA1363751027,Canada,CAD,Toronto Stock Exchange,Equities,A3,S&P/TSX COMPOSITE Index,Industrials,0.25%
+102,MACQUARIE GROUP LTD DEF,AU000000MQG1,Australia,AUD,Australian Stock Exchange,Equities,A3,ASX All Ordinaries Index,Financials,0.25%
+103,BARRICK MINING CORP,CA06849F1080,Canada,CAD,Toronto Stock Exchange,Equities,-,-,Materials,0.25%
+104,DEUTSCHE BANK AG,DE0005140008,Germany,EUR,XETRA,Equities,-,DAX Index,Financials,0.25%
+105,NATIONAL BANK OF CANADA,CA6330671034,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Financials,0.25%
+106,NORDEA BANK,FI4000297767,Finland,EUR,Helsinki Stock Exchange,Equities,-,OMX Stockholm 30 Index,Financials,0.23%
+107,PROSUS NV CLASS N,NL0013654783,China,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Consumer Discretionary,0.23%
+108,HONG KONG EXCHANGES AND CLEARING L,HK0388045442,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Financials,0.23%
+109,ESSILORLUXOTTICA SA,FR0000121667,France,EUR,Euronext Paris,Equities,A2,CAC 40 Index,Health Care,0.23%
+110,SOCIETE GENERALE SA,FR0000130809,France,EUR,Euronext Paris,Equities,A2,CAC 40 Index,Financials,0.23%
+111,ENGIE SA,FR0010208488,France,EUR,Euronext Paris,Equities,A1,CAC 40 Index,Utilities,0.23%
+112,RELX PLC,GB00B2B0DG97,United Kingdom,GBP,London Stock Exchange,Equities,Baa1,FTSE 100 Index,Industrials,0.23%
+113,ARGENX,NL0010832176,Netherlands,EUR,Euronext Brussels,Equities,-,-,Health Care,0.23%
+114,COMPASS GROUP PLC,GB00BD6K4575,United Kingdom,USD,London Stock Exchange,Equities,-,FTSE 100 Index,Consumer Discretionary,0.22%
+115,DEUTSCHE POST AG,DE0005552004,Germany,EUR,XETRA,Equities,Baa1,DAX Index,Industrials,0.22%
+116,FUJIKURA LTD,JP3811000003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.22%
+117,HOYA CORP,JP3837800006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.22%
+118,NEBIUS NV CLASS A,NL0009805522,Netherlands,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,0.22%
+119,ASM INTERNATIONAL NV,NL0000334118,Netherlands,EUR,Euronext Amsterdam,Equities,Ba1,Amsterdam Exchanges Index,Information Technology,0.21%
+120,DANONE SA,FR0000120644,France,EUR,Euronext Paris,Equities,A3,CAC 40 Index,Consumer Staples,0.21%
+121,VOLVO CLASS B,SE0000115446,Sweden,SEK,Stockholm Stock Exchange,Equities,Baa2,OMX Stockholm 30 Index,Industrials,0.21%
+122,RHEINMETALL AG,DE0007030009,Germany,EUR,XETRA,Equities,Ba1,DAX Index,Industrials,0.21%
+123,BAYER AG,DE000BAY0017,Germany,EUR,XETRA,Equities,A3,DAX Index,Health Care,0.21%
+124,RENESAS ELECTRONICS CORP,JP3164720009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.21%
+125,ANGLO AMERICAN PLC,GB00BTK05J60,United Kingdom,GBP,-,Equities,-,-,Materials,0.21%
+126,TAKEDA PHARMACEUTICAL LTD,JP3463000004,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Health Care,0.21%
+127,SUMITOMO ELECTRIC INDUSTRIES LTD,JP3407400005,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Consumer Discretionary,0.21%
+128,WHEATON PRECIOUS METALS CORP,CA9628791027,Brazil,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Materials,0.20%
+129,ATLAS COPCO CLASS A,SE0017486889,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.20%
+130,DEUTSCHE BOERSE AG,DE0005810055,Germany,EUR,XETRA,Equities,Aa2,DAX Index,Financials,0.20%
+131,CAIXABANK SA,ES0140609019,Spain,EUR,Mercado Continuo Espana,Equities,Baa3,IBEX 35 Index,Financials,0.20%
+132,KDDI CORP,JP3496400007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Communication Services,0.20%
+133,BASF N,DE000BASF111,Germany,EUR,XETRA,Equities,A1,DAX Index,Materials,0.20%
+134,STANDARD CHARTERED PLC,GB0004082847,United Kingdom,GBP,London Stock Exchange,Equities,A2,FTSE 100 Index,Financials,0.20%
+135,LONDON STOCK EXCHANGE GROUP PLC,GB00B0SWJX34,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Financials,0.19%
+136,SWISS RE AG,CH0126881561,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Financials,0.19%
+137,HERMES INTERNATIONAL,FR0000052292,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Consumer Discretionary,0.19%
+138,LONZA GROUP AG,CH0013841017,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Health Care,0.19%
+139,NINTENDO LTD,JP3756600007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Communication Services,0.19%
+140,PRYSMIAN,IT0004176001,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Industrials,0.19%
+141,E.ON N,DE000ENAG999,Germany,EUR,XETRA,Equities,A3,DAX Index,Utilities,0.19%
+142,STMICROELECTRONICS NV,NL0000226223,Singapore,EUR,Euronext Paris,Equities,Baa2,CAC 40 Index,Information Technology,0.19%
+143,DIAGEO PLC,GB0002374006,United Kingdom,GBP,London Stock Exchange,Equities,A3,FTSE 100 Index,Consumer Staples,0.19%
+144,HOLCIM LTD AG,CH0012214059,Switzerland,CHF,Scoach Switzerland,Equities,Baa2,Swiss Market Index,Materials,0.18%
+145,DSV,DK0060079531,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Industrials,0.18%
+146,CAMECO CORP,CA13321L1085,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Energy,0.18%
+147,FERRARI NV,NL0011585146,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Consumer Discretionary,0.18%
+148,RIO TINTO LTD,AU000000RIO1,Australia,AUD,Australian Stock Exchange,Equities,A3,ASX All Ordinaries Index,Materials,0.18%
+149,ALIMENTATION COUCHE TARD INC,CA01626P1484,Canada,CAD,Toronto Stock Exchange,Equities,-,-,Consumer Staples,0.18%
+150,GOODMAN GROUP UNITS,AU000000GMG2,Australia,AUD,Australian Stock Exchange,Equities,Baa2,ASX All Ordinaries Index,Real Estate,0.18%
+151,SUN LIFE FINANCIAL INC,CA8667961053,Canada,CAD,Toronto Stock Exchange,Equities,A2,S&P/TSX COMPOSITE Index,Financials,0.18%
+152,DISCO CORP,JP3548600000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.17%
+153,ENI,IT0003132476,Italy,EUR,Milan Stock Exchange,Equities,A3,FTSE Italia All-Share Index,Energy,0.17%
+154,GALDERMA GROUP N AG,CH1335392721,Switzerland,CHF,-,Equities,-,Swiss Market Index,Health Care,0.17%
+155,RECKITT BENCKISER GROUP PLC,GB00BSZBP530,United Kingdom,GBP,-,Equities,-,-,Consumer Staples,0.17%
+156,LEGRAND SA,FR0010307819,France,EUR,Euronext Paris,Equities,A3,CAC 40 Index,Industrials,0.17%
+157,TDK CORP,JP3538800008,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Information Technology,0.17%
+158,SANDVIK,SE0000667891,Sweden,SEK,Stockholm Stock Exchange,Equities,Baa2,OMX Stockholm 30 Index,Industrials,0.17%
+159,ORIX CORP,JP3200450009,Japan,JPY,Tokyo Stock Exchange,Equities,Baa2,TOPIX Index,Financials,0.17%
+160,RWE AG,DE0007037129,Germany,EUR,XETRA,Equities,Baa1,DAX Index,Utilities,0.17%
+161,HALEON PLC,GB00BMX86B70,Switzerland,GBP,-,Equities,-,-,Health Care,0.17%
+162,MARUBENI CORP,JP3877600001,Japan,JPY,Tokyo Stock Exchange,Equities,Baa2,TOPIX Index,Industrials,0.17%
+163,JAPAN TOBACCO INC,JP3726800000,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Consumer Staples,0.17%
+164,FANUC CORP,JP3802400006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.16%
+165,ERSTE GROUP BANK AG,AT0000652011,Austria,EUR,Vienna Stock Exchange,Equities,Baa1,Austrian Traded Index,Financials,0.16%
+166,DAIKIN INDUSTRIES LTD,JP3481800005,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Industrials,0.16%
+167,SSE PLC,GB0007908733,United Kingdom,GBP,London Stock Exchange,Equities,A3,FTSE 100 Index,Utilities,0.16%
+168,FRANCO NEVADA CORP,CA3518581051,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Materials,0.16%
+169,CELESTICA INC,CA15101Q2071,Canada,CAD,-,Equities,-,-,Information Technology,0.16%
+170,COMPAGNIE DE SAINT GOBAIN SA,FR0000125007,France,EUR,Euronext Paris,Equities,Baa2,CAC 40 Index,Industrials,0.16%
+171,CONSTELLATION SOFTWARE INC,CA21037X1006,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Information Technology,0.16%
+172,TESCO PLC,GB00BLGZ9862,United Kingdom,GBP,-,Equities,-,-,Consumer Staples,0.16%
+173,GIVAUDAN SA,CH0010645932,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Materials,0.16%
+174,TEVA PHARMACEUTICAL INDUSTRIES ADR,US8816242098,Israel,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care,0.16%
+175,GENERALI,IT0000062072,Italy,EUR,Milan Stock Exchange,Equities,Baa2,FTSE Italia All-Share Index,Financials,0.16%
+176,CSL LTD,AU000000CSL8,United States,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Health Care,0.16%
+177,SUMITOMO CORP,JP3404600003,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Industrials,0.16%
+178,SANDOZ GROUP AG,CH1243598427,Switzerland,CHF,-,Equities,-,Swiss Market Index,Health Care,0.15%
+179,UNITED OVERSEAS BANK LTD,SG1M31001969,Singapore,SGD,-,Equities,-,-,Financials,0.15%
+180,SOFTBANK CORP,JP3732000009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Communication Services,0.15%
+181,UCB SA,BE0003739530,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Health Care,0.15%
+182,DAIICHI LIFE GROUP INC,JP3476480003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.15%
+183,WOODSIDE ENERGY GROUP LTD,AU0000224040,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Energy,0.15%
+184,DOLLARAMA INC,CA25675T1075,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Consumer Discretionary,0.15%
+185,INTACT FINANCIAL CORP,CA45823T1066,Canada,CAD,Toronto Stock Exchange,Equities,Baa1,S&P/TSX COMPOSITE Index,Financials,0.15%
+186,ORANGE SA,FR0000133308,France,EUR,Euronext Paris,Equities,Baa1,CAC 40 Index,Communication Services,0.15%
+187,KONINKLIJKE AHOLD DELHAIZE NV,NL0011794037,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Consumer Staples,0.14%
+188,MERCEDES-BENZ GROUP N AG,DE0007100000,Germany,EUR,XETRA,Equities,A3,DAX Index,Consumer Discretionary,0.14%
+189,SEA ADS REPRESENTING LTD CLASS A,US81141R1005,Singapore,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Consumer Discretionary,0.14%
+190,FUJITSU LTD,JP3818000006,Japan,JPY,Tokyo Stock Exchange,Equities,Baa1,TOPIX Index,Information Technology,0.14%
+191,WOOLWORTHS GROUP LTD,AU000000WOW2,Australia,AUD,Australian Stock Exchange,Equities,A3,ASX All Ordinaries Index,Consumer Staples,0.14%
+192,IBIDEN LTD,JP3148800000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.14%
+193,ASSA ABLOY CLASS B,SE0007100581,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Industrials,0.14%
+194,JAPAN POST BANK LTD,JP3946750001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.14%
+195,PRUDENTIAL PLC,GB0007099541,Hong Kong,GBP,London Stock Exchange,Equities,A2,FTSE 100 Index,Financials,0.14%
+196,ALCON AG,CH0432492467,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Health Care,0.14%
+197,KOMATSU LTD,JP3304200003,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Industrials,0.14%
+198,ADIDAS N AG,DE000A1EWWW0,Germany,EUR,XETRA,Equities,-,DAX Index,Consumer Discretionary,0.14%
+199,DANSKE BANK,DK0010274414,Denmark,DKK,Copenhagen Stock Exchange,Equities,Baa1,OMX COPENHAGEN 20 Index,Financials,0.13%
+200,BANK LEUMI LE ISRAEL,IL0006046119,Israel,ILS,-,Equities,-,-,Financials,0.13%
+201,HONDA MOTOR LTD,JP3854600008,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Consumer Discretionary,0.13%
+202,CENOVUS ENERGY,CA15135U1093,Canada,CAD,Toronto Stock Exchange,Equities,Baa2,S&P/TSX COMPOSITE Index,Energy,0.13%
+203,POWER CORPORATION OF CANADA,CA7392391016,Canada,CAD,Toronto Stock Exchange,Equities,A2,S&P/TSX COMPOSITE Index,Financials,0.13%
+204,FERROVIAL NV,NL0015001FS8,Netherlands,EUR,Mercado Continuo Espana,Equities,-,IBEX 35 Index,Industrials,0.13%
+205,3I GROUP PLC,GB00B1YW4409,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Financials,0.13%
+206,TRANSURBAN GROUP STAPLED UNITS,AU000000TCL6,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Industrials,0.13%
+207,SOMPO HOLDINGS INC,JP3165000005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.13%
+208,CHUGAI PHARMACEUTICAL LTD,JP3519400000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.13%
+209,MS&AD INSURANCE GROUP HOLDINGS INC,JP3890310000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.13%
+210,SIKA AG,CH0418792922,Switzerland,CHF,-,Equities,-,Swiss Market Index,Materials,0.13%
+211,FAIRFAX FINANCIAL HOLDINGS SUB VOT,CA3039011026,Canada,CAD,Toronto Stock Exchange,Equities,Baa3,S&P/TSX COMPOSITE Index,Financials,0.13%
+212,AJINOMOTO INC,JP3119600009,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Consumer Staples,0.13%
+213,KBC GROEP NV,BE0003565737,Belgium,EUR,Euronext Brussels,Equities,A3,BEL 20 Index,Financials,0.12%
+214,NEC CORP,JP3733000008,Japan,JPY,Tokyo Stock Exchange,Equities,Baa2,TOPIX Index,Information Technology,0.12%
+215,SWISS LIFE HOLDING AG,CH0014852781,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Financials,0.12%
+216,EXPERIAN PLC,GB00B19NLV48,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Industrials,0.12%
+217,SWEDBANK CLASS A,SE0000242455,Sweden,SEK,Stockholm Stock Exchange,Equities,A1,OMX Stockholm 30 Index,Financials,0.12%
+218,BANK HAPOALIM BM,IL0006625771,Israel,ILS,-,Equities,-,-,Financials,0.12%
+219,SUNBELT RENTALS HOLDINGS INC,US8669661048,United States,GBP,-,Equities,-,-,Industrials,0.12%
+220,NUTRIEN LTD,CA67077M1086,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Materials,0.12%
+221,ERICSSON CLASS B,SE0000108656,Sweden,SEK,Stockholm Stock Exchange,Equities,Baa1,OMX Stockholm 30 Index,Information Technology,0.12%
+222,FORTIS INC,CA3495531079,Canada,CAD,Toronto Stock Exchange,Equities,A3,S&P/TSX COMPOSITE Index,Utilities,0.12%
+223,OTSUKA HOLDINGS LTD,JP3188220002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.12%
+224,SKANDINAVISKA ENSKILDA BANKEN CLAS,SE0000148884,Sweden,SEK,Stockholm Stock Exchange,Equities,A1,OMX Stockholm 30 Index,Financials,0.12%
+225,KINROSS GOLD CORP,CA4969024047,Canada,CAD,Toronto Stock Exchange,Equities,Baa3,S&P/TSX COMPOSITE Index,Materials,0.12%
+226,DAIICHI SANKYO LTD,JP3475350009,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Health Care,0.11%
+227,COMMERZBANK AG,DE000CBK1001,Germany,EUR,XETRA,Equities,Baa1,DAX Index,Financials,0.11%
+228,RESONA HOLDINGS INC,JP3500610005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.11%
+229,REPSOL SA,ES0173516115,Spain,EUR,Mercado Continuo Espana,Equities,Baa2,IBEX 35 Index,Energy,0.11%
+230,IMPERIAL BRANDS PLC,GB0004544929,United Kingdom,GBP,London Stock Exchange,Equities,Baa3,FTSE 100 Index,Consumer Staples,0.11%
+231,NTT INC,JP3735400008,Japan,JPY,Tokyo Stock Exchange,Equities,Aa2,TOPIX Index,Communication Services,0.11%
+232,PEMBINA PIPELINE CORP,CA7063271034,Canada,CAD,Toronto Stock Exchange,Equities,Baa2,S&P/TSX COMPOSITE Index,Energy,0.11%
+233,MITSUBISHI ESTATE LTD,JP3899600005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Real Estate,0.11%
+234,TOWER SEMICONDUCTOR LTD,IL0010823792,Israel,ILS,-,Equities,-,Hang Seng Index,Information Technology,0.11%
+235,TECK RESOURCES SUBORDINATE VOTING,CA8787422044,Canada,CAD,New York Stock Exchange,Equities,Baa2,S&P 500 Index,Materials,0.11%
+236,AMADEUS IT GROUP SA,ES0109067019,Spain,EUR,Mercado Continuo Espana,Equities,Baa2,IBEX 35 Index,Consumer Discretionary,0.11%
+237,VESTAS WIND SYSTEMS,DK0061539921,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,-,Industrials,0.11%
+238,AVIVA PLC,GB00BPQY8M80,United Kingdom,GBP,-,Equities,-,-,Financials,0.11%
+239,ABN AMRO BANK NV,NL0011540547,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Financials,0.10%
+240,QBE INSURANCE GROUP LTD,AU000000QBE9,Australia,AUD,Australian Stock Exchange,Equities,Baa2,ASX All Ordinaries Index,Financials,0.10%
+241,ATLAS COPCO CLASS B,SE0017486897,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.10%
+242,NOMURA HOLDINGS INC,JP3762600009,Japan,JPY,Tokyo Stock Exchange,Equities,Baa3,TOPIX Index,Financials,0.10%
+243,ACS ACTIVIDADES DE CONSTRUCCION Y,ES0167050915,Spain,EUR,Mercado Continuo Espana,Equities,-,IBEX 35 Index,Industrials,0.10%
+244,ADYEN NV,NL0012969182,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Financials,0.10%
+245,SINGAPORE TELECOMMUNICATIONS LTD,SG1T75931496,Singapore,SGD,-,Equities,-,-,Communication Services,0.10%
+246,KYOCERA CORP,JP3249600002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.10%
+247,HEIDELBERG MATERIALS AG,DE0006047004,Germany,EUR,XETRA,Equities,Ba1,DAX Index,Materials,0.10%
+248,VODAFONE GROUP PLC,GB00BH4HKS39,United Kingdom,GBP,London Stock Exchange,Equities,A3,FTSE 100 Index,Communication Services,0.10%
+249,AIB GROUP PLC,IE00BF0L3536,Ireland,EUR,-,Equities,-,-,Financials,0.10%
+250,LOBLAW COMPANIES LTD,CA5394811015,Canada,CAD,Toronto Stock Exchange,Equities,Baa2,S&P/TSX COMPOSITE Index,Consumer Staples,0.10%
+251,ARCELORMITTAL SA,LU1598757687,Luxembourg,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Materials,0.10%
+252,SAMPO CLASS A,FI4000552500,Finland,EUR,-,Equities,-,OMX Helsinki Index,Financials,0.10%
+253,INTERCONTINENTAL HOTELS GROUP PLC,GB00BHJYC057,United Kingdom,USD,-,Equities,-,-,Consumer Discretionary,0.10%
+254,VEOLIA ENVIRON. SA,FR0000124141,France,EUR,Euronext Paris,Equities,Baa1,CAC 40 Index,Utilities,0.10%
+255,FUJIFILM HOLDINGS CORP,JP3814000000,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Information Technology,0.10%
+256,HEINEKEN NV,NL0000009165,Netherlands,EUR,Euronext Amsterdam,Equities,Baa1,Amsterdam Exchanges Index,Consumer Staples,0.10%
+257,DNB BANK,NO0010161896,Norway,NOK,Oslo Stock Exchange,Equities,-,Oslo SE All-share Index,Financials,0.10%
+258,SMC (JAPAN) CORP,JP3162600005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.10%
+259,BPER BANCA,IT0000066123,Italy,EUR,Milan Stock Exchange,Equities,Ba2,FTSE Italia All-Share Index,Financials,0.10%
+260,AERCAP HOLDINGS NV,NL0000687663,Ireland,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Industrials,0.10%
+261,TOYOTA TSUSHO CORP,JP3635000007,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Industrials,0.10%
+262,LASERTEC CORP,JP3979200007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.10%
+263,RESTAURANTS BRANDS INTERNATIONAL I,CA76131D1033,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Consumer Discretionary,0.10%
+264,SUMITOMO MITSUI TRUST GROUP INC,JP3892100003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.10%
+265,MICHELIN,FR001400AJ45,France,EUR,-,Equities,-,-,Consumer Discretionary,0.10%
+266,ASTELLAS PHARMA INC,JP3942400007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.10%
+267,AENA SME SA,ES0105046017,Spain,EUR,-,Equities,-,-,Industrials,0.09%
+268,THALES SA,FR0000121329,France,EUR,Euronext Paris,Equities,A2,CAC 40 Index,Industrials,0.09%
+269,BANCA MONTE DEI PASCHI DI SIENA SP,IT0005508921,Italy,EUR,-,Equities,-,-,Financials,0.09%
+270,MITSUI FUDOSAN LTD,JP3893200000,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Real Estate,0.09%
+271,US DOLLAR,_CURRENCYUSD,United States,USD,-,Cash,-,-,unknown,0.09%
+272,PUBLICIS GROUPE SA,FR0000130577,France,EUR,Euronext Paris,Equities,Baa2,CAC 40 Index,Communication Services,0.09%
+273,NN GROUP NV,NL0010773842,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Financials,0.09%
+274,CK HUTCHISON HOLDINGS LTD,KYG217651051,United Kingdom,HKD,-,Equities,-,Hang Seng Index,Industrials,0.09%
+275,VAT GROUP AG,CH0311864901,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Industrials,0.09%
+276,SEVEN & I HOLDINGS LTD,JP3422950000,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Consumer Staples,0.09%
+277,TECHTRONIC INDUSTRIES LTD,HK0669013440,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Industrials,0.09%
+278,BE SEMICONDUCTOR INDUSTRIES NV,NL0012866412,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Information Technology,0.09%
+279,BRIDGESTONE CORP,JP3830800003,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Consumer Discretionary,0.09%
+280,COLES GROUP LTD,AU0000030678,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Consumer Staples,0.09%
+281,NEXT PLC,GB0032089863,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Consumer Discretionary,0.09%
+282,ARISTOCRAT LEISURE LTD,AU000000ALL7,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Consumer Discretionary,0.09%
+283,JAPAN POST HOLDINGS LTD,JP3752900005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.09%
+284,MTU AERO ENGINES HOLDING AG,DE000A0D9PT0,Germany,EUR,XETRA,Equities,Baa3,DAX Index,Industrials,0.09%
+285,EQUINOR,NO0010096985,Norway,NOK,Oslo Stock Exchange,Equities,B1,Oslo SE All-share Index,Energy,0.09%
+286,NOVOZYMES CLASS B,DK0060336014,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Materials,0.09%
+287,FORTESCUE LTD,AU000000FMG4,Australia,AUD,Australian Stock Exchange,Equities,Ba2,ASX All Ordinaries Index,Materials,0.09%
+288,MERCK,DE0006599905,Germany,EUR,XETRA,Equities,A3,DAX Index,Health Care,0.09%
+289,KERING SA,FR0000121485,France,EUR,Euronext Paris,Equities,Baa2,CAC 40 Index,Consumer Discretionary,0.09%
+290,GEBERIT AG,CH0030170408,Switzerland,CHF,Scoach Switzerland,Equities,A2,Swiss Market Index,Industrials,0.09%
+291,DAIMLER TRUCK HOLDING E AG,DE000DTR0CK8,Germany,EUR,-,Equities,-,DAX Index,Industrials,0.09%
+292,UNIVERSAL MUSIC GROUP NV,NL0015000IY2,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Communication Services,0.09%
+293,LEONARDO,IT0003856405,Italy,EUR,Milan Stock Exchange,Equities,Ba1,FTSE Italia All-Share Index,Industrials,0.09%
+294,RB GLOBAL INC,CA74935Q1072,United States,CAD,-,Equities,-,-,Industrials,0.09%
+295,KONINKLIJKE PHILIPS NV,NL0000009538,Netherlands,EUR,Euronext Amsterdam,Equities,A3,Amsterdam Exchanges Index,Health Care,0.08%
+296,EAST JAPAN RAILWAY,JP3783600004,Japan,JPY,Tokyo Stock Exchange,Equities,Aa2,TOPIX Index,Industrials,0.08%
+297,BOC HONG KONG HOLDINGS LTD,HK2388011192,China,HKD,-,Equities,-,Hang Seng Index,Financials,0.08%
+298,CANON INC,JP3242800005,Japan,JPY,Tokyo Stock Exchange,Equities,Aa1,TOPIX Index,Information Technology,0.08%
+299,SWISSCOM AG,CH0008742519,Switzerland,CHF,Scoach Switzerland,Equities,A2,Swiss Market Index,Communication Services,0.08%
+300,COCA COLA EUROPACIFIC PARTNERS PLC,GB00BDCPN049,United Kingdom,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Consumer Staples,0.08%
+301,ELBIT SYSTEMS LTD,IL0010811243,Israel,ILS,-,Equities,-,-,Industrials,0.08%
+302,HELVETIA BALOISE HOLDING N AG,CH0466642201,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Financials,0.08%
+303,SVENSKA HANDELSBANKEN CLASS A,SE0007100599,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Financials,0.08%
+304,LEGAL AND GENERAL GROUP PLC,GB0005603997,United Kingdom,GBP,London Stock Exchange,Equities,A3,FTSE 100 Index,Financials,0.08%
+305,RESONAC HOLDINGS CORP,JP3368000000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.08%
+306,BOMBARDIER INC,CA0977518616,Canada,CAD,Toronto Stock Exchange,Equities,-,-,Industrials,0.08%
+307,BANCO BPM,IT0005218380,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Financials,0.08%
+308,KONINKLIJKE KPN NV,NL0000009082,Netherlands,EUR,Euronext Amsterdam,Equities,Baa3,Amsterdam Exchanges Index,Communication Services,0.08%
+309,SUN HUNG KAI PROPERTIES LTD,HK0016000132,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Real Estate,0.08%
+310,SGS SA,CH1256740924,Switzerland,CHF,-,Equities,-,Swiss Market Index,Industrials,0.08%
+311,SUZUKI MOTOR CORP,JP3397200001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.08%
+312,ASICS CORP,JP3118000003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.08%
+313,FRESENIUS SE AND CO KGAA,DE0005785604,Germany,EUR,XETRA,Equities,Ba1,DAX Index,Health Care,0.08%
+314,HALMA PLC,GB0004052071,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Information Technology,0.08%
+315,ENEOS HOLDINGS INC,JP3386450005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Energy,0.08%
+316,BANK OF IRELAND GROUP PLC,IE00BD1RP616,Ireland,EUR,-,Equities,-,-,Financials,0.08%
+317,NORTHERN STAR RESOURCES LTD,AU000000NST8,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Materials,0.08%
+318,PAN AMERICAN SILVER CORP,CA6979001089,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Materials,0.08%
+319,DENSO CORP,JP3551500006,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Consumer Discretionary,0.08%
+320,KAO CORP,JP3205800000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Staples,0.08%
+321,KONE CORP CLASS B,FI0009013403,Finland,EUR,Helsinki Stock Exchange,Equities,-,OMX Helsinki Index,Industrials,0.08%
+322,TERUMO CORP,JP3546800008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.07%
+323,BMW AG,DE0005190003,Germany,EUR,XETRA,Equities,A2,DAX Index,Consumer Discretionary,0.07%
+324,BRAMBLES LTD,AU000000BXB1,Australia,AUD,Australian Stock Exchange,Equities,Baa1,ASX All Ordinaries Index,Industrials,0.07%
+325,INPEX CORP,JP3294460005,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Energy,0.07%
+326,AEON LTD,JP3388200002,Japan,JPY,Tokyo Stock Exchange,Equities,Baa1,TOPIX Index,Consumer Staples,0.07%
+327,CREDIT AGRICOLE SA,FR0000045072,France,EUR,Euronext Paris,Equities,A2,CAC 40 Index,Financials,0.07%
+328,WARTSILA,FI0009003727,Finland,EUR,Helsinki Stock Exchange,Equities,-,OMX Helsinki Index,Industrials,0.07%
+329,FURUKAWA ELECTRIC LTD,JP3827200001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.07%
+330,FIRST QUANTUM MINERALS LTD,CA3359341052,Zambia,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Materials,0.07%
+331,EBARA CORP,JP3166000004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.07%
+332,JULIUS BAER GRUPPE AG,CH0102484968,Switzerland,CHF,Scoach Switzerland,Equities,A2,Swiss Market Index,Financials,0.07%
+333,VONOVIA,DE000A1ML7J1,Germany,EUR,XETRA,Equities,Baa2,DAX Index,Real Estate,0.07%
+334,EVOLUTION MINING LTD,AU000000EVN4,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Materials,0.07%
+335,HEXAGON CLASS B,SE0015961909,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Information Technology,0.07%
+336,ANTOFAGASTA PLC,GB0000456144,Chile,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Materials,0.07%
+337,PARTNERS GROUP HOLDING AG,CH0024608827,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Financials,0.07%
+338,MAGNA INTERNATIONAL INC,CA5592224011,Canada,CAD,Toronto Stock Exchange,Equities,Baa1,S&P/TSX COMPOSITE Index,Consumer Discretionary,0.07%
+339,BANCO DE SABADELL,ES0113860A34,Spain,EUR,Mercado Continuo Espana,Equities,-,IBEX 35 Index,Financials,0.07%
+340,ALFA LAVAL,SE0000695876,Sweden,SEK,Stockholm Stock Exchange,Equities,Baa1,OMX Stockholm 30 Index,Industrials,0.07%
+341,VOLKSWAGEN NON-VOTING PREF AG,DE0007664039,Germany,EUR,XETRA,Equities,A3,DAX Index,Consumer Discretionary,0.07%
+342,ORIENTAL LAND LTD,JP3198900007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.07%
+343,WSP GLOBAL INC,CA92938W2022,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Industrials,0.07%
+344,HANNOVER RUECK,DE0008402215,Germany,EUR,XETRA,Equities,Aa3,DAX Index,Financials,0.07%
+345,EPIROC CLASS A,SE0015658109,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.07%
+346,TERNA RETE ELETTRICA NAZIONALE,IT0003242622,Italy,EUR,Milan Stock Exchange,Equities,Baa1,FTSE Italia All-Share Index,Utilities,0.07%
+347,IHI CORP,JP3134800006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.07%
+348,SAAB CLASS B,SE0021921269,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.07%
+349,IMPERIAL OIL LTD,CA4530384086,Canada,CAD,Toronto Stock Exchange,Equities,Aaa,S&P/TSX COMPOSITE Index,Energy,0.07%
+350,CENTRAL JAPAN RAILWAY,JP3566800003,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Industrials,0.07%
+351,NIPPON STEEL CORP,JP3381000003,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Materials,0.07%
+352,LUNDIN MINING CORP,CA5503721063,Chile,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Materials,0.07%
+353,ESSITY CLASS B,SE0009922164,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Consumer Staples,0.07%
+354,EMERA INC,CA2908761018,Canada,CAD,Toronto Stock Exchange,Equities,Baa1,S&P/TSX COMPOSITE Index,Utilities,0.07%
+355,KUBOTA CORP,JP3266400005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.07%
+356,GENMAB,DK0010272202,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Health Care,0.07%
+357,SANTOS LTD,AU000000STO6,Australia,AUD,Australian Stock Exchange,Equities,Baa1,ASX All Ordinaries Index,Energy,0.06%
+358,SECOM LTD,JP3421800008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.06%
+359,CAPGEMINI,FR0000125338,France,EUR,Euronext Paris,Equities,Baa2,CAC 40 Index,Information Technology,0.06%
+360,DAIWA HOUSE INDUSTRY LTD,JP3505000004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Real Estate,0.06%
+361,SCREEN HOLDINGS LTD,JP3494600004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.06%
+362,BOLIDEN,SE0020050417,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Materials,0.06%
+363,TELECOM ITALIA,IT0005712671,Italy,EUR,-,Equities,-,-,Communication Services,0.06%
+364,GREAT WEST LIFECO INC,CA39138C1068,Canada,CAD,Toronto Stock Exchange,Equities,A1,S&P/TSX COMPOSITE Index,Financials,0.06%
+365,TELEFONICA SA,ES0178430E18,Spain,EUR,Mercado Continuo Espana,Equities,Baa2,IBEX 35 Index,Communication Services,0.06%
+366,CLP HOLDINGS LTD,HK0002007356,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Utilities,0.06%
+367,INFORMA PLC,GB00BMJ6DW54,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Communication Services,0.06%
+368,JX ADVANCED METALS CORP,JP3379550001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.06%
+369,DSM FIRMENICH AG,CH1216478797,Switzerland,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Materials,0.06%
+370,TOURMALINE OIL CORP,CA89156V1067,Canada,CAD,Toronto Stock Exchange,Equities,B1,S&P/TSX COMPOSITE Index,Energy,0.06%
+371,EDP ENERGIAS DE PORTUGAL SA,PTEDP0AM0009,Portugal,EUR,Euronext Lisbon,Equities,-,-,Utilities,0.06%
+372,FINECOBANK BANCA FINECO,IT0000072170,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Financials,0.06%
+373,SINGAPORE EXCHANGE LTD,SG1J26887955,Singapore,SGD,-,Equities,-,-,Financials,0.06%
+374,SNAM,IT0003153415,Italy,EUR,Milan Stock Exchange,Equities,Baa1,FTSE Italia All-Share Index,Utilities,0.06%
+375,POSTE ITALIANE,IT0003796171,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Financials,0.06%
+376,KERRY GROUP PLC,IE0004906560,Ireland,EUR,Irish Stock Exchange,Equities,Baa2,ISEQ Irish Overall Index,Consumer Staples,0.06%
+377,BT GROUP PLC,GB0030913577,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Communication Services,0.06%
+378,WOLTERS KLUWER NV,NL0000395903,Netherlands,EUR,Euronext Amsterdam,Equities,Baa1,Amsterdam Exchanges Index,Industrials,0.06%
+379,NOVA LTD,IL0010845571,Israel,ILS,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,0.06%
+380,STRAUMANN HOLDING AG,CH1175448666,Switzerland,CHF,-,Equities,-,Swiss Market Index,Health Care,0.06%
+381,CELLNEX TELECOM,ES0105066007,Spain,EUR,Mercado Continuo Espana,Equities,-,IBEX 35 Index,Communication Services,0.06%
+382,PERNOD RICARD SA,FR0000120693,France,EUR,Euronext Paris,Equities,Baa3,CAC 40 Index,Consumer Staples,0.06%
+383,BROOKFIELD ASSET MANAGEMENT VOTING,CA1130041058,Canada,CAD,New York Stock Exchange,Equities,-,S&P 500 Index,Financials,0.06%
+384,ENDESA SA,ES0130670112,Spain,EUR,Mercado Continuo Espana,Equities,Baa2,IBEX 35 Index,Utilities,0.06%
+385,RENTOKIL INITIAL PLC,GB00B082RF11,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Industrials,0.06%
+386,KAJIMA CORP,JP3210200006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.06%
+387,BAWAG GROUP AG,AT0000BAWAG2,Austria,EUR,Vienna Stock Exchange,Equities,-,Austrian Traded Index,Financials,0.06%
+388,LOGITECH INTERNATIONAL SA,CH0025751329,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Information Technology,0.06%
+389,SUNCORP GROUP LTD,AU000000SUN6,Australia,AUD,Australian Stock Exchange,Equities,A2,ASX All Ordinaries Index,Financials,0.06%
+390,SEGRO REIT PLC,GB00B5ZN1N88,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Real Estate,0.06%
+391,SCENTRE GROUP UNIT,AU000000SCG8,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Real Estate,0.06%
+392,TELSTRA GROUP LTD,AU000000TLS2,Australia,AUD,Australian Stock Exchange,Equities,A2,ASX All Ordinaries Index,Communication Services,0.06%
+393,KIRIN HOLDINGS LTD,JP3258000003,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Consumer Staples,0.06%
+394,MITSUI KINZOKU LIMITED LTD,JP3888400003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.06%
+395,DASSAULT SYSTEMES,FR0014003TT8,France,EUR,-,Equities,-,-,Information Technology,0.06%
+396,UPM-KYMMENE,FI0009005987,Finland,EUR,Helsinki Stock Exchange,Equities,Ba1,OMX Helsinki Index,Materials,0.06%
+397,KINGSPAN GROUP PLC,IE0004927939,Ireland,EUR,Irish Stock Exchange,Equities,-,ISEQ Irish Overall Index,Industrials,0.06%
+398,SUMITOMO REALTY & DEVELOPMENT LTD,JP3409000001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Real Estate,0.06%
+399,DAIFUKU LTD,JP3497400006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.06%
+400,HYDRO ONE LTD,CA4488112083,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Utilities,0.06%
+401,NITTO DENKO CORP,JP3684000007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.06%
+402,ASAHI KASEI CORP,JP3111200006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.06%
+403,ASAHI GROUP HOLDINGS LTD,JP3116000005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Staples,0.05%
+404,COMPUTERSHARE LTD,AU000000CPU5,United States,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Industrials,0.05%
+405,NIDEC CORP,JP3734800000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.05%
+406,KANSAI ELECTRIC POWER INC,JP3228600007,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Utilities,0.05%
+407,KAWASAKI HEAVY INDUSTRIES LTD,JP3224200000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.05%
+408,SYMRISE AG,DE000SYM9999,Germany,EUR,XETRA,Equities,-,DAX Index,Materials,0.05%
+409,NESTE,FI0009013296,Finland,EUR,Helsinki Stock Exchange,Equities,-,OMX Helsinki Index,Energy,0.05%
+410,SWISS PRIME SITE AG,CH0008038389,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Real Estate,0.05%
+411,SCHINDLER HOLDING PAR AG,CH0024638196,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Industrials,0.05%
+412,SIEMENS HEALTHINEERS AG,DE000SHL1006,Germany,EUR,XETRA,Equities,-,DAX Index,Health Care,0.05%
+413,TOROMONT INDUSTRIES LTD,CA8911021050,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Industrials,0.05%
+414,SHIONOGI LTD,JP3347200002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.05%
+415,COCA COLA HBC AG,CH0198251305,Italy,GBP,London Stock Exchange,Equities,Baa1,FTSE 100 Index,Consumer Staples,0.05%
+416,NATURGY ENERGY GROUP SA,ES0116870314,Spain,EUR,Mercado Continuo Espana,Equities,Baa2,IBEX 35 Index,Utilities,0.05%
+417,FISHER AND PAYKEL HEALTHCARE CORPO,NZFAPE0001S2,New Zealand,NZD,New Zealand Exchange,Equities,-,NZX 50 Index,Health Care,0.05%
+418,UNITED UTILITIES GROUP PLC,GB00B39J2M42,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Utilities,0.05%
+419,RYANAIR HOLDINGS PLC,IE00BYTBXV33,Ireland,EUR,Irish Stock Exchange,Equities,-,ISEQ Irish Overall Index,Industrials,0.05%
+420,ALAMOS GOLD INC CLASS A,CA0115321089,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Materials,0.05%
+421,WHITECAP RESOURCES INC,CA96467A2002,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Energy,0.05%
+422,SEKISUI HOUSE LTD,JP3420600003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.05%
+423,ORIGIN ENERGY LTD,AU000000ORG5,Australia,AUD,Australian Stock Exchange,Equities,Baa2,ASX All Ordinaries Index,Utilities,0.05%
+424,HENKEL & KGAA PREF AG,DE0006048432,Germany,EUR,XETRA,Equities,A2,DAX Index,Consumer Staples,0.05%
+425,MONCLER,IT0004965148,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Consumer Discretionary,0.05%
+426,CHUBU ELECTRIC POWER INC,JP3526600006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Utilities,0.05%
+427,OBAYASHI CORP,JP3190000004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.05%
+428,UNIBAIL RODAMCO WE STAPLED UNITS,FR0013326246,France,EUR,-,Equities,-,-,Real Estate,0.05%
+429,T&D HOLDINGS INC,JP3539220008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.05%
+430,TAISEI CORP,JP3443600006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.05%
+431,CARLSBERG CLASS B,DK0010181759,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Consumer Staples,0.05%
+432,PHOENIX FINANCIAL LTD,IL0007670123,Israel,ILS,-,Equities,-,-,Financials,0.05%
+433,SINGAPORE TECHNOLOGIES ENGINEERING,SG1F60858221,Singapore,SGD,-,Equities,-,-,Industrials,0.05%
+434,NIPPON YUSEN,JP3753000003,Japan,JPY,Tokyo Stock Exchange,Equities,Baa2,TOPIX Index,Industrials,0.05%
+435,EURONEXT NV,NL0006294274,Netherlands,EUR,Euronext Paris,Equities,-,CAC 40 Index,Financials,0.05%
+436,ROCHE HOLDING AG,CH0012032113,Switzerland,CHF,NASDAQ National Market System,Equities,-,Swiss Market Index,Health Care,0.05%
+437,ROGERS COMMUNICATIONS NON-VOTING I,CA7751092007,Canada,CAD,Toronto Stock Exchange,Equities,Baa1,S&P/TSX COMPOSITE Index,Communication Services,0.05%
+438,IA FINANCIAL INC,CA45075E1043,Canada,CAD,-,Equities,-,-,Financials,0.05%
+439,KEPPEL LTD,SG1U68934629,Singapore,SGD,-,Equities,-,-,Industrials,0.05%
+440,INSURANCE AUSTRALIA GROUP LTD,AU000000IAG3,Australia,AUD,Australian Stock Exchange,Equities,A2,ASX All Ordinaries Index,Financials,0.05%
+441,KONGSBERG GRUPPEN,NO0013536151,Norway,NOK,Oslo Stock Exchange,Equities,-,Oslo SE All-share Index,Industrials,0.05%
+442,SOUTH32 LTD,AU000000S320,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Materials,0.05%
+443,BOUYGUES SA,FR0000120503,France,EUR,Euronext Paris,Equities,Baa1,CAC 40 Index,Industrials,0.05%
+444,DAIWA SECURITIES GROUP INC,JP3502200003,Japan,JPY,Tokyo Stock Exchange,Equities,Baa3,TOPIX Index,Financials,0.05%
+445,ADMIRAL GROUP PLC,GB00B02J6398,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Financials,0.05%
+446,LINK REAL ESTATE INVESTMENT TRUST,HK0823032773,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Real Estate,0.05%
+447,ISRAEL DISCOUNT BANK LTD,IL0006912120,Israel,ILS,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.05%
+448,METRO INC,CA59162N1096,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Consumer Staples,0.05%
+449,CHOCOLADEFABRIKEN LINDT & SPRUENGL,CH0010570759,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Consumer Staples,0.05%
+450,JAPAN EXCHANGE GROUP INC,JP3183200009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.05%
+451,CGI INC CLASS A,CA12532H1047,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Information Technology,0.05%
+452,EQT,SE0012853455,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Financials,0.05%
+453,AGEAS SA,BE0974264930,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Financials,0.05%
+454,ASR NEDERLAND NV,NL0011872643,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Financials,0.05%
+455,ARC RESOURCES LTD,CA00208D4084,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Energy,0.05%
+456,INTERTEK GROUP PLC,GB0031638363,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Industrials,0.05%
+457,BANDAI NAMCO HOLDINGS INC,JP3778630008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.05%
+458,TELIA COMPANY,SE0000667925,Sweden,SEK,Stockholm Stock Exchange,Equities,A3,OMX Stockholm 30 Index,Communication Services,0.05%
+459,SONOVA HOLDING AG,CH0012549785,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Health Care,0.05%
+460,ENLIGHT RENEWABLE ENERGY LTD,IL0007200111,Israel,ILS,-,Equities,-,-,Utilities,0.05%
+461,LYNAS RARE EARTHS LTD,AU000000LYC6,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Materials,0.05%
+462,ALTAGAS LTD,CA0213611001,Canada,CAD,Toronto Stock Exchange,Equities,Baa2,S&P/TSX COMPOSITE Index,Utilities,0.05%
+463,KUEHNE UND NAGEL INTERNATIONAL AG,CH0025238863,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Industrials,0.05%
+464,SMITH AND NEPHEW PLC,GB0009223206,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Health Care,0.05%
+465,NORSK HYDRO,NO0005052605,Norway,NOK,Oslo Stock Exchange,Equities,Baa2,Oslo SE All-share Index,Materials,0.05%
+466,FUJI ELECTRIC LTD,JP3820000002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.05%
+467,SUMITOMO METAL MINING LTD,JP3402600005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.05%
+468,OSAKA GAS LTD,JP3180400008,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Utilities,0.05%
+469,TOKYO GAS LTD,JP3573000001,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Utilities,0.05%
+470,KEYERA CORP,CA4932711001,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Energy,0.05%
+471,TFI INTERNATIONAL INC,CA87241L1094,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Industrials,0.05%
+472,BUNZL,GB00B0744B38,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Industrials,0.05%
+473,OLYMPUS CORP,JP3201200007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.05%
+474,STELLANTIS NV,NL00150001Q9,Netherlands,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Consumer Discretionary,0.05%
+475,CAPITALAND INTEGRATED COMMERCIAL T,SG1M51904654,Singapore,SGD,-,Equities,-,-,Real Estate,0.05%
+476,RYOHIN KEIKAKU LTD,JP3976300008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.05%
+477,CARREFOUR SA,FR0000120172,France,EUR,Euronext Paris,Equities,Baa2,CAC 40 Index,Consumer Staples,0.05%
+478,MITSUI OSK LINES LTD,JP3362700001,Japan,JPY,Tokyo Stock Exchange,Equities,Baa3,TOPIX Index,Industrials,0.04%
+479,METSO CORPORATION,FI0009014575,Finland,EUR,Helsinki Stock Exchange,Equities,-,OMX Helsinki Index,Industrials,0.04%
+480,CHOCOLADEFABRIKEN LINDT & SPRUENGL,CH0010570767,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Consumer Staples,0.04%
+481,PLS GROUP LTD,AU000000PLS0,Australia,AUD,-,Equities,-,-,Materials,0.04%
+482,BELIMO N AG,CH1101098163,Switzerland,CHF,-,Equities,-,Swiss Market Index,Industrials,0.04%
+483,GEORGE WESTON LTD,CA9611485090,Canada,CAD,Toronto Stock Exchange,Equities,Baa2,S&P/TSX COMPOSITE Index,Consumer Staples,0.04%
+484,WASHINGTON H SOUL PATTINSON & COMP,AU000000SOL3,Australia,AUD,Australian Stock Exchange,Equities,B1,ASX All Ordinaries Index,Financials,0.04%
+485,THOMSON REUTERS CORP,CA8849038812,Canada,CAD,-,Equities,-,-,Industrials,0.04%
+486,ACCOR SA,FR0000120404,France,EUR,Euronext Paris,Equities,Baa3,CAC 40 Index,Consumer Discretionary,0.04%
+487,NOMURA RESEARCH INSTITUTE LTD,JP3762800005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.04%
+488,SEVERN TRENT PLC,GB00B1FH8J72,United Kingdom,GBP,London Stock Exchange,Equities,Baa1,FTSE 100 Index,Utilities,0.04%
+489,KONAMI GROUP CORP,JP3300200007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Communication Services,0.04%
+490,CENTRICA PLC,GB00B033F229,United Kingdom,GBP,London Stock Exchange,Equities,A3,FTSE 100 Index,Utilities,0.04%
+491,ENDEAVOUR MINING,GB00BL6K5J42,United Kingdom,GBP,-,Equities,-,-,Materials,0.04%
+492,BANKINTER SA,ES0113679I37,Spain,EUR,Mercado Continuo Espana,Equities,Baa3,IBEX 35 Index,Financials,0.04%
+493,MIZRAHI TEFAHOT BANK LTD,IL0006954379,Israel,ILS,-,Equities,-,-,Financials,0.04%
+494,EIFFAGE SA,FR0000130452,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Industrials,0.04%
+495,MARKS AND SPENCER GROUP PLC,GB0031274896,United Kingdom,GBP,London Stock Exchange,Equities,Baa3,FTSE 100 Index,Consumer Staples,0.04%
+496,AKZO NOBEL NV,NL0013267909,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Materials,0.04%
+497,AEGON LTD,BMG0112X1056,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Financials,0.04%
+498,SMITHS GROUP PLC,GB00B1WY2338,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Industrials,0.04%
+499,POWER ASSETS HOLDINGS LTD,HK0006000050,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Utilities,0.04%
+500,FORTUM,FI0009007132,Finland,EUR,Helsinki Stock Exchange,Equities,A2,OMX Helsinki Index,Utilities,0.04%
+501,GEA GROUP AG,DE0006602006,Germany,EUR,XETRA,Equities,Baa3,DAX Index,Industrials,0.04%
+502,YOKOHAMA FINANCIAL GROUP INC,JP3305990008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.04%
+503,OERSTED,DK0060094928,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Utilities,0.04%
+504,THE SAGE GROUP PLC,GB00B8C3BL03,United Kingdom,GBP,London Stock Exchange,Equities,B1,FTSE 100 Index,Information Technology,0.04%
+505,PAN PACIFIC INTERNATIONAL HOLDINGS,JP3639650005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.04%
+506,CHECK POINT SOFTWARE TECHNOLOGIES,IL0010824113,Israel,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,0.04%
+507,ATKINSREALIS GROUP INC,CA04764T1049,Canada,CAD,-,Equities,-,-,Industrials,0.04%
+508,M&G PLC,GB00BKFB1C65,United Kingdom,GBP,-,Equities,-,-,Financials,0.04%
+509,JARDINE MATHESON HOLDINGS LTD,BMG507361001,Hong Kong,USD,-,Equities,-,-,Industrials,0.04%
+510,CK ASSET HOLDINGS LTD,KYG2177B1014,Hong Kong,HKD,-,Equities,-,-,Real Estate,0.04%
+511,SIGMA HEALTHCARE LTD,AU000000SIG5,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Health Care,0.04%
+512,UNIPOL ASSICURAZIONI SPA,IT0004810054,Italy,EUR,Milan Stock Exchange,Equities,Ba2,FTSE Italia All-Share Index,Financials,0.04%
+513,TELE2 CLASS B,SE0005190238,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Communication Services,0.04%
+514,MINEBEA MITSUMI INC,JP3906000009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.04%
+515,AKER BP,NO0010345853,Norway,NOK,Oslo Stock Exchange,Equities,-,Oslo SE All-share Index,Energy,0.04%
+516,HONG KONG AND CHINA GAS LTD,HK0003000038,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Utilities,0.04%
+517,BUREAU VERITAS SA,FR0006174348,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Industrials,0.04%
+518,MEDIBANK PRIVATE LTD,AU000000MPL3,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Financials,0.04%
+519,CCL INDUSTRIES INC CLASS B,CA1249003098,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Materials,0.04%
+520,BANCO COMERCIAL PORTUGUES SA,PTBCP0AM0015,Portugal,EUR,Euronext Lisbon,Equities,-,-,Financials,0.04%
+521,REXEL SA,FR0010451203,France,EUR,Euronext Paris,Equities,Ba3,CAC 40 Index,Industrials,0.04%
+522,APA GROUP UNITS,AU000000APA1,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Utilities,0.04%
+523,HEINEKEN HOLDING NV,NL0000008977,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Consumer Staples,0.04%
+524,OMV AG,AT0000743059,Austria,EUR,Vienna Stock Exchange,Equities,A3,Austrian Traded Index,Energy,0.04%
+525,SINGAPORE AIRLINES LTD,SG1V61937297,Singapore,SGD,-,Equities,-,-,Industrials,0.04%
+526,EUROFINS SCIENTIFIC,FR0014000MR3,Luxembourg,EUR,-,Equities,-,-,Health Care,0.04%
+527,THE LOTTERY CORPORATION LTD,AU0000219529,Australia,AUD,-,Equities,-,-,Consumer Discretionary,0.04%
+528,ADDTECH CLASS B,SE0014781795,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.04%
+529,GILDAN ACTIVEWEAR INC,CA3759161035,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Consumer Discretionary,0.04%
+530,KLEPIERRE REIT SA,FR0000121964,France,EUR,Euronext Paris,Equities,A3,CAC 40 Index,Real Estate,0.04%
+531,TENARIS SA,LU2598331598,Luxembourg,EUR,-,Equities,-,-,Energy,0.04%
+532,GFL ENVIRONMENTAL SUBORDINATE VOTI,CA36168Q1046,Canada,CAD,Toronto Stock Exchange,Equities,-,-,Industrials,0.04%
+533,TMX GROUP LTD,CA87262K1057,Canada,CAD,Toronto Stock Exchange,Equities,B1,S&P/TSX COMPOSITE Index,Financials,0.04%
+534,TORAY INDUSTRIES INC,JP3621000003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.04%
+535,GRAB HOLDINGS LTD CLASS A,KYG4124C1096,Singapore,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Industrials,0.04%
+536,TELENOR,NO0010063308,Norway,NOK,Oslo Stock Exchange,Equities,A3,Oslo SE All-share Index,Communication Services,0.04%
+537,JAPANESE YEN,_CURRENCYJPY,Japan,JPY,-,Cash,-,-,unknown,0.04%
+538,CONTINENTAL AG,DE0005439004,Germany,EUR,XETRA,Equities,Baa3,DAX Index,Consumer Discretionary,0.04%
+539,PANDORA,DK0060252690,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Consumer Discretionary,0.04%
+540,ORION CLASS B,FI0009014377,Finland,EUR,Helsinki Stock Exchange,Equities,-,OMX Helsinki Index,Health Care,0.04%
+541,SKANSKA CLASS B,SE0000113250,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Industrials,0.04%
+542,INDUSTRIVARDEN CLASS C,SE0000107203,Sweden,SEK,Stockholm Stock Exchange,Equities,A3,OMX Stockholm 30 Index,Financials,0.04%
+543,SBI HOLDINGS INC,JP3436120004,Japan,JPY,Tokyo Stock Exchange,Equities,B1,TOPIX Index,Financials,0.04%
+544,EPIROC CLASS B,SE0015658117,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.04%
+545,GALP ENERGIA SGPS SA CLASS B,PTGAL0AM0009,Portugal,EUR,Euronext Lisbon,Equities,-,-,Energy,0.04%
+546,WISE PLC CLASS A,JE00BQKY0816,Jersey,GBP,-,Equities,-,-,Financials,0.04%
+547,FRESENIUS MEDICAL CARE AG,DE0005785802,Germany,EUR,XETRA,Equities,Ba1,DAX Index,Health Care,0.03%
+548,MILLICOM INTERNATIONAL CELLULAR SA,LU0038705702,Sweden,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Communication Services,0.03%
+549,MAGNUM ICE CREAM NV,NL0015002MS2,Netherlands,EUR,-,Equities,-,-,Consumer Staples,0.03%
+550,EVOLUTION,SE0012673267,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Consumer Discretionary,0.03%
+551,AUCKLAND INTERNATIONAL AIRPORT LTD,NZAIAE0002S6,New Zealand,NZD,New Zealand Exchange,Equities,-,-,Industrials,0.03%
+552,SWEDISH ORPHAN BIOVITRUM,SE0000872095,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Health Care,0.03%
+553,SKF CLASS B,SE0000108227,Sweden,SEK,Stockholm Stock Exchange,Equities,Baa1,OMX Stockholm 30 Index,Industrials,0.03%
+554,HOCHTIEF AG,DE0006070006,Germany,EUR,XETRA,Equities,-,DAX Index,Industrials,0.03%
+555,WH GROUP LTD,KYG960071028,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Consumer Staples,0.03%
+556,MITSUBISHI CHEMICAL GROUP CORP,JP3897700005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.03%
+557,MOWI,NO0003054108,Norway,NOK,Oslo Stock Exchange,Equities,-,Oslo SE All-share Index,Consumer Staples,0.03%
+558,ELEMENT FLEET MANAGEMENT CORP,CA2861812014,Canada,CAD,Toronto Stock Exchange,Equities,B1,S&P/TSX COMPOSITE Index,Industrials,0.03%
+559,CHIBA BANK LTD,JP3511800009,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Financials,0.03%
+560,RAIFFEISEN BANK INTERNATIONAL AG,AT0000606306,Austria,EUR,Vienna Stock Exchange,Equities,A2,Austrian Traded Index,Financials,0.03%
+561,MAKITA CORP,JP3862400003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.03%
+562,XERO LTD,NZXROE0001S2,New Zealand,AUD,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.03%
+563,QIAGEN NV,NL0015002SN0,Netherlands,EUR,-,Equities,-,DAX Index,Health Care,0.03%
+564,A P MOLLER MAERSK CLASS B,DK0010244508,Denmark,DKK,Copenhagen Stock Exchange,Equities,Baa1,OMX COPENHAGEN 20 Index,Industrials,0.03%
+565,TRELLEBORG CLASS B,SE0000114837,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Industrials,0.03%
+566,CAPITALAND ASCENDAS REIT,SG1M77906915,Singapore,SGD,-,Equities,-,-,Real Estate,0.03%
+567,AGC INC,JP3112000009,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Industrials,0.03%
+568,MELROSE INDUSTRIES PLC,GB00BNGDN821,United Kingdom,GBP,-,Equities,-,-,Industrials,0.03%
+569,STANTEC INC,CA85472N1096,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Industrials,0.03%
+570,PRO MEDICUS LTD,AU000000PME8,Australia,AUD,-,Equities,-,-,Health Care,0.03%
+571,SECURITAS CLASS B,SE0000163594,Sweden,SEK,Stockholm Stock Exchange,Equities,Baa2,OMX Stockholm 30 Index,Industrials,0.03%
+572,ACCIONA SA,ES0125220311,Spain,EUR,Mercado Continuo Espana,Equities,-,IBEX 35 Index,Utilities,0.03%
+573,BEIERSDORF AG,DE0005200000,Germany,EUR,XETRA,Equities,-,DAX Index,Consumer Staples,0.03%
+574,ORKLA,NO0003733800,Norway,NOK,Oslo Stock Exchange,Equities,-,Oslo SE All-share Index,Consumer Staples,0.03%
+575,YOKOGAWA ELECTRIC CORP,JP3955000009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.03%
+576,INFRATIL LTD,NZIFTE0003S3,New Zealand,NZD,-,Equities,-,-,Financials,0.03%
+577,OBIC LTD,JP3173400007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.03%
+578,SUBARU CORP,JP3814800003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.03%
+579,SHIMIZU CORP,JP3358800005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.03%
+580,STANDARD LIFE PLC,GB00BGXQNP29,United Kingdom,GBP,-,Equities,-,-,Financials,0.03%
+581,SHIMANO INC,JP3358000002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.03%
+582,ASSOCIATED BRITISH FOODS PLC,GB0006731235,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Consumer Staples,0.03%
+583,TALANX AG,DE000TLX1005,Germany,EUR,XETRA,Equities,A3,DAX Index,Financials,0.03%
+584,GALAXY ENTERTAINMENT GROUP LTD,HK0027032686,Macao,HKD,-,Equities,-,Hang Seng Index,Consumer Discretionary,0.03%
+585,TOPPAN HOLDINGS INC,JP3629000005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.03%
+586,PEARSON PLC,GB0006776081,United Kingdom,GBP,London Stock Exchange,Equities,Baa1,FTSE 100 Index,Consumer Discretionary,0.03%
+587,CAE INC,CA1247651088,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Industrials,0.03%
+588,EQUINOX GOLD CORP,CA29446Y5020,Canada,CAD,-,Equities,-,-,Materials,0.03%
+589,COLOPLAST CLASS B,DK0060448595,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Health Care,0.03%
+590,ASX LTD,AU000000ASX7,Australia,AUD,Australian Stock Exchange,Equities,Aa3,ASX All Ordinaries Index,Financials,0.03%
+591,INTERNATIONAL AIRLINES GROUP SA,ES0177542018,United Kingdom,EUR,London Stock Exchange,Equities,Ba2,FTSE 100 Index,Industrials,0.03%
+592,HENKEL AG,DE0006048408,Germany,EUR,XETRA,Equities,A2,DAX Index,Consumer Staples,0.03%
+593,SAPUTO INC,CA8029121057,Canada,CAD,Toronto Stock Exchange,Equities,B1,S&P/TSX COMPOSITE Index,Consumer Staples,0.03%
+594,KNORR BREMSE AG,DE000KBX1006,Germany,EUR,XETRA,Equities,-,DAX Index,Industrials,0.03%
+595,HENNES & MAURITZ CLASS B,SE0000106270,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Consumer Discretionary,0.03%
+596,REDEIA CORPORACION SA,ES0173093024,Spain,EUR,Mercado Continuo Espana,Equities,-,IBEX 35 Index,Utilities,0.03%
+597,ITALGAS,IT0005211237,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Utilities,0.03%
+598,VICINITY CENTRES,AU000000VCX7,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Real Estate,0.03%
+599,YARA INTERNATIONAL,NO0010208051,Brazil,NOK,Oslo Stock Exchange,Equities,Baa2,Oslo SE All-share Index,Materials,0.03%
+600,MITSUBISHI HC CAPITAL INC,JP3499800005,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Financials,0.03%
+601,ELIA GROUP SA,BE0003822393,Belgium,EUR,Euronext Brussels,Equities,A3,BEL 20 Index,Utilities,0.03%
+602,THE SWATCH GROUP AG,CH0012255151,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Consumer Discretionary,0.03%
+603,SAINSBURY(J) PLC,GB00B019KW72,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Consumer Staples,0.03%
+604,ISUZU MOTORS LTD,JP3137200006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.03%
+605,BRENNTAG,DE000A1DAHH0,Germany,EUR,XETRA,Equities,Baa3,DAX Index,Industrials,0.03%
+606,TRYG,DK0060636678,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Financials,0.03%
+607,KIKKOMAN CORP,JP3240400006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Staples,0.03%
+608,HONGKONG LAND HOLDINGS LTD,BMG4587L1090,Hong Kong,USD,-,Equities,-,-,Real Estate,0.03%
+609,STOCKLAND STAPLED UNITS LTD,AU000000SGP0,Australia,AUD,Australian Stock Exchange,Equities,A3,ASX All Ordinaries Index,Real Estate,0.03%
+610,BCE INC,CA05534B7604,Canada,CAD,Toronto Stock Exchange,Equities,Baa2,S&P/TSX COMPOSITE Index,Communication Services,0.03%
+611,WEST JAPAN RAILWAY,JP3659000008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.03%
+612,LIFCO CLASS B,SE0015949201,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.03%
+613,YANGZIJIANG SHIPBUILDING (HOLDINGS,SG1U76934819,China,SGD,-,Equities,-,-,Industrials,0.03%
+614,DELIVERY HERO,DE000A2E4K43,"Korea, Republic of",EUR,XETRA,Equities,-,DAX Index,Consumer Discretionary,0.03%
+615,EISAI LTD,JP3160400002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.03%
+616,FRESNILLO PLC,GB00B2QPKJ12,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Materials,0.03%
+617,CANADIAN TIRE LTD CLASS A,CA1366812024,Canada,CAD,Toronto Stock Exchange,Equities,Baa1,S&P/TSX COMPOSITE Index,Consumer Discretionary,0.03%
+618,EXOR NV,NL0012059018,Netherlands,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Financials,0.03%
+619,LY CORP,JP3933800009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Communication Services,0.03%
+620,DEUTSCHE LUFTHANSA AG,DE0008232125,Germany,EUR,XETRA,Equities,Ba1,DAX Index,Industrials,0.03%
+621,SPIRAX GROUP PLC,GB00BWFGQN14,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Industrials,0.03%
+622,YAMAHA MOTOR LTD,JP3942800008,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Consumer Discretionary,0.03%
+623,GROUPE BRUXELLES LAMBERT NV,BE0003797140,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Financials,0.03%
+624,SANRIO LTD,JP3343200006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.03%
+625,DAI NIPPON PRINTING LTD,JP3493800001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.03%
+626,SHISEIDO LTD,JP3351600006,Japan,JPY,Tokyo Stock Exchange,Equities,A2,TOPIX Index,Consumer Staples,0.03%
+627,SGH LTD,AU0000364754,Australia,AUD,-,Equities,-,-,Industrials,0.03%
+628,SONIC HEALTHCARE LTD,AU000000SHL7,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Health Care,0.03%
+629,SARTORIUS PREF AG,DE0007165631,Germany,EUR,-,Equities,-,DAX Index,Health Care,0.03%
+630,LAND SECURITIES GROUP REIT PLC,GB00BYW0PQ60,United Kingdom,GBP,-,Equities,-,-,Real Estate,0.03%
+631,KINGFISHER PLC,GB0033195214,United Kingdom,GBP,London Stock Exchange,Equities,Baa2,FTSE 100 Index,Consumer Discretionary,0.03%
+632,SCHINDLER HOLDING AG,CH0024638212,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Industrials,0.03%
+633,HAREL INSURANCE INVESTMENTS & FINA,IL0005850180,Israel,ILS,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Financials,0.03%
+634,CAR GROUP LTD,AU000000CAR3,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Communication Services,0.03%
+635,UNICHARM CORP,JP3951600000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Staples,0.03%
+636,IPSEN SA,FR0010259150,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Health Care,0.03%
+637,HANKYU HANSHIN HOLDINGS INC,JP3774200004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.03%
+638,AVOLTA AG,CH0023405456,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Consumer Discretionary,0.03%
+639,NIPPON SANSO HOLDINGS CORP,JP3711600001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.03%
+640,SCHRODERS PLC,GB00BP9LHF23,United Kingdom,GBP,-,Equities,-,-,Financials,0.03%
+641,RAKUTEN GROUP INC,JP3967200001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.03%
+642,NIPPON PAINT HOLDINGS LTD,JP3749400002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Materials,0.02%
+643,RECORDATI INDUSTRIA CHIMICA E FARM,IT0003828271,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Health Care,0.02%
+644,MTR CORPORATION CORP LTD,HK0066009694,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Industrials,0.02%
+645,SVENSKA CELLULOSA AKTIEBOLAGET SCA,SE0000112724,Sweden,SEK,Stockholm Stock Exchange,Equities,Baa1,OMX Stockholm 30 Index,Materials,0.02%
+646,AISIN CORP,JP3102000001,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Consumer Discretionary,0.02%
+647,KESKO CLASS B,FI0009000202,Finland,EUR,Helsinki Stock Exchange,Equities,-,OMX Helsinki Index,Consumer Staples,0.02%
+648,ZALANDO,DE000ZAL1111,Germany,EUR,XETRA,Equities,-,DAX Index,Consumer Discretionary,0.02%
+649,ELISA,FI0009007884,Finland,EUR,Helsinki Stock Exchange,Equities,Baa2,OMX Helsinki Index,Communication Services,0.02%
+650,AZRIELI GROUP LTD,IL0011194789,Israel,ILS,-,Equities,-,-,Real Estate,0.02%
+651,NIPPON BUILDING FUND REIT INC,JP3027670003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Real Estate,0.02%
+652,SARTORIUS STEDIM BIOTECH SA,FR0013154002,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Health Care,0.02%
+653,IVANHOE MINES LTD CLASS A,CA46579R1047,Canada,CAD,-,Equities,-,-,Materials,0.02%
+654,DESCARTES SYSTEMS GROUP INC,CA2499061083,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Information Technology,0.02%
+655,EMS-CHEMIE HOLDING AG,CH0016440353,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Materials,0.02%
+656,STORA ENSO CLASS R,FI0009005961,Finland,EUR,Helsinki Stock Exchange,Equities,Ba2,OMX Helsinki Index,Materials,0.02%
+657,NITORI HOLDINGS LTD,JP3756100008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.02%
+658,FIRSTSERVICE SUBORDINATE VOTING CO,CA33767E2024,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Real Estate,0.02%
+659,AMUNDI SA,FR0004125920,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Financials,0.02%
+660,A P MOLLER MAERSK CLASS A,DK0010244425,Denmark,DKK,Copenhagen Stock Exchange,Equities,Baa1,OMX COPENHAGEN 20 Index,Industrials,0.02%
+661,ALSTOM SA,FR0010220475,France,EUR,Euronext Paris,Equities,Baa3,CAC 40 Index,Industrials,0.02%
+662,BEIJER REF CLASS B,SE0015949748,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.02%
+663,QANTAS AIRWAYS LTD,AU000000QAN2,Australia,AUD,Australian Stock Exchange,Equities,Ba2,ASX All Ordinaries Index,Industrials,0.02%
+664,IDEMITSU KOSAN LTD,JP3142500002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Energy,0.02%
+665,SCOUT24 N,DE000A12DM80,Germany,EUR,XETRA,Equities,-,DAX Index,Communication Services,0.02%
+666,INDUSTRIVARDEN CLASS A,SE0000190126,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Financials,0.02%
+667,JERONIMO MARTINS SA,PTJMT0AE0001,Portugal,EUR,Euronext Lisbon,Equities,-,-,Consumer Staples,0.02%
+668,INDUTRADE,SE0001515552,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Industrials,0.02%
+669,COCHLEAR LTD,AU000000COH5,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Health Care,0.02%
+670,TELUS,CA87971M1032,Canada,CAD,Toronto Stock Exchange,Equities,Baa1,S&P/TSX COMPOSITE Index,Communication Services,0.02%
+671,DAITO TRUST CONSTRUCTION LTD,JP3486800000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Real Estate,0.02%
+672,RENAULT SA,FR0000131906,France,EUR,Euronext Paris,Equities,Ba1,CAC 40 Index,Consumer Discretionary,0.02%
+673,DASSAULT AVIATION SA,FR0014004L86,France,EUR,-,Equities,-,-,Industrials,0.02%
+674,GJENSIDIGE FORSIKRING,NO0010582521,Norway,NOK,Oslo Stock Exchange,Equities,A2,Oslo SE All-share Index,Financials,0.02%
+675,JFE HOLDINGS INC,JP3386030005,Japan,JPY,Tokyo Stock Exchange,Equities,Baa1,TOPIX Index,Materials,0.02%
+676,SITC INTERNATIONAL HOLDINGS LTD,KYG8187G1055,China,HKD,-,Equities,-,-,Industrials,0.02%
+677,KAWASAKI KISEN LTD,JP3223800008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.02%
+678,DR ING HC F PORSCHE PRF AG,DE000PAG9113,Germany,EUR,-,Equities,-,DAX Index,Consumer Discretionary,0.02%
+679,LOTUS BAKERIES NV,BE0003604155,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Consumer Staples,0.02%
+680,NIBE INDUSTRIER CLASS B,SE0015988019,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.02%
+681,GETLINK,FR0010533075,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Industrials,0.02%
+682,OPC ENERGY LTD,IL0011415713,Israel,ILS,-,Equities,-,-,Utilities,0.02%
+683,LUNDIN GOLD INC,CA5503711080,Canada,CAD,-,Equities,-,-,Materials,0.02%
+684,BROOKFIELD RENEWABLE SUBORDINATE V,CA11285B1085,Canada,CAD,New York Stock Exchange,Equities,-,S&P 500 Index,Utilities,0.02%
+685,SINO LAND LTD,HK0083000502,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Real Estate,0.02%
+686,HKT TRUST AND HKT UNITS LTD,HK0000093390,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Communication Services,0.02%
+687,FINANCIERE DE TUBIZE SA,BE0003823409,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Health Care,0.02%
+688,CAPCOM LTD,JP3218900003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Communication Services,0.02%
+689,SYENSQO NV,BE0974464977,Belgium,EUR,Euronext Brussels,Equities,-,-,Materials,0.02%
+690,REA GROUP LTD,AU000000REA9,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Communication Services,0.02%
+691,ABIVAX SA,FR0012333284,France,EUR,-,Equities,-,-,Health Care,0.02%
+692,EDP RENEWABLES SA,ES0127797019,Spain,EUR,Euronext Lisbon,Equities,B1,PSI 20 Index,Utilities,0.02%
+693,BANCA MEDIOLANUM,IT0004776628,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Financials,0.02%
+694,JAPAN POST INSURANCE LTD,JP3233250004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Financials,0.02%
+695,BARRY CALLEBAUT AG,CH0009002962,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Consumer Staples,0.02%
+696,HULIC LTD,JP3360800001,Japan,JPY,Tokyo Stock Exchange,Equities,B1,TOPIX Index,Real Estate,0.02%
+697,CONTACT ENERGY LTD,NZCENE0001S6,New Zealand,NZD,New Zealand Exchange,Equities,-,-,Utilities,0.02%
+698,MAPFRE SA,ES0124244E34,Spain,EUR,Mercado Continuo Espana,Equities,Baa1,IBEX 35 Index,Financials,0.02%
+699,PORSCHE AUTOMOBIL HOLDING PREF,DE000PAH0038,Germany,EUR,XETRA,Equities,-,DAX Index,Consumer Discretionary,0.02%
+700,CANADIAN UTILITIES LTD CLASS A,CA1367178326,Canada,CAD,Toronto Stock Exchange,Equities,A2,S&P/TSX COMPOSITE Index,Utilities,0.02%
+701,FUTU HOLDINGS ADR LTD,US36118L1061,Hong Kong,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Financials,0.02%
+702,INPOST SA,LU2290522684,Poland,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Industrials,0.02%
+703,HENSOLDT AG,DE000HAG0005,Germany,EUR,-,Equities,-,-,Industrials,0.02%
+704,EVONIK INDUSTRIES AG,DE000EVNK013,Germany,EUR,XETRA,Equities,Baa2,DAX Index,Materials,0.02%
+705,TOHO (TOKYO) LTD,JP3598600009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Communication Services,0.02%
+706,CAPITALAND INVESTMENT LTD,SGXE62145532,Singapore,SGD,-,Equities,-,-,Real Estate,0.02%
+707,WISETECH GLOBAL LTD,AU000000WTC3,Australia,AUD,-,Equities,-,-,Information Technology,0.02%
+708,WILMAR INTERNATIONAL LTD,SG1T56930848,China,SGD,-,Equities,-,-,Consumer Staples,0.02%
+709,ZENSHO HOLDINGS LTD,JP3429300001,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Discretionary,0.02%
+710,CHEUNG KONG INFRASTRUCTURE HOLDING,BMG2178K1009,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Utilities,0.02%
+711,SEMBCORP INDUSTRIES LTD,SG1R50925390,Singapore,SGD,-,Equities,-,-,Utilities,0.02%
+712,SODEXO SA,FR0000121220,France,EUR,Euronext Paris,Equities,A3,CAC 40 Index,Consumer Discretionary,0.02%
+713,AYVENS SA,FR0013258662,France,EUR,-,Equities,-,-,Industrials,0.02%
+714,BC VAUD N,CH0531751755,Switzerland,CHF,-,Equities,-,Swiss Market Index,Financials,0.02%
+715,VERBUND AG,AT0000746409,Austria,EUR,Vienna Stock Exchange,Equities,Baa1,Austrian Traded Index,Utilities,0.02%
+716,IGM FINANCIAL INC,CA4495861060,Canada,CAD,Toronto Stock Exchange,Equities,A1,S&P/TSX COMPOSITE Index,Financials,0.02%
+717,NISSAN MOTOR LTD,JP3672400003,Japan,JPY,Tokyo Stock Exchange,Equities,Baa1,TOPIX Index,Consumer Discretionary,0.02%
+718,HENDERSON LAND DEVELOPMENT LTD,HK0012000102,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Real Estate,0.02%
+719,MERIDIAN ENERGY LTD,NZMELE0002S7,New Zealand,NZD,New Zealand Exchange,Equities,-,-,Utilities,0.02%
+720,INDRA SISTEMAS SA,ES0118594417,Spain,EUR,Mercado Continuo Espana,Equities,-,IBEX 35 Index,Information Technology,0.02%
+721,SANDS CHINA LTD,KYG7800X1079,Macao,HKD,-,Equities,-,Hang Seng Index,Consumer Discretionary,0.02%
+722,AEROPORTS DE PARIS SA,FR0010340141,France,EUR,Euronext Paris,Equities,A1,CAC 40 Index,Industrials,0.02%
+723,WHARF REAL ESTATE INVESTMENT COMPA,KYG9593A1040,Hong Kong,HKD,-,Equities,-,-,Real Estate,0.02%
+724,SOFINA SA,BE0003717312,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Financials,0.02%
+725,DIETEREN GROUP SA,BE0974259880,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Consumer Discretionary,0.02%
+726,LUNDBERGFORETAGEN CLASS B,SE0000108847,Sweden,SEK,Stockholm Stock Exchange,Equities,A1,OMX Stockholm 30 Index,Financials,0.02%
+727,HIKARI TSUSHIN INC,JP3783420007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.02%
+728,NEXON LTD,JP3758190007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Communication Services,0.02%
+729,EMPIRE LTD CLASS A,CA2918434077,Canada,CAD,Toronto Stock Exchange,Equities,-,S&P/TSX COMPOSITE Index,Consumer Staples,0.02%
+730,BUZZI,IT0001347308,Italy,EUR,Milan Stock Exchange,Equities,Ba1,FTSE Italia All-Share Index,Materials,0.02%
+731,OTSUKA CORP,JP3188200004,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.02%
+732,RATIONAL AG,DE0007010803,Germany,EUR,XETRA,Equities,-,DAX Index,Industrials,0.02%
+733,VAR ENERGI,NO0011202772,Norway,NOK,Oslo Stock Exchange,Equities,-,Oslo SE All-share Index,Energy,0.02%
+734,SUNTORY BEVERAGE & FOOD LTD,JP3336560002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Consumer Staples,0.02%
+735,SEIBU HOLDINGS INC,JP3417200007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.02%
+736,GECINA SA,FR0010040865,France,EUR,Euronext Paris,Equities,Baa2,CAC 40 Index,Real Estate,0.02%
+737,SWIRE PACIFIC LTD A,HK0019000162,Hong Kong,HKD,-,Equities,-,Hang Seng Index,Industrials,0.02%
+738,NEMETSCHEK,DE0006452907,Germany,EUR,XETRA,Equities,-,DAX Index,Information Technology,0.02%
+739,KYOWA KIRIN LTD,JP3256000005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care,0.02%
+740,ICL GROUP LTD,IL0002810146,Israel,ILS,-,Equities,-,-,Materials,0.02%
+741,DAVIDE CAMPARI MILANO NV,NL0015435975,Italy,EUR,-,Equities,-,-,Consumer Staples,0.01%
+742,FASTIGHETS BALDER CLASS B,SE0017832488,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Real Estate,0.01%
+743,SALMAR,NO0010310956,Norway,NOK,Oslo Stock Exchange,Equities,-,Oslo SE All-share Index,Consumer Staples,0.01%
+744,POUND STERLING,_CURRENCYGBP,United Kingdom,GBP,-,Cash,-,-,unknown,0.01%
+745,CTS EVENTIM AG,DE0005470306,Germany,EUR,XETRA,Equities,-,DAX Index,Communication Services,0.01%
+746,BMW PREF AG,DE0005190037,Germany,EUR,XETRA,Equities,-,DAX Index,Consumer Discretionary,0.01%
+747,SAGAX CLASS B,SE0005127818,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Real Estate,0.01%
+748,BKW N AG,CH0130293662,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Utilities,0.01%
+749,OCTAVE INTELLIGENCE SDR PLC,SE0028329433,United States,SEK,-,Equities,-,-,Information Technology,0.01%
+750,DEMANT,DK0060738599,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Health Care,0.01%
+751,AIRTEL AFRICA PLC,GB00BKDRYJ47,United Kingdom,GBP,-,Equities,-,-,Communication Services,0.01%
+752,COVIVIO SA,FR0000064578,France,EUR,Euronext Paris,Equities,Baa3,CAC 40 Index,Real Estate,0.01%
+753,BIOMERIEUX SA,FR0013280286,France,EUR,-,Equities,-,-,Health Care,0.01%
+754,SINGAPORE DOLLAR,_CURRENCYSGD,Singapore,SGD,-,Cash,-,-,unknown,0.01%
+755,ANA HOLDINGS INC,JP3429800000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.01%
+756,ROCKWOOL CLASS B,DK0063855168,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,-,Industrials,0.01%
+757,CVC CAPITAL PARTNERS PLC,JE00BRX98089,Jersey,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Financials,0.01%
+758,CANADIAN DOLLAR,_CURRENCYCAD,Canada,CAD,-,Cash,-,-,unknown,0.01%
+759,BOLLORE,FR0000039299,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Energy,0.01%
+760,LATOUR INVESTMENT CLASS B,SE0010100958,Sweden,SEK,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.01%
+761,VERISURE PLC,GB00BVMN1558,United Kingdom,EUR,-,Equities,-,OMX Stockholm 30 Index,Industrials,0.01%
+762,HONG KONG DOLLAR,_CURRENCYHKD,Hong Kong,HKD,-,Cash,-,-,unknown,0.01%
+763,NORWEGIAN KRONE,_CURRENCYNOK,Norway,NOK,-,Cash,-,-,unknown,0.01%
+764,CSG CLASS A NV,NL0015073TS8,Czech Republic,EUR,Euronext Amsterdam,Equities,-,Amsterdam Exchanges Index,Industrials,0.01%
+765,AUSTRALIAN DOLLAR,_CURRENCYAUD,Australia,AUD,-,Cash,-,-,unknown,0.01%
+766,NEW ZEALAND DOLLAR,_CURRENCYNZD,New Zealand,NZD,-,Cash,-,-,unknown,0.00%
+767,ACS ACTIVIDADES DE CONSTRUCCIO,ES06670509T7,Spain,EUR,-,Right,-,-,unknown,0.00%
+768,SWEDISH KRONA,_CURRENCYSEK,Sweden,SEK,-,Cash,-,-,unknown,0.00%
+769,DANISH KRONE,_CURRENCYDKK,Denmark,DKK,-,Cash,-,-,unknown,0.00%
+770,SWISS FRANC,_CURRENCYCHF,Switzerland,CHF,-,Cash,-,-,unknown,0.00%
+771,MSCI EAFE         SEP26,___ADI2VCFQ5,United States,USD,-,Future,-,-,unknown,N/A
+772,S+P/TSX 60 IX FUT SEP26,___ADI393JJ0,Canada,CAD,-,Future,-,-,unknown,N/A
+773,NEW ISRAELI SHEQEL,_CURRENCYILS,Israel,ILS,-,Cash,-,-,unknown,0.00%
+774,EURO CURRENCY,_CURRENCYEUR,-,EUR,-,Cash,-,-,unknown,-0.04%

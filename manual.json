@@ -1,0 +1,196 @@
+{
+  "manual_version": "1.0 - July 2026",
+  "sleeves": {
+    "QDVB": {
+      "name": "iShares Edge MSCI USA Quality Factor",
+      "target": 12.0,
+      "kind": "equity",
+      "thematic": false,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00BD1F4L37",
+      "ter": 0.2
+    },
+    "ZPRV": {
+      "name": "SPDR MSCI USA Small Cap Value Weighted",
+      "target": 3.0,
+      "kind": "equity",
+      "thematic": false,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00BSPLC413",
+      "ter": 0.3
+    },
+    "EXUS": {
+      "name": "Xtrackers MSCI World ex USA 1C",
+      "target": 20.0,
+      "kind": "equity",
+      "thematic": false,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE0006WW1TQ4",
+      "ter": 0.15
+    },
+    "IMAE": {
+      "name": "iShares Core MSCI Europe Acc",
+      "target": 10.0,
+      "kind": "equity",
+      "thematic": false,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00B4K48X80",
+      "ter": 0.12
+    },
+    "MTPI": {
+      "name": "iShares MSCI EM ex-China Acc",
+      "target": 17.5,
+      "kind": "equity",
+      "thematic": false,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00BMG6Z448",
+      "ter": 0.18
+    },
+    "36BZ": {
+      "name": "iShares MSCI China A",
+      "target": 5.0,
+      "kind": "equity",
+      "thematic": false,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00BQT3WG13",
+      "ter": 0.4
+    },
+    "GRID": {
+      "name": "First Trust Smart Grid Infrastructure",
+      "target": 3.5,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE000J80JTL1",
+      "ter": 0.65
+    },
+    "XDW0": {
+      "name": "Xtrackers MSCI World Energy 1C",
+      "target": 3.5,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00BM67HM91",
+      "ter": 0.25
+    },
+    "4COP": {
+      "name": "Global X Copper Miners UCITS",
+      "target": 1.5,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE0003Z9E2Y3",
+      "ter": 0.5
+    },
+    "NUKL": {
+      "name": "Global X Uranium UCITS",
+      "target": 1.5,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE000M7V94E1",
+      "ter": 0.65
+    },
+    "UMDV": {
+      "name": "iShares US Medical Devices",
+      "target": 3.0,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00BMX0DF60",
+      "ter": 0.25
+    },
+    "XDWH": {
+      "name": "Xtrackers MSCI World Health Care 1C",
+      "target": 2.0,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00BM67HK77",
+      "ter": 0.25
+    },
+    "IS0C": {
+      "name": "iShares Agribusiness",
+      "target": 1.0,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "SMART",
+      "currency": "EUR",
+      "isin": "IE00B6R52143",
+      "ter": 0.55
+    },
+    "IH2O": {
+      "name": "iShares Global Water",
+      "target": 1.5,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00B1TXK627",
+      "ter": 0.65
+    },
+    "BOTZ": {
+      "name": "Global X Robotics & AI UCITS",
+      "target": 5.0,
+      "kind": "equity",
+      "thematic": true,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00BLCHJB90",
+      "ter": 0.5
+    },
+    "XEON": {
+      "name": "Xtrackers EUR Overnight Rate Swap 1C",
+      "target": 6.5,
+      "kind": "stabilizer",
+      "thematic": false,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "LU0290358497",
+      "ter": 0.1
+    },
+    "SGLD": {
+      "name": "Invesco Physical Gold ETC",
+      "target": 3.5,
+      "kind": "stabilizer",
+      "thematic": false,
+      "exchange": "IBIS2",
+      "currency": "EUR",
+      "isin": "IE00B579F325",
+      "ter": 0.12
+    }
+  },
+  "rules": {
+    "max_lines": 17,
+    "min_position_pct": 1.0,
+    "thematic_cap_pct": 25.0,
+    "band_relative": 0.25,
+    "xeon_floor_pct": 3.0,
+    "sgld_cap_pct": 5.0,
+    "regime_correction_dd": 10.0,
+    "regime_crash_dd": 20.0,
+    "ladder_levels": [
+      20.0,
+      30.0,
+      40.0
+    ],
+    "rebuild_stabilizer_share": 0.5,
+    "min_order_eur": 100.0,
+    "avg_ter_flag": 0.3,
+    "semi_cluster_cap_pct": 16.0,
+    "tsmc_in_mtpi_cap_pct": 22.0
+  },
+  "semi_pattern": "TAIWAN SEMICONDUCTOR|TSMC|NVIDIA|ASML|SAMSUNG ELECTRO|SK HYNIX|MEDIATEK|BROADCOM|ADVANCED MICRO|INTEL CORP|TEXAS INSTRUMENT|INFINEON|STMICRO|TOKYO ELECTRON|APPLIED MATERIAL|LAM RESEARCH|KLA CORP|MICRON|QUALCOMM|ARM HOLDINGS|ANALOG DEVICES|RENESAS|ADVANTEST|DISCO CORP|BE SEMICONDUCTOR|ASM INTERNATIONAL|ASMPT|NXP SEMI|MARVELL|SYNOPSYS|CADENCE DESIGN|UNITED MICROELECTRONICS|GLOBALFOUNDRIES|SUMCO|SILTRONIC"
+}

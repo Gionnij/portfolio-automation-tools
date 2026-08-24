@@ -1,0 +1,55 @@
+﻿,Name,ISIN,Country,Currency,Exchange,Type of Security,Rating,Primary Listing,Industry Classification,Weighting
+1,SK HYNIX INC,KR7000660001,"Korea, Republic of",KRW,-,Equities,-,-,Information Technology,11.55%
+2,INFINEON TECHNOLOGIES AG,DE0006231004,Germany,EUR,XETRA,Equities,-,DAX Index,Information Technology,6.19%
+3,DELTA ELECTRONICS INC,TW0002308004,Taiwan,TWD,-,Equities,-,-,Information Technology,5.98%
+4,GE VERNOVA INC,US36828A1016,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Industrials,5.18%
+5,TEXAS INSTRUMENT INC,US8825081040,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,5.05%
+6,STMICROELECTRONICS ADR NV,US8610121027,Netherlands,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Information Technology,4.47%
+7,ABB LTD,CH0012221716,Switzerland,CHF,Scoach Switzerland,Equities,A2,Swiss Market Index,Industrials,4.34%
+8,EATON PLC,IE00B8KQN827,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Industrials,3.93%
+9,SIEMENS ENERGY N AG,DE000ENER6Y0,Germany,EUR,-,Equities,-,DAX Index,Industrials,3.89%
+10,MITSUBISHI ELECTRIC CORP,JP3902400005,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Industrials,3.80%
+11,GE AEROSPACE,US3696043013,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Industrials,3.72%
+12,MITSUBISHI CORP,JP3898400001,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Industrials,3.66%
+13,SCHNEIDER ELECTRIC,FR0000121972,France,EUR,Euronext Paris,Equities,A3,CAC 40 Index,Industrials,3.53%
+14,RENESAS ELECTRONICS CORP,JP3164720009,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,3.40%
+15,ILLINOIS TOOL INC,US4523081093,United States,USD,New York Stock Exchange,Equities,A2,S&P 500 Index,Industrials,3.33%
+16,MONOLITHIC POWER SYSTEMS INC,US6098391054,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,2.92%
+17,HONDA MOTOR LTD,JP3854600008,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Consumer Discretionary,2.85%
+18,LEGRAND SA,FR0010307819,France,EUR,Euronext Paris,Equities,A3,CAC 40 Index,Industrials,2.79%
+19,HITACHI LTD,JP3788600009,Japan,JPY,Tokyo Stock Exchange,Equities,A3,TOPIX Index,Industrials,2.72%
+20,HONEYWELL INTERNATIONAL INC WHEN I,US4385162056,United States,USD,-,Equities,-,-,Industrials,1.79%
+21,CHROMA ATE INC,TW0002360005,Taiwan,TWD,-,Equities,-,-,Information Technology,1.79%
+22,HONEYWELL AEROSPACE INC,US43849R1059,United States,USD,-,Equities,-,-,Industrials,1.73%
+23,VESTAS WIND SYSTEMS,DK0061539921,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,-,Industrials,1.63%
+24,HUBBELL INC,US4435106079,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Industrials,1.46%
+25,CGN POWER LTD H,CNE100001T80,China,HKD,-,Equities,-,Hang Seng Index,Utilities,1.43%
+26,ALFA LAVAL,SE0000695876,Sweden,SEK,Stockholm Stock Exchange,Equities,Baa1,OMX Stockholm 30 Index,Industrials,1.09%
+27,DONGFANG ELECTRIC CORP LTD H,CNE100000304,China,HKD,-,Equities,-,-,Industrials,0.66%
+28,HUANENG POWER INTERNATIONAL INC H,CNE1000006Z4,China,HKD,-,Equities,-,Hang Seng Index,Utilities,0.66%
+29,MAKITA CORP,JP3862400003,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.65%
+30,REDCO CORP,US2244081046,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Industrials,0.54%
+31,XINJIANG GOLDWIND SCIENCE AND TECH,CNE100000PP1,China,HKD,Tokyo Stock Exchange,Equities,-,TOPIX Index,Industrials,0.53%
+32,SKYWORKS SOLUTIONS INC,US83088M1027,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,0.50%
+33,NORDEX,DE000A0D6554,Germany,EUR,XETRA,Equities,-,DAX Index,Industrials,0.41%
+34,CIRRUS LOGIC INC,US1727551004,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,0.38%
+35,CHINA RESOURCES POWER LTD,HK0836012952,China,HKD,-,Equities,-,Hang Seng Index,Utilities,0.28%
+36,POWER INTEGRATIONS INC,US7392761034,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,0.21%
+37,ITRON INC,US4657411066,United States,USD,NASDAQ National Market System,Equities,Ba2,NASDAQ Composite Index,Information Technology,0.18%
+38,NUSCALE POWER CORP CLASS A,US67079K1007,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Industrials,0.17%
+39,SOLAREDGE TECHNOLOGIES INC,US83417M1045,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Information Technology,0.16%
+40,HANWHA SOLUTIONS CORP,KR7009830001,"Korea, Republic of",KRW,-,Equities,-,-,Materials,0.13%
+41,CTS CORP,US1265011056,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Information Technology,0.09%
+42,SANKEN ELECTRIC LTD,JP3329600005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Information Technology,0.08%
+43,NEW TAIWAN DOLLAR,_CURRENCYTWD,Taiwan,TWD,-,Cash,-,-,unknown,0.05%
+44,0,IE00BZ3FDF20,-,EUR,-,Equities,-,-,unknown,0.04%
+45,0,IE00BYQNZ507,-,USD,-,Equities,-,-,unknown,0.03%
+46,SOUTH KOREAN WON,_CURRENCYKRW,"Korea, Republic of",KRW,-,Cash,-,-,unknown,0.02%
+47,US DOLLAR,_CURRENCYUSD,United States,USD,-,Cash,-,-,unknown,0.02%
+48,HANWHA SOLUTIONS CORP,KRA0098301G4,"Korea, Republic of",KRW,-,Right,-,-,unknown,0.00%
+49,JAPANESE YEN,_CURRENCYJPY,Japan,JPY,-,Cash,-,-,unknown,0.00%
+50,DANISH KRONE,_CURRENCYDKK,Denmark,DKK,-,Cash,-,-,unknown,0.00%
+51,HONG KONG DOLLAR,_CURRENCYHKD,Hong Kong,HKD,-,Cash,-,-,unknown,0.00%
+52,SWISS FRANC,_CURRENCYCHF,Switzerland,CHF,-,Cash,-,-,unknown,0.00%
+53,SWEDISH KRONA,_CURRENCYSEK,Sweden,SEK,-,Cash,-,-,unknown,0.00%
+54,EURO CURRENCY,_CURRENCYEUR,-,EUR,-,Cash,-,-,unknown,-0.04%

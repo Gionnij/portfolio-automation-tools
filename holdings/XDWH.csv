@@ -1,0 +1,130 @@
+﻿,Name,ISIN,Country,Currency,Exchange,Type of Security,Rating,Primary Listing,Industry Classification,Weighting
+1,ELI LILLY,US5324571083,United States,USD,New York Stock Exchange,Equities,A2,S&P 500 Index,Pharmaceuticals,12.01%
+2,JOHNSON & JOHNSON,US4781601046,United States,USD,New York Stock Exchange,Equities,Aaa,S&P 500 Index,Pharmaceuticals,7.57%
+3,ABBVIE INC,US00287Y1091,United States,USD,New York Stock Exchange,Equities,Baa2,S&P 500 Index,Biotechnology,5.47%
+4,UNITEDHEALTH GROUP INC,US91324P1021,United States,USD,New York Stock Exchange,Equities,A3,S&P 500 Index,Managed Health Care,4.63%
+5,MERCK & CO INC,US58933Y1055,United States,USD,New York Stock Exchange,Equities,A2,S&P 500 Index,Pharmaceuticals,3.89%
+6,ROCHE PS PAR AG,CH1499059983,Switzerland,CHF,-,Equities,-,Swiss Market Index,Pharmaceuticals,3.58%
+7,ASTRAZENECA PLC,GB0009895292,United Kingdom,GBP,London Stock Exchange,Equities,A2,FTSE 100 Index,Pharmaceuticals,3.48%
+8,NOVARTIS AG,CH0012005267,Switzerland,CHF,Scoach Switzerland,Equities,Aa3,Swiss Market Index,Pharmaceuticals,3.47%
+9,AMGEN INC,US0311621009,United States,USD,NASDAQ National Market System,Equities,Baa1,NASDAQ Composite Index,Biotechnology,2.36%
+10,THERMO FISHER SCIENTIFIC INC,US8835561023,United States,USD,New York Stock Exchange,Equities,Baa3,S&P 500 Index,Life Sciences Tools & Services,2.29%
+11,ABBOTT LABORATORIES,US0028241000,United States,USD,New York Stock Exchange,Equities,A1,S&P 500 Index,Health Care Equipment,1.96%
+12,GILEAD SCIENCES INC,US3755581036,United States,USD,NASDAQ National Market System,Equities,Baa1,NASDAQ Composite Index,Biotechnology,1.91%
+13,NOVO NORDISK CLASS B,DK0062498333,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,-,Pharmaceuticals,1.88%
+14,INTUITIVE SURGICAL INC,US46120E6023,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Health Care Equipment,1.75%
+15,PFIZER INC,US7170811035,United States,USD,New York Stock Exchange,Equities,A1,S&P 500 Index,Pharmaceuticals,1.68%
+16,CVS HEALTH CORP,US1266501006,United States,USD,New York Stock Exchange,Equities,Baa1,S&P 500 Index,Health Care Services,1.60%
+17,VERTEX PHARMACEUTICALS INC,US92532F1003,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,1.54%
+18,DANAHER CORP,US2358511028,United States,USD,New York Stock Exchange,Equities,A2,S&P 500 Index,Life Sciences Tools & Services,1.49%
+19,BRISTOL MYERS SQUIBB,US1101221083,United States,USD,New York Stock Exchange,Equities,A2,S&P 500 Index,Pharmaceuticals,1.45%
+20,STRYKER CORP,US8636671013,United States,USD,New York Stock Exchange,Equities,A3,S&P 500 Index,Health Care Equipment,1.38%
+21,GLAXOSMITHKLINE,GB00BN7SWP63,United Kingdom,GBP,-,Equities,-,-,Pharmaceuticals,1.29%
+22,MEDTRONIC PLC,IE00BTN1Y115,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care Equipment,1.26%
+23,SANOFI SA,FR0000120578,France,EUR,Euronext Paris,Equities,A1,CAC 40 Index,Pharmaceuticals,1.14%
+24,MCKESSON CORP,US58155Q1031,United States,USD,New York Stock Exchange,Equities,Baa2,S&P 500 Index,Health Care Distributors,1.11%
+25,ELEVANCE HEALTH INC,US0367521038,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Managed Health Care,1.04%
+26,CIGNA,US1255231003,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care Services,0.89%
+27,REGENERON PHARMACEUTICALS INC,US75886F1075,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,0.80%
+28,BOSTON SCIENTIFIC CORP,US1011371077,United States,USD,New York Stock Exchange,Equities,Baa3,S&P 500 Index,Health Care Equipment,0.79%
+29,HCA HEALTHCARE INC,US40412C1018,United States,USD,New York Stock Exchange,Equities,B3,S&P 500 Index,Health Care Facilities,0.75%
+30,ESSILORLUXOTTICA SA,FR0000121667,France,EUR,Euronext Paris,Equities,A2,CAC 40 Index,Health Care Supplies,0.68%
+31,CARDINAL HEALTH INC,US14149Y1082,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care Distributors,0.68%
+32,ARGENX,NL0010832176,Netherlands,EUR,Euronext Brussels,Equities,-,-,Biotechnology,0.67%
+33,HOYA CORP,JP3837800006,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care Supplies,0.66%
+34,EDWARDS LIFESCIENCES CORP,US28176E1082,United States,USD,New York Stock Exchange,Equities,Baa3,S&P 500 Index,Health Care Equipment,0.64%
+35,CENCORA INC,US03073E1055,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care Distributors,0.63%
+36,BAYER AG,DE000BAY0017,Germany,EUR,XETRA,Equities,A3,DAX Index,Pharmaceuticals,0.63%
+37,TAKEDA PHARMACEUTICAL LTD,JP3463000004,Japan,JPY,Tokyo Stock Exchange,Equities,Aa3,TOPIX Index,Pharmaceuticals,0.62%
+38,LONZA GROUP AG,CH0013841017,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Life Sciences Tools & Services,0.57%
+39,HUMANA INC,US4448591028,United States,USD,New York Stock Exchange,Equities,Aa2,S&P 500 Index,Managed Health Care,0.57%
+40,0,IE00BYQNZ507,-,USD,-,Equities,-,-,unknown,0.56%
+41,BECTON DICKINSON,US0758871091,United States,USD,New York Stock Exchange,Equities,A3,S&P 500 Index,Health Care Equipment,0.54%
+42,IDEXX LABORATORIES INC,US45168D1046,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Health Care Equipment,0.52%
+43,GALDERMA GROUP N AG,CH1335392721,Switzerland,CHF,-,Equities,-,Swiss Market Index,Pharmaceuticals,0.51%
+44,HALEON PLC,GB00BMX86B70,Switzerland,GBP,-,Equities,-,-,Pharmaceuticals,0.50%
+45,ALNYLAM PHARMACEUTICALS INC,US02043Q1076,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,0.47%
+46,TEVA PHARMACEUTICAL INDUSTRIES ADR,US8816242098,Israel,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Pharmaceuticals,0.47%
+47,CSL LTD,AU000000CSL8,United States,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Biotechnology,0.47%
+48,SANDOZ GROUP AG,CH1243598427,Switzerland,CHF,-,Equities,-,Swiss Market Index,Pharmaceuticals,0.46%
+49,AGILENT TECHNOLOGIES INC,US00846U1016,United States,USD,New York Stock Exchange,Equities,Baa2,S&P 500 Index,Life Sciences Tools & Services,0.46%
+50,NATERA INC,US6323071042,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,0.45%
+51,UCB SA,BE0003739530,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Pharmaceuticals,0.44%
+52,WATERS CORP,US9418481035,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Life Sciences Tools & Services,0.44%
+53,ALCON AG,CH0432492467,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Health Care Supplies,0.41%
+54,IQVIA HOLDINGS INC,US46266C1053,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Life Sciences Tools & Services,0.40%
+55,BIOGEN INC,US09062X1037,United States,USD,NASDAQ National Market System,Equities,Aaa,NASDAQ Composite Index,Biotechnology,0.39%
+56,CENTENE CORP,US15135B1017,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Managed Health Care,0.39%
+57,CHUGAI PHARMACEUTICAL LTD,JP3519400000,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Pharmaceuticals,0.38%
+58,REVOLUTION MEDICINES INC,US76155X1000,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,0.38%
+59,ZOETIS INC CLASS A,US98978V1035,United States,USD,New York Stock Exchange,Equities,Baa2,S&P 500 Index,Pharmaceuticals,0.37%
+60,GE HEALTHCARE TECHNOLOGIES INC,US36266G1076,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Health Care Equipment,0.36%
+61,RESMED INC,US7611521078,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care Equipment,0.35%
+62,OTSUKA HOLDINGS LTD,JP3188220002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Pharmaceuticals,0.34%
+63,DAIICHI SANKYO LTD,JP3475350009,Japan,JPY,Tokyo Stock Exchange,Equities,A1,TOPIX Index,Pharmaceuticals,0.33%
+64,ILLUMINA INC,US4523271090,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Life Sciences Tools & Services,0.33%
+65,DEXCOM INC,US2521311074,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Health Care Equipment,0.33%
+66,VEEVA SYSTEMS INC CLASS A,US9224751084,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care Technology,0.31%
+67,METTLER TOLEDO INC,US5926881054,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Life Sciences Tools & Services,0.31%
+68,WEST PHARMACEUTICAL SERVICES INC,US9553061055,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Life Sciences Tools & Services,0.31%
+69,ROYALTY PHARMA PLC CLASS A,GB00BMVP7Y09,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Pharmaceuticals,0.29%
+70,QUEST DIAGNOSTICS INC,US74834L1008,United States,USD,New York Stock Exchange,Equities,Baa2,S&P 500 Index,Health Care Services,0.28%
+71,ASTELLAS PHARMA INC,JP3942400007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Pharmaceuticals,0.28%
+72,LABCORP HOLDINGS INC,US5049221055,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care Services,0.28%
+73,INSMED INC,US4576693075,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,0.27%
+74,MERCK,DE0006599905,Germany,EUR,XETRA,Equities,A3,DAX Index,Pharmaceuticals,0.26%
+75,UNITED THERAPEUTICS CORP,US91307C1027,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,0.26%
+76,KONINKLIJKE PHILIPS NV,NL0000009538,Netherlands,EUR,Euronext Amsterdam,Equities,A3,Amsterdam Exchanges Index,Health Care Equipment,0.25%
+77,STERIS,IE00BFY8C754,United States,USD,New York Stock Exchange,Equities,-,S&P 500 Index,Health Care Equipment,0.25%
+78,INCYTE CORP,US45337C1027,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,0.24%
+79,FRESENIUS SE AND CO KGAA,DE0005785604,Germany,EUR,XETRA,Equities,Ba1,DAX Index,Health Care Services,0.23%
+80,TERUMO CORP,JP3546800008,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care Equipment,0.22%
+81,ZIMMER BIOMET HOLDINGS INC,US98956P1021,United States,USD,New York Stock Exchange,Equities,Baa1,S&P 500 Index,Health Care Equipment,0.21%
+82,NEUROCRINE BIOSCIENCES INC,US64125C1099,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Biotechnology,0.20%
+83,GENMAB,DK0010272202,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Biotechnology,0.19%
+84,STRAUMANN HOLDING AG,CH1175448666,Switzerland,CHF,-,Equities,-,Swiss Market Index,Health Care Equipment,0.18%
+85,MEDLINE INC CLASS A,US58507V1070,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Health Care Supplies,0.18%
+86,COOPER INC,US2166485019,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Health Care Supplies,0.17%
+87,SIEMENS HEALTHINEERS AG,DE000SHL1006,Germany,EUR,XETRA,Equities,-,DAX Index,Health Care Equipment,0.16%
+88,SHIONOGI LTD,JP3347200002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Pharmaceuticals,0.16%
+89,FISHER AND PAYKEL HEALTHCARE CORPO,NZFAPE0001S2,New Zealand,NZD,New Zealand Exchange,Equities,-,NZX 50 Index,Health Care Equipment,0.16%
+90,ROCHE HOLDING AG,CH0012032113,Switzerland,CHF,NASDAQ National Market System,Equities,-,Swiss Market Index,Pharmaceuticals,0.15%
+91,SMITH AND NEPHEW PLC,GB0009223206,United Kingdom,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Health Care Equipment,0.14%
+92,SONOVA HOLDING AG,CH0012549785,Switzerland,CHF,Scoach Switzerland,Equities,-,Swiss Market Index,Health Care Equipment,0.14%
+93,OLYMPUS CORP,JP3201200007,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Health Care Equipment,0.14%
+94,INSULET CORP,US45784P1012,United States,USD,NASDAQ National Market System,Equities,-,NASDAQ Composite Index,Health Care Equipment,0.13%
+95,SIGMA HEALTHCARE LTD,AU000000SIG5,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Health Care Distributors,0.12%
+96,EUROFINS SCIENTIFIC,FR0014000MR3,Luxembourg,EUR,-,Equities,-,-,Life Sciences Tools & Services,0.11%
+97,ORION CLASS B,FI0009014377,Finland,EUR,Helsinki Stock Exchange,Equities,-,OMX Helsinki Index,Pharmaceuticals,0.11%
+98,FRESENIUS MEDICAL CARE AG,DE0005785802,Germany,EUR,XETRA,Equities,Ba1,DAX Index,Health Care Services,0.10%
+99,SWEDISH ORPHAN BIOVITRUM,SE0000872095,Sweden,SEK,Stockholm Stock Exchange,Equities,-,OMX Stockholm 30 Index,Biotechnology,0.10%
+100,QIAGEN NV,NL0015002SN0,Netherlands,EUR,-,Equities,-,DAX Index,Life Sciences Tools & Services,0.10%
+101,PRO MEDICUS LTD,AU000000PME8,Australia,AUD,-,Equities,-,-,Health Care Technology,0.10%
+102,COLOPLAST CLASS B,DK0060448595,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Health Care Supplies,0.09%
+103,US DOLLAR,_CURRENCYUSD,United States,USD,-,Cash,-,-,unknown,0.09%
+104,SONIC HEALTHCARE LTD,AU000000SHL7,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Health Care Services,0.08%
+105,EISAI LTD,JP3160400002,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Pharmaceuticals,0.08%
+106,SARTORIUS PREF AG,DE0007165631,Germany,EUR,-,Equities,-,DAX Index,Life Sciences Tools & Services,0.08%
+107,IPSEN SA,FR0010259150,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Pharmaceuticals,0.08%
+108,RECORDATI INDUSTRIA CHIMICA E FARM,IT0003828271,Italy,EUR,Milan Stock Exchange,Equities,-,FTSE Italia All-Share Index,Pharmaceuticals,0.07%
+109,SARTORIUS STEDIM BIOTECH SA,FR0013154002,France,EUR,Euronext Paris,Equities,-,CAC 40 Index,Life Sciences Tools & Services,0.07%
+110,COCHLEAR LTD,AU000000COH5,Australia,AUD,Australian Stock Exchange,Equities,-,ASX All Ordinaries Index,Health Care Equipment,0.07%
+111,FINANCIERE DE TUBIZE SA,BE0003823409,Belgium,EUR,Euronext Brussels,Equities,-,BEL 20 Index,Pharmaceuticals,0.06%
+112,ABIVAX SA,FR0012333284,France,EUR,-,Equities,-,-,Biotechnology,0.06%
+113,KYOWA KIRIN LTD,JP3256000005,Japan,JPY,Tokyo Stock Exchange,Equities,-,TOPIX Index,Pharmaceuticals,0.05%
+114,DEMANT,DK0060738599,Denmark,DKK,Copenhagen Stock Exchange,Equities,-,OMX COPENHAGEN 20 Index,Health Care Equipment,0.04%
+115,EURO CURRENCY,_CURRENCYEUR,-,EUR,-,Cash,-,-,unknown,0.04%
+116,BIOMERIEUX SA,FR0013280286,France,EUR,-,Equities,-,-,Health Care Equipment,0.04%
+117,NEW ZEALAND DOLLAR,_CURRENCYNZD,New Zealand,NZD,-,Cash,-,-,unknown,0.01%
+118,AUSTRALIAN DOLLAR,_CURRENCYAUD,Australia,AUD,-,Cash,-,-,unknown,0.01%
+119,DANISH KRONE,_CURRENCYDKK,Denmark,DKK,-,Cash,-,-,unknown,0.01%
+120,POUND STERLING,_CURRENCYGBP,United Kingdom,GBP,-,Cash,-,-,unknown,0.01%
+121,SWEDISH KRONA,_CURRENCYSEK,Sweden,SEK,-,Cash,-,-,unknown,0.00%
+122,JAPANESE YEN,_CURRENCYJPY,Japan,JPY,-,Cash,-,-,unknown,0.00%
+123,SWISS FRANC,_CURRENCYCHF,Switzerland,CHF,-,Cash,-,-,unknown,0.00%
+124,NEW ISRAELI SHEQEL,_CURRENCYILS,Israel,ILS,-,Cash,-,-,unknown,0.00%
+125,HONG KONG DOLLAR,_CURRENCYHKD,Hong Kong,HKD,-,Cash,-,-,unknown,0.00%
+126,-,US436CVR0216,United States,USD,-,Equities,-,-,unknown,0.00%
+127,NMC HEALTH PLC,GB00B7FC0762,United Arab Emirates,GBP,London Stock Exchange,Equities,-,FTSE 100 Index,Health Care Facilities,0.00%
+128,CANADIAN DOLLAR,_CURRENCYCAD,Canada,CAD,-,Cash,-,-,unknown,N/A
+129,MSCI WORLD HEALTH SEP26,___ADI3BF6G0,Germany,USD,-,Future,-,-,unknown,N/A

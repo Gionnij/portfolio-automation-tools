@@ -1,0 +1,111 @@
+Name,Ticker,Sector,Weight (%)
+Johnson Controls International Plc,JCI,Industrials,8.81
+Eaton Corporation Plc,ETN,Industrials,8.40
+Schneider Electric SE,SU.FP,Industrials,8.16
+ABB Ltd,ABBN.SW,Industrials,8.13
+Quanta Services Inc.,PWR,Industrials,7.93
+National Grid Plc,NG/.LN,Utilities,4.07
+Prysmian SpA,PRY.IM,Industrials,3.85
+nVent Electric Plc,NVT,Industrials,3.09
+Hubbell Incorporated,HUBB,Industrials,2.79
+Tesla Inc.,TSLA,Consumer Discretionary,1.99
+TERNA - Rete Elettrica Nazionale SpA,TRN.IM,Utilities,1.95
+NVIDIA Corporation,NVDA,Information Technology,1.91
+Cisco Systems Inc.,CSCO,Information Technology,1.86
+HD Hyundai Electric Co. Ltd.,267260.KS,Industrials,1.73
+Hydro One Ltd,H.CT,Utilities,1.70
+Aptiv Plc,APTV,Consumer Discretionary,1.46
+LS Electric Co. Ltd.,010120.KS,Industrials,1.38
+Belimo Holding AG,BEAN.SE,Industrials,1.34
+GE Vernova Inc.,GEV,Industrials,1.15
+SPIE S.A.,SPIE.FP,Industrials,1.15
+Oracle Corporation,ORCL,Information Technology,1.13
+Texas Instruments Incorporated,TXN,Information Technology,1.10
+Equatorial Energia SA,EQTL3.BZ,Utilities,1.09
+International Business Machines Corporation,IBM,Information Technology,1.09
+Elia System Operator SA/NV,ELI.BB,Utilities,1.00
+NKT A/S,NKT.DC,Industrials,0.98
+Siemens AG,SIE.GY,Industrials,0.97
+Red Electrica Corporacion S.A.,RED.SM,Utilities,0.90
+Nexans SA,NEX.FP,Industrials,0.81
+Fortune Electric Co. Ltd.,1519.TT,Industrials,0.80
+MYR Group Inc.,MYRG,Industrials,0.80
+SAP SE,SAP.GY,Information Technology,0.80
+Analog Devices Inc.,ADI,Information Technology,0.76
+QUALCOMM Incorporated,QCOM,Information Technology,0.76
+Iberdrola S.A.,IBE.SM,Utilities,0.66
+Enphase Energy Inc.,ENPH,Information Technology,0.63
+Companhia Paranaense de Energia-Copel,CPLE3.BZ,Utilities,0.58
+Hitachi Ltd.,6501.JP,Industrials,0.58
+Infineon Technologies AG,IFX.GY,Information Technology,0.49
+Energisa SA (Units),ENGI11.BZ,Utilities,0.45
+SolarEdge Technologies Inc.,SEDG,Information Technology,0.40
+Itron Inc.,ITRI,Information Technology,0.38
+Mitsubishi Electric Corporation,6503.JP,Industrials,0.36
+Voltronic Power Technology Corp.,6409.TT,Industrials,0.36
+Meidensha Corporation,6508.JP,Industrials,0.34
+Transmissora Alianca de Energia Electrica S.A. (Unit),TAEE11.BZ,Utilities,0.34
+Astor Enerji A.S.,ASTOR.TI,Industrials,0.33
+Daihen Corporation,6622.JP,Industrials,0.33
+Emerson Electric Co.,EMR,Industrials,0.33
+Panasonic Corporation,6752.JP,Consumer Discretionary,0.33
+Taihan Electric Wire Co. Ltd.,001440.KS,Industrials,0.32
+Sanil Electric Co. Ltd.,062040.KS,Industrials,0.31
+Shihlin Electric & Engineering Corporation,1503.TT,Industrials,0.31
+Fujikura Ltd.,5803.JP,Industrials,0.29
+Hammond Power Solutions Inc.,HPS/A.CT,Industrials,0.29
+Atkore International Group Inc.,ATKR,Industrials,0.28
+Alupar Investimento S.A (Unit),ALUP11.BZ,Utilities,0.26
+NXP Semiconductors N.V.,NXPI,Information Technology,0.26
+Renesas Electronics Corp.,6723.JP,Information Technology,0.24
+Sumitomo Electric Industries Ltd.,5802.JP,Consumer Discretionary,0.24
+American Superconductor Corporation,AMSC,Industrials,0.23
+Cenergy Holdings SA,CENER.GA,Industrials,0.21
+Isa Energia Brasil Sa,ISAE4.BZ,Utilities,0.21
+Legrand S.A.,LR.FP,Industrials,0.20
+Fluence Energy Inc. (Class A),FLNC,Industrials,0.18
+REN - Redes Energeticas Nacionais SGPS S.A.,RENE.PL,Utilities,0.17
+SMA Solar Technology AG,S92.GR,Industrials,0.17
+BYD Company Limited (Class H),1211.HK,Consumer Discretionary,0.16
+Iljin Electric Co. Ltd.,103590.KS,Industrials,0.16
+Landis+Gyr Group AG,LAND.SE,Information Technology,0.16
+Wasion Holdings Limited,3393.HK,Information Technology,0.16
+SSE Plc,SSE.LN,Utilities,0.15
+Allis Electric Co. Ltd.,1514.TT,Industrials,0.14
+R&S Group Holding AG,RSGN.SE,Industrials,0.14
+Willdan Group Inc.,WLDN,Industrials,0.14
+Ta Ya Electric Wire & Cable Co. Ltd.,1609.TT,Industrials,0.12
+MasTec Inc.,MTZ,Industrials,0.10
+Samsung SDI Co. Ltd.,006400.KS,Information Technology,0.09
+Contemporary Amperex Technology Co. Ltd. (Class H),3750.HK,Industrials,0.08
+Furukawa Electric Co. Ltd.,5801.JP,,0.08
+Preformed Line Products Company,PLPC,Industrials,0.08
+WESCO International Inc.,WCC,Industrials,0.07
+Fuji Electric Co. Ltd.,6504.JP,,0.06
+Generac Holdings Inc.,GNRC,Industrials,0.06
+NGK Insulators Ltd.,5333.JP,Industrials,0.06
+Takaoka Toko Co. Ltd.,6617.JP,Industrials,0.06
+Advanced Energy Industries Inc.,AEIS,Information Technology,0.05
+Alfen Beheer BV,ALFEN.NA,Industrials,0.05
+Hyosung Heavy Industries Corporation,298040.KS,Industrials,0.05
+LS Eco Energy Ltd.,229640.KS,Industrials,0.05
+Osaki Electric Co. Ltd.,6644.JP,Information Technology,0.05
+Trimble Inc.,TRMB,Information Technology,0.05
+Valmont Industries Inc.,VMI,Industrials,0.05
+Advantech Co. Ltd.,2395.TT,Information Technology,0.04
+Littelfuse Inc.,LFUS,Information Technology,0.04
+STMicroelectronics N.V.,STM,Information Technology,0.04
+Arcosa Inc.,ACA,Industrials,0.03
+ESCO Technologies Inc.,ESE,Industrials,0.03
+EnerSys,ENS,Industrials,0.03
+Verbund AG,VER.AV,Utilities,0.03
+AZZ Inc.,AZZ,Industrials,0.02
+Azbil Corporation,6845.JP,,0.02
+GS Yuasa Corporation,6674.JP,Consumer Discretionary,0.02
+Primoris Services Corporation,PRIM,Industrials,0.02
+Belden Inc.,BDC,Information Technology,0.01
+Chung-Hsin Electric and Machinery Manufacturing Corp.,1513.TT,Industrials,0.01
+Digi International Inc.,DGII,Information Technology,0.01
+Stella-Jones Inc.,SJ.CT,Materials,0.01
+Tatung Co. Ltd.,2371.TT,Industrials,0.01
+Axia Energia (ADR),AXIA,Utilities,0.00

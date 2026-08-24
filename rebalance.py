@@ -250,6 +250,27 @@ def _need_ib():
                  "of --ib)")
 
 
+def _check_account(ib, expect):
+    """IBKR paper accounts are DU*/DF*; live are U*/F*. Verify the Gateway is
+    really logged into the account type the caller asked for - a wrong-account
+    order is the one mistake with no undo."""
+    if not expect:
+        return
+    accts = [a for a in (ib.managedAccounts() or []) if a]
+    if not accts:
+        return
+    actual = "paper" if all(a.upper().startswith("D") for a in accts) else "live"
+    if actual != expect:
+        ib.disconnect()
+        sys.exit(f"\nACCOUNT MISMATCH - nothing was done.\n"
+                 f"You asked for the {expect.upper()} account, but IB Gateway "
+                 f"is logged into the {actual.upper()} account "
+                 f"({', '.join(accts)}).\n"
+                 f"Log Gateway out and back in with your {expect.upper()} "
+                 f"credentials, then retry.")
+    print(f"  account: {', '.join(accts)} ({actual})")
+
+
 def _connect(ib, host, port, client_id):
     """Connect to Gateway/TWS, or exit with a message a human can act on.
 
@@ -275,7 +296,7 @@ def _connect(ib, host, port, client_id):
             f"[technical detail: {type(e).__name__}: {e}]")
 
 
-def snapshot_ib(cfg, host, port, client_id):
+def snapshot_ib(cfg, host, port, client_id, expect_account=None):
     """Price every sleeve WITHOUT needing a market-data subscription:
     held sleeves use IBKR portfolio prices (server-side, free); the rest use
     historical daily closes. FX to EUR via historical rates."""
@@ -283,6 +304,7 @@ def snapshot_ib(cfg, host, port, client_id):
     from ib_async import IB, Stock, Forex
     ib = IB()
     _connect(ib, host, port, client_id)
+    _check_account(ib, expect_account)
     ib.reqMarketDataType(4)                      # delayed-frozen: real-time if entitled, else 15-min delayed, else last delayed close - plenty for monthly rebalancing
 
     # open-order guard: staging while orders are still working at the broker
@@ -801,7 +823,7 @@ def write_report(cfg, res, checklist, out_md, contribution):
 # ------------------------------------------------------------------- execute
 
 def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
-            state_path=None):
+            state_path=None, expect_account=None):
     """Two-phase execution, liquidity-first, with per-order results.
 
     Phase 1 - all SELLs, aggressive limits (est - 0.5%); IBKR's price-cap
@@ -817,6 +839,7 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
     orders = load_json(orders_path)
     ib = IB()
     _connect(ib, host, port, client_id)
+    _check_account(ib, expect_account)
 
     # hard guard: never execute on top of orders still working at the broker
     # (a slow sell from a previous run, a manual order, ...). Executing now
@@ -1028,6 +1051,9 @@ def main():
     ap.add_argument("--orders-out", default=str(HERE / "orders.json"))
     ap.add_argument("--execute", metavar="ORDERS_JSON",
                     help="place previously staged orders (asks per order)")
+    ap.add_argument("--expect-account", choices=["paper", "live"],
+                    help="refuse to run unless IB Gateway is logged into this "
+                         "account type (paper IDs start with DU)")
     ap.add_argument("--reset-baseline", action="store_true",
                     help="treat TODAY's portfolio as the new baseline: "
                          "unit price back to 100, drawdown D back to 0, "
@@ -1049,7 +1075,8 @@ def main():
             sys.exit("--execute requires --ib host:port")
         host, port = args.ib.split(":")
         execute(args.execute, cfg, host, int(port), args.client_id,
-                auto_yes=args.yes, state_path=args.state)
+                auto_yes=args.yes, state_path=args.state,
+                expect_account=args.expect_account)
         return
 
     state = load_json(args.state, default=json.loads(json.dumps(DEFAULT_STATE)))
@@ -1057,7 +1084,8 @@ def main():
         snap = snapshot_csv(args.positions_csv)
     elif args.ib:
         host, port = args.ib.split(":")
-        snap = snapshot_ib(cfg, host, int(port), args.client_id)
+        snap = snapshot_ib(cfg, host, int(port), args.client_id,
+                           expect_account=args.expect_account)
     else:
         sys.exit("need --positions-csv or --ib")
 

@@ -34,22 +34,31 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
-STATE = HERE / "state.json"
-UNDO = HERE / "state.undo.json"
-PENDING = HERE / "state.pending"      # "1" = last prepare not yet executed
-
-
-def _pending():
-    try:
-        return PENDING.read_text().strip() == "1"
-    except Exception:
-        return False
-ORDERS = HERE / "orders.json"
-APPROVED = HERE / "orders_approved.json"
-REPORT = HERE / "prep_report.md"
-
+# One folder serves BOTH accounts: every stateful file is namespaced, so the
+# paper account's memory can never be read or written by a live run.
 PORTS = {"paper": 4002, "live": 4001}
 CONFIRM = {"paper": "EXECUTE", "live": "EXECUTE LIVE"}
+
+
+def P(acct):
+    """Per-account file paths."""
+    a = "live" if acct == "live" else "paper"
+    return dict(
+        state=HERE / f"state.{a}.json",
+        undo=HERE / f"state.{a}.undo.json",
+        pending=HERE / f"state.{a}.pending",
+        orders=HERE / f"orders.{a}.json",
+        approved=HERE / f"orders_approved.{a}.json",
+        result=HERE / f"orders_result.{a}.json",
+        report=HERE / f"prep_report.{a}.md",
+    )
+
+
+def _pending(acct):
+    try:
+        return P(acct)["pending"].read_text().strip() == "1"
+    except Exception:
+        return False
 SERVER_PORT = 8642
 
 
@@ -97,12 +106,13 @@ def section_by_prefix(sections, prefix):
     return []
 
 
-def report_payload(run_logs):
-    """Parse prep_report.md + orders.json into the JSON the page renders."""
+def report_payload(acct, run_logs):
+    """Parse this account's report + orders into the JSON the page renders."""
     import re
-    if not REPORT.exists():
-        return {"ok": False, "log": "no prep_report.md yet"}
-    title, meta, sections = parse_report(REPORT.read_text())
+    pp = P(acct)
+    if not pp["report"].exists():
+        return {"ok": False, "log": f"no report yet for the {acct} account"}
+    title, meta, sections = parse_report(pp["report"].read_text())
     regime_txt = " ".join(section_by_prefix(sections, "Regime"))
     m = re.search(r"D = ([\-\d.]+)%.*?(Calm|Correction|Crash)", regime_txt)
     dm = re.search(r"\*\*DRIFT:\*\*\s*(.+)", " ".join(
@@ -110,11 +120,11 @@ def report_payload(run_logs):
     _, wrows = parse_table(section_by_prefix(sections, "Current vs target"))
     _, crows = parse_table(section_by_prefix(sections, "Manual compliance"))
     try:
-        orders = json.loads(ORDERS.read_text())
+        orders = json.loads(pp["orders"].read_text())
     except Exception:
         orders = []
     try:
-        history = json.loads(STATE.read_text()).get("history", [])
+        history = json.loads(pp["state"].read_text()).get("history", [])
     except Exception:
         history = []
     return {"ok": True, "title": title, "meta": meta,
@@ -124,27 +134,31 @@ def report_payload(run_logs):
             "units": [h.get("unit", 0) for h in history],
             "log": "\n\n".join(f"$ {c}\n{o}" for c, o in run_logs),
             "drift": dm.group(1).strip() if dm else None,
-            "pending": _pending()}
+            "account": acct, "pending": _pending(acct)}
 
 
 # ------------------------------------------------------------------ actions
 
 def api_prepare(p):
-    account = p.get("account", "paper")
-    port = PORTS.get(account, 4002)
+    account = "live" if p.get("account") == "live" else "paper"
+    pp, port = P(account), PORTS[account]
     # state hygiene: a previous prepare that was never executed gets rolled
-    # back before we run again, so previews don't stack up in state.json
-    if _pending() and UNDO.exists():
-        shutil.copy(UNDO, STATE)
-    if STATE.exists():
-        shutil.copy(STATE, UNDO)
+    # back before we run again, so previews don't stack up in state
+    if _pending(account) and pp["undo"].exists():
+        shutil.copy(pp["undo"], pp["state"])
+    if pp["state"].exists():
+        shutil.copy(pp["state"], pp["undo"])
 
     logs = []
     if p.get("fetch", True):
         ok, out = run_step(["fetch_prices.py"])
         logs.append(("python fetch_prices.py", out))
     cmd = ["rebalance.py", "--contribute", str(p.get("contribute", 0) or 0),
-           "--ib", f"127.0.0.1:{port}"]
+           "--ib", f"127.0.0.1:{port}",
+           "--expect-account", account,          # hard account verification
+           "--state", str(pp["state"]),
+           "--orders-out", str(pp["orders"]),
+           "--out", str(pp["report"])]
     if p.get("deploy"):
         cmd += ["--deploy", str(p["deploy"])]
     if p.get("min_order") is not None:      # 0 is a valid value, not "unset"
@@ -152,69 +166,74 @@ def api_prepare(p):
     ok, out = run_step(cmd)
     logs.append(("python " + " ".join(cmd), out))
     if not ok:
-        return {"ok": False,
+        return {"ok": False, "account": account,
                 "log": "\n\n".join(f"$ {c}\n{o}" for c, o in logs)}
-    payload = report_payload(logs)
+    payload = report_payload(account, logs)
     if payload.get("ok"):
-        # a "pending preview" only exists when something was actually staged;
-        # a refresh that stages nothing has nothing awaiting execution
-        PENDING.write_text("1" if payload.get("orders") else "0")
-        payload["pending"] = _pending()
+        # a "pending preview" only exists when something was actually staged
+        pp["pending"].write_text("1" if payload.get("orders") else "0")
+        payload["pending"] = _pending(account)
     return payload
 
 
 def api_execute(p):
-    account = p.get("account", "paper")
-    port = PORTS.get(account, 4002)
+    account = "live" if p.get("account") == "live" else "paper"
+    pp, port = P(account), PORTS[account]
     phrase = (p.get("confirm") or "").strip()
     if phrase != CONFIRM[account]:
-        return {"ok": False,
-                "log": f"confirmation phrase wrong - type exactly: "
-                       f"{CONFIRM[account]}"}
+        return {"ok": False, "log": f"confirmation phrase wrong - type "
+                                    f"exactly: {CONFIRM[account]}"}
     try:
-        orders = json.loads(ORDERS.read_text())
+        orders = json.loads(pp["orders"].read_text())
     except Exception:
         return {"ok": False, "log": "no staged orders found"}
     sel = p.get("selected", [])
     chosen = [o for i, o in enumerate(orders) if i in sel]
     if not chosen:
         return {"ok": False, "log": "no orders selected"}
-    APPROVED.write_text(json.dumps(chosen, indent=1))
-    result_file = HERE / "orders_result.json"
-    result_file.write_text("[]")         # clear stale results
-    ok, out = run_step(["rebalance.py", "--execute", str(APPROVED),
-                        "--ib", f"127.0.0.1:{port}", "--yes"])
+    pp["approved"].write_text(json.dumps(chosen, indent=1))
+    pp["result"].write_text("[]")            # clear stale results
+    ok, out = run_step(["rebalance.py", "--execute", str(pp["approved"]),
+                        "--ib", f"127.0.0.1:{port}", "--yes",
+                        "--expect-account", account,
+                        "--state", str(pp["state"])])
     if ok:
-        PENDING.write_text("0")          # state now reflects executed orders
+        pp["pending"].write_text("0")        # state reflects executed orders
     try:
-        results = json.loads(result_file.read_text())
+        results = json.loads(pp["result"].read_text())
     except Exception:
         results = []
-    return {"ok": ok, "log": out, "results": results,
+    return {"ok": ok, "log": out, "results": results, "account": account,
             "sent": len(chosen), "total": len(orders)}
 
 
 def api_resync(p):
     """Re-baseline: today's portfolio becomes the reference (D back to 0)."""
-    account = p.get("account", "paper")
-    port = PORTS.get(account, 4002)
+    account = "live" if p.get("account") == "live" else "paper"
+    pp, port = P(account), PORTS[account]
     ok, out = run_step(["rebalance.py", "--contribute", "0",
-                        "--ib", f"127.0.0.1:{port}", "--reset-baseline"])
+                        "--ib", f"127.0.0.1:{port}", "--reset-baseline",
+                        "--expect-account", account,
+                        "--state", str(pp["state"]),
+                        "--orders-out", str(pp["orders"]),
+                        "--out", str(pp["report"])])
     if not ok:
-        return {"ok": False, "log": out}
-    PENDING.write_text("0")
-    payload = report_payload([("resync baseline", out)])
-    payload["pending"] = _pending()
+        return {"ok": False, "account": account, "log": out}
+    pp["pending"].write_text("0")
+    payload = report_payload(account, [("resync baseline", out)])
+    payload["pending"] = _pending(account)
     return payload
 
 
-def api_undo(_p):
-    if UNDO.exists():
-        shutil.copy(UNDO, STATE)
-        PENDING.write_text("0")
-        return {"ok": True, "log": "state.json restored from before the "
-                                   "last prepare"}
-    return {"ok": False, "log": "no undo snapshot found"}
+def api_undo(p):
+    account = "live" if p.get("account") == "live" else "paper"
+    pp = P(account)
+    if pp["undo"].exists():
+        shutil.copy(pp["undo"], pp["state"])
+        pp["pending"].write_text("0")
+        return {"ok": True, "log": f"{account} state restored from before "
+                                   f"the last prepare"}
+    return {"ok": False, "log": f"no undo snapshot for the {account} account"}
 
 
 # ------------------------------------------------------------------ web page
@@ -266,10 +285,7 @@ details summary{cursor:pointer;color:#718096;font-size:13px}
   <div id="banner" class="banner paper">PAPER account &middot; port 4002 &middot;
     nothing is sent without the confirmation phrase</div>
   <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
-    <span><label><input type="radio" name="acct" value="paper" checked
-      onchange="setAcct()"> Paper</label>
-    <label><input type="radio" name="acct" value="live"
-      onchange="setAcct()"> LIVE</label></span>
+    <span id="modebox"></span>
     <span><label>contribute &euro;</label>
       <input type="number" id="contribute" value="600" step="50"></span>
     <span><label>deploy &euro;</label>
@@ -321,13 +337,29 @@ details summary{cursor:pointer;color:#718096;font-size:13px}
 const COLORS={PASS:"#1a7f37",CHECK:"#b35900",HUMAN:"#4a5568",FAIL:"#c0392b",
   Calm:"#1a7f37",Correction:"#b35900",Crash:"#c0392b"};
 let DATA=null;
-function acct(){return document.querySelector('input[name=acct]:checked').value}
+function acct(){return MODE}
 function phrase(){return acct()==="live"?"EXECUTE LIVE":"EXECUTE"}
-let FOLDER="";
+let FOLDER="", MODE="paper";      // always starts on paper, every load
+function acctSet(m){ MODE=m; setAcct(); }
+function armLive(){
+  const w=prompt("Switch to the LIVE account?\n\n"+
+    "Orders you approve there use REAL money.\n"+
+    "IB Gateway must be logged into your live account (port 4001).\n\n"+
+    "Type  LIVE  to continue:");
+  if(w===null) return;
+  if(w.trim().toUpperCase()!=="LIVE"){ alert("Not switched - phrase did not match."); return; }
+  acctSet("live");
+}
 function setAcct(){
   const a=acct(), b=document.getElementById("banner");
-  const mismatch = FOLDER && ((a==="live" && /paper/i.test(FOLDER)) ||
-                              (a==="paper" && /live/i.test(FOLDER)));
+  const mismatch = false;
+  document.getElementById("modebox").innerHTML = a==="live"
+    ? "<b style='color:#c0392b'>&#9679; LIVE</b> "+
+      "<button class='ghost' style='padding:4px 10px;font-size:12px' "+
+      "onclick='acctSet(\"paper\")'>back to paper</button>"
+    : "<b style='color:#1a7f37'>&#9679; PAPER</b> "+
+      "<button class='ghost' style='padding:4px 10px;font-size:12px' "+
+      "onclick='armLive()'>switch to LIVE&hellip;</button>";
   document.body.className = a==="live"?"live":"";
   b.className="banner "+a;
   b.innerHTML = a==="live"
@@ -335,18 +367,13 @@ function setAcct(){
       + "confirmation phrase: <b>EXECUTE LIVE</b>"
     : "PAPER account &middot; port 4002 &middot; nothing is sent without "
       + "the confirmation phrase";
-  if(FOLDER){
-    b.innerHTML += " &middot; folder: <code>"+esc(FOLDER)+"</code>";
-    if(mismatch){
-      b.innerHTML += "<br>&#9888;&#65039; <b>You are running from the '"+
-        esc(FOLDER)+"' folder but have "+a.toUpperCase()+" selected.</b> "+
-        "Each folder keeps its own state.json - mixing them corrupts the "+
-        "drawdown tracking. Use the matching folder.";
-      b.style.background="#c0392b"; b.style.color="#fff";
-    }
-  }
+  b.innerHTML += " &middot; state file: <code>state."+a+".json</code>";
   document.getElementById("confirm").placeholder="type "+phrase();
   checkConfirm();
+  fetch("/api/last",{method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({account:a})})
+    .then(r=>r.json()).then(d=>{if(d.ok)render(d);}).catch(()=>{});
 }
 function chip(t,c){return `<span class="chip" style="background:${c}">${t}</span>`}
 async function call(url,body,spinId){
@@ -387,7 +414,9 @@ function render(d){
     (check?chip(check+" CHECK",COLORS.CHECK):"")+
     (fail?chip(fail+" FAIL",COLORS.FAIL):"")+
     (d.pending?chip("preview not executed","#805ad5"):"")+
-    (d.drift?chip("positions changed outside the tool","#c0392b"):"");
+    (d.drift?chip("positions changed outside the tool","#c0392b"):"")+
+    chip((d.account||"paper").toUpperCase()+" account",
+         d.account==="live"?"#c0392b":"#1a7f37");
   if(d.drift){
     document.getElementById("meta").innerHTML+=
       "<br><b style='color:#c0392b'>"+esc(d.drift)+"</b>";
@@ -533,7 +562,7 @@ async function resync(){
   alert(d.ok?"Baseline reset to today's portfolio.":"Resync failed - see log.");
 }
 async function undoState(){
-  const d=await call("/api/undo",{});
+  const d=await call("/api/undo",{account:acct()});
   alert(d.log);
 }
 // on load: show whatever the last run produced
@@ -589,7 +618,9 @@ class Handler(BaseHTTPRequestHandler):
                 self._json({"ok": True, "folder": HERE.name,
                             "path": str(HERE)})
             elif self.path == "/api/last":
-                self._json(report_payload([]))
+                self._json(report_payload(
+                    "live" if payload.get("account") == "live" else "paper",
+                    []))
             else:
                 self._json({"ok": False, "log": "unknown endpoint"}, 404)
         except Exception as e:

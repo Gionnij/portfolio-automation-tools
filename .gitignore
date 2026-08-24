@@ -5,16 +5,20 @@
 
 # portfolio memory: units, all-time high, ladder state, drift tracking
 state.json
+state.*.json
+state.*.pending
 state.undo.json
 state.pending
 
 # staged / approved / executed orders of a single run
 orders.json
-orders_approved.json
-orders_result.json
+orders.*.json
+orders_approved*.json
+orders_result*.json
 
 # generated output of a single run
 prep_report.md
+prep_report.*.md
 report.html
 xray_report.xlsx
 

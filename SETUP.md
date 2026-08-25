@@ -57,7 +57,15 @@ python webdash.py             # opens http://127.0.0.1:8642
 
 In the browser:
 
-- leave the toggle on **Paper** (port 4002 under the hood)
+- the page **always opens on PAPER** (port 4002 under the hood). One folder
+  serves both accounts: paper and live keep separate memory
+  (`state.paper.json` vs `state.live.json`), so they can never mix.
+- to go live you press **switch to LIVE…** and type `LIVE` when prompted;
+  the page turns red. Reloading the page always drops back to paper.
+- as a hard backstop the tool asks IB Gateway which account is actually
+  connected (paper IDs start with `DU`) and **refuses to run on a mismatch** —
+  so picking LIVE while Gateway is on paper stops with `ACCOUNT MISMATCH`
+  instead of doing something surprising.
 - set **contribute €** (e.g. 6145 to simulate the whole starting pot)
 - **Prepare (dry run)** — nothing is sent; you get regime, staged orders,
   current-vs-target bars, and the compliance checklist

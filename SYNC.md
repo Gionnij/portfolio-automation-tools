@@ -41,23 +41,35 @@ Invite Giulio: repo → Settings → Collaborators.
 
 ## One-time: Giulio clones
 
+**Prerequisites:** a GitHub account, accepted collaborator invite, and git
+able to authenticate. Easiest on macOS:
+
 ```bash
-cd ~
-git clone git@github.com:<giovanni>/portfolio-tool.git portfolio
-cd portfolio
+brew install gh          # GitHub CLI (skip if you already use SSH keys)
+gh auth login            # choose GitHub.com -> HTTPS -> login via browser
+```
+
+Then:
+
+```bash
+git clone https://github.com/<giovanni>/<repo>.git ~/portfolio
+cd ~/portfolio
 pip install ib_async pandas openpyxl
 ```
 
-(Giulio can put the folder wherever he likes — the tool has no hardcoded
-paths. Giovanni keeps his under `~/Desktop/Finance/`.)
+One folder is all you need — it runs **both** paper and live, keeping their
+state in separate files. There is no second "paper folder" any more.
 
-If he already has a working folder with his own `state.json`, keep it:
+Carrying over an existing paper portfolio's memory (note the new name):
 
 ```bash
-cp ~/Investment\ package/state.json ~/portfolio/state.json   # if it exists
+cp "~/Investment package/portfolio-paper/state.json" ~/portfolio/state.paper.json
 ```
 
-Then he works only in the cloned folder and deletes the old one.
+(Folder location is free — the tool has no hardcoded paths. Giovanni keeps
+his at `~/Desktop/Finance/portfolio`.)
+
+Then work only in the cloned folder and delete the old ones.
 
 ---
 

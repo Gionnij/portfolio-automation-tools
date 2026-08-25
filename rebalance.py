@@ -184,7 +184,49 @@ def _load_price_overrides(path="prices.csv"):
     return out
 
 
-_MIN_TICK = {}          # conId -> exchange minimum price variation
+_RULES = {}             # conId -> [ [PriceIncrement, ...], ... ]
+
+
+def _cache_rules(ib, det):
+    """Remember the market rules (MiFID tick tables) for a contract.
+
+    NOTE: ContractDetails.minTick is NOT the tradable increment - for EU ETFs
+    IBKR reports something like 0.0001 while the venue only accepts 0.05 steps.
+    The authoritative source is the market rule attached to each exchange.
+    """
+    con_id = det.contract.conId
+    if con_id in _RULES:
+        return
+    rules, seen = [], set()
+    for rid in (getattr(det, "marketRuleIds", "") or "").split(","):
+        rid = rid.strip()
+        if not rid.isdigit() or rid in seen:
+            continue
+        seen.add(rid)
+        try:
+            inc = ib.reqMarketRule(int(rid))
+            if inc:
+                rules.append(inc)
+        except Exception:
+            pass
+    _RULES[con_id] = rules
+
+
+def _tick_at(con_id, price):
+    """COARSEST increment valid at `price` across the contract's exchanges.
+
+    We route SMART, so we can't know the venue in advance - but a price on the
+    coarsest decimal grid is also valid on every finer one, so the coarsest
+    choice is always accepted. Falls back to 0.01 (the common case)."""
+    best = 0.01
+    for rule in _RULES.get(con_id) or []:
+        cur = None
+        for pi in sorted(rule, key=lambda x: getattr(x, "lowEdge", 0)):
+            if price >= getattr(pi, "lowEdge", 0):
+                cur = getattr(pi, "increment", None)
+        if cur and cur > best:
+            best = cur
+    return best
 
 
 def _round_tick(price, tick, up):
@@ -214,7 +256,7 @@ def _resolve(ib, meta, sym):
                          secIdType="ISIN", secId=isin)
             cds = ib.reqContractDetails(c)
             if cds:
-                _MIN_TICK[cds[0].contract.conId] = getattr(cds[0], "minTick", 0)
+                _cache_rules(ib, cds[0])
                 return cds[0].contract, ""
         except Exception:
             pass
@@ -232,7 +274,7 @@ def _resolve(ib, meta, sym):
             cds = None
         if cds:
             con = cds[0].contract
-            _MIN_TICK[con.conId] = getattr(cds[0], "minTick", 0)
+            _cache_rules(ib, cds[0])
             hint = "" if (e == ex and c == ccy) else \
                 f"  [resolved on {con.exchange}/{con.currency}]"
             return con, hint
@@ -637,9 +679,14 @@ def prepare(cfg, state, snap, contribution, deploy=0.0):
                                  unit=round(unit, 4), D=round(D, 2),
                                  regime=regime,
                                  contribution=contribution))
-    # units grow by contributed equity money (test-friendly approximation:
-    # executed buys are assumed to fill; adjust next run reads real positions)
+    # Units grow by equity money going in. At PREPARE time we can only assume
+    # the staged orders fill; execute() corrects this with the real fills.
+    # Without that correction, failed orders inflate units -> the unit price
+    # collapses -> a phantom drawdown fires the ladder. (Seen live: a filled
+    # XEON sell plus 5 rejected buys produced a fake "D = 30% Crash".)
     eq_in = sum(v for t, v in plan.items() if t in eq_tickers) + ladder_total
+    state["units_pre"] = state["units"]      # before the optimistic growth
+    state["unit_price"] = unit               # price used for the conversion
     if unit > 0:
         state["units"] += eq_in / unit
 
@@ -926,8 +973,8 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         if con is None:
             _rec(o, "skipped", note="contract not resolved - check manual.json")
             continue
-        tick = _MIN_TICK.get(con.conId, 0.01)
-        lim = _round_tick(o["est_price"] * 0.995, tick, up=False)
+        raw = o["est_price"] * 0.995
+        lim = _round_tick(raw, _tick_at(con.conId, raw), up=False)
         try:
             trade = ib.placeOrder(con, LimitOrder("SELL", o["qty"], lim))
             print(f"  sent (limit {lim}) - waiting for fill...")
@@ -960,8 +1007,8 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         if con is None:
             _rec(o, "skipped", note="contract not resolved - check manual.json")
             continue
-        tick = _MIN_TICK.get(con.conId, 0.01)
-        lim = _round_tick(o["est_price"] * 1.002, tick, up=True)
+        raw = o["est_price"] * 1.002
+        lim = _round_tick(raw, _tick_at(con.conId, raw), up=True)
         cost = o["qty"] * lim
         avail = _available_eur()
         if avail is not None and cost > avail - 5:
@@ -1026,6 +1073,22 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
                         exp[r["ticker"]] = round(exp.get(r["ticker"], 0) + d, 4)
                 st["expected_positions"] = {k: v for k, v in exp.items() if v}
                 st["expected_exact"] = True     # derived from real fills
+
+                # Correct the optimistic unit growth from prepare(): only
+                # equity money that ACTUALLY moved counts.
+                up, upx = st.get("units_pre"), st.get("unit_price")
+                if up is not None and upx:
+                    eq = [t for t, m in cfg["sleeves"].items()
+                          if m.get("kind") == "equity"]
+                    real_in = 0.0
+                    for r in results:
+                        if r["ticker"] in eq and r["filled"]:
+                            px = next((o["est_price"] for o in orders
+                                       if o["ticker"] == r["ticker"]), 0)
+                            v = r["filled"] * px
+                            real_in += v if r["side"] == "BUY" else -v
+                    st["units"] = up + real_in / upx
+                    st["units_pre"] = None
                 save_json(state_path, st)
         except Exception:
             pass

@@ -823,7 +823,7 @@ def write_report(cfg, res, checklist, out_md, contribution):
 # ------------------------------------------------------------------- execute
 
 def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
-            state_path=None, expect_account=None):
+            state_path=None, expect_account=None, result_path=None):
     """Two-phase execution, liquidity-first, with per-order results.
 
     Phase 1 - all SELLs, aggressive limits (est - 0.5%); IBKR's price-cap
@@ -926,7 +926,7 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         if con is None:
             _rec(o, "skipped", note="contract not resolved - check manual.json")
             continue
-        tick = _MIN_TICK.get(rcon.conId, 0.01)
+        tick = _MIN_TICK.get(con.conId, 0.01)
         lim = _round_tick(o["est_price"] * 0.995, tick, up=False)
         try:
             trade = ib.placeOrder(con, LimitOrder("SELL", o["qty"], lim))
@@ -960,7 +960,7 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         if con is None:
             _rec(o, "skipped", note="contract not resolved - check manual.json")
             continue
-        tick = _MIN_TICK.get(rcon.conId, 0.01)
+        tick = _MIN_TICK.get(con.conId, 0.01)
         lim = _round_tick(o["est_price"] * 1.002, tick, up=True)
         cost = o["qty"] * lim
         avail = _available_eur()
@@ -1008,7 +1008,8 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         print("\nNOTE: a sell did not fully fill; unspent cash will be "
               "restaged by the next prepare.")
     try:
-        (HERE / "orders_result.json").write_text(json.dumps(results, indent=1))
+        Path(result_path or HERE / "orders_result.json").write_text(
+            json.dumps(results, indent=1))
     except Exception:
         pass
 
@@ -1051,6 +1052,8 @@ def main():
     ap.add_argument("--orders-out", default=str(HERE / "orders.json"))
     ap.add_argument("--execute", metavar="ORDERS_JSON",
                     help="place previously staged orders (asks per order)")
+    ap.add_argument("--result-out",
+                    help="where to write per-order execution results")
     ap.add_argument("--expect-account", choices=["paper", "live"],
                     help="refuse to run unless IB Gateway is logged into this "
                          "account type (paper IDs start with DU)")
@@ -1076,7 +1079,8 @@ def main():
         host, port = args.ib.split(":")
         execute(args.execute, cfg, host, int(port), args.client_id,
                 auto_yes=args.yes, state_path=args.state,
-                expect_account=args.expect_account)
+                expect_account=args.expect_account,
+                result_path=args.result_out)
         return
 
     state = load_json(args.state, default=json.loads(json.dumps(DEFAULT_STATE)))

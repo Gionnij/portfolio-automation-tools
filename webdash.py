@@ -196,7 +196,8 @@ def api_execute(p):
     ok, out = run_step(["rebalance.py", "--execute", str(pp["approved"]),
                         "--ib", f"127.0.0.1:{port}", "--yes",
                         "--expect-account", account,
-                        "--state", str(pp["state"])])
+                        "--state", str(pp["state"]),
+                        "--result-out", str(pp["result"])])
     if ok:
         pp["pending"].write_text("0")        # state reflects executed orders
     try:

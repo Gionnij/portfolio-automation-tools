@@ -364,11 +364,22 @@ def snapshot_ib(cfg, host, port, client_id, expect_account=None):
               "wait until they fill or expire before executing")
     overrides = _load_price_overrides()          # optional prices.csv gap-filler (offline, guaranteed)
 
+    # Index holdings under EVERY identity IBKR might report them by: conId,
+    # symbol and localSymbol. A sleeve we call "UMDV" is held by the broker as
+    # "U5MD" (its Xetra listing), and keying on symbol alone made the tool
+    # blind to the position - it read 0 shares and kept re-buying the sleeve.
+    def _keys(c):
+        return {k for k in (str(getattr(c, "conId", "") or ""),
+                            (getattr(c, "symbol", "") or "").upper(),
+                            (getattr(c, "localSymbol", "") or "").upper()) if k}
+
     port_items, held = {}, {}
     for it in ib.portfolio():
-        port_items[it.contract.symbol.upper()] = it
+        for k in _keys(it.contract):
+            port_items.setdefault(k, it)
     for pos in ib.positions():
-        held[pos.contract.symbol.upper()] = float(pos.position)
+        for k in _keys(pos.contract):
+            held[k] = float(pos.position)
 
     fx = {}
     def to_eur(px, ccy):
@@ -390,6 +401,17 @@ def snapshot_ib(cfg, host, port, client_id, expect_account=None):
             con, hint = _resolve(ib, meta, meta.get("ib_symbol", t))
             if hint:
                 resolved_notes.append(t + hint)
+            # the sleeve name may not be how the broker labels it - retry the
+            # holdings lookup by conId now that we know the real contract
+            if con is not None:
+                cid = str(con.conId)
+                if cid in held:
+                    pos = held[cid]
+                if port_items.get(cid) is not None:
+                    pi = port_items[cid]
+                    if pi.marketPrice and not math.isnan(pi.marketPrice):
+                        con, px, ccy = (pi.contract, pi.marketPrice,
+                                        pi.contract.currency)
             ccy = con.currency if con is not None else meta.get("currency", "EUR")
             # live snapshot only. The historical service (_hist_price) hangs
             # ~60s/contract on these EU venues (corporate-action lookup times

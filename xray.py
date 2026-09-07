@@ -43,7 +43,7 @@ SYN = {  # field -> header synonyms (checked in order; exact match wins first)
                  "weighting %", "weight", "weighting", "gewichtung", "peso",
                  "% weight", "percent of fund", "index weight",
                  "net assets (%)", "% of net asset value", "% nav",
-                 "percent of net assets", "% of fund", "fund weight"],
+                 "percent of net assets", "% of fund", "fund weight", "net assets"],
     "isin":     ["isin"],
     "ticker":   ["issuer ticker", "ticker", "symbol"],
     "country":  ["location", "country of risk", "country", "land", "domicile"],
@@ -139,8 +139,8 @@ def ticker_country(tkr):
     m = re.search(r"[ .]([A-Z0-9]{1,3})$", t)
     if m:
         return TICKER_SUFFIX_COUNTRY.get(m.group(1), "")
-    if re.fullmatch(r"[A-Z]{1,5}", t):       # bare ticker = US listing
-        return "United States"
+    # Bare symbols are not a country identifier: e.g. SAP, RIO and BHP
+    # appear on multiple venues. Keep unknowns visible instead of assuming US.
     return ""
 
 
@@ -181,7 +181,7 @@ def region_of(country):
 CASH_PAT = re.compile(
     r"cash|liquidit|money market|margin|fx forward|forward|future|swap|"
     r"collateral|repo|treasur.*bill|deposit|e-mini|payabl|receivabl|"
-    r"(?:pound|yen|won|dollar|yuan|renminbi|franc|krona|euro)$", re.I)
+    r"(?:pound|yen|won|dollar|yuan|renminbi|franc|krona|krone|euro)$", re.I)
 
 STOP_TOKENS = {
     "INC", "CORP", "CORPORATION", "LTD", "LIMITED", "PLC", "SA", "NV", "AG",
@@ -193,7 +193,7 @@ STOP_TOKENS = {
 
 def norm_h(s):
     s = unicodedata.normalize("NFKD", str(s)).encode("ascii", "ignore").decode()
-    return re.sub(r"\s+", " ", s.strip().lower())
+    return re.sub(r"\s+", " ", s.replace("_", " ").strip().lower())
 
 
 def name_key(name):
@@ -338,7 +338,7 @@ def read_holdings_file(path, enrich=None):
             df[col] = ""
         df[col] = df[col].astype(str).str.strip().replace({"nan": "", "-": ""})
     df["country"] = df["country"].map(
-        lambda c: COUNTRY_MAP.get(norm_h(c), c.title() if c.islower() else c) or "Unknown")
+        lambda c: COUNTRY_MAP.get(norm_h(c), ISIN_COUNTRY.get(c.upper(), c.title() if c.islower() else c)) or "Unknown")
     df["currency"] = df["currency"].str.upper().map(
         lambda c: c if re.fullmatch(r"[A-Z]{3}", c or "") else "Unknown")
     df["isin"] = df["isin"].str.upper().map(

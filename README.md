@@ -68,3 +68,25 @@ Caveat: ISIN country = legal domicile, not economic exposure (many Chinese ADRs 
 - ETFs with no holdings file are counted as "Unknown" in every exposure so totals stay honest — the Summary tab flags them.
 - Currency exposure uses each holding's trading currency, not the ETF listing currency.
 - Weights entered as `17.5` or `17,5%` or Excel-percent all work.
+
+## Lens: the integrated research UI
+
+```sh
+pip install pandas openpyxl ib_async
+python webdash.py
+```
+
+Open [Lens locally](http://127.0.0.1:8642). Add tickers or search by ISIN,
+choose the right listing, and enter percentages totaling 100%. Run X-Ray to
+see combined holdings and overlap. **Data sources** lets you verify all fund
+identities with the paper Gateway and refresh supported provider downloads.
+
+Automatic sources currently cover the original iShares, Global X and SPDR
+funds (10 equity ETFs). Other funds retain their existing files or accept a
+provider download link. Missing data is explicitly counted as unknown.
+Research drafts stay separate from the monthly investing policy; **Monthly
+investing** opens the existing order workflow. Export/import a JSON investment
+list to exchange a draft with someone running their own copy.
+
+See [UI-NOTES.md](UI-NOTES.md) for supported sources, limitations and tests.
+The AI advisor questionnaire remains deferred.

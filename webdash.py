@@ -31,6 +31,9 @@ import threading
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import urlsplit
+
+import workspace
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
@@ -240,7 +243,8 @@ def api_undo(p):
 # ------------------------------------------------------------------ web page
 
 PAGE = r"""<!DOCTYPE html><html><head><meta charset="utf-8">
-<title>Portfolio dashboard</title><style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lens · Monthly investing</title><style>
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
      background:#f5f6f8;color:#1a202c;margin:0;padding:24px 14px}
 body.live{background:#fdf3f3}
@@ -279,19 +283,28 @@ pre{background:#1a202c;color:#e2e8f0;padding:12px;border-radius:8px;
 details summary{cursor:pointer;color:#718096;font-size:13px}
 .exrow{margin-top:12px;display:flex;gap:10px;align-items:center;
   flex-wrap:wrap}
+/* Match the research workspace while retaining the live-account red state. */
+body{background:#f7f8f4;color:#202d29;padding-top:32px}
+.wrap{max-width:1100px}.card{border:1px solid #e2e7df;border-radius:16px;box-shadow:none;padding:22px 26px}
+h1{font:32px Georgia,serif;letter-spacing:-.7px;margin-bottom:10px}
+h2{color:#52664b}button{background:#335c44}button.ghost{background:#edf3e8;color:#335c44}
+.banner.paper{background:#edf3e8;color:#335c44}.cur{background:#335c44}.tgt{background:#d8eaa6}
+@media(max-width:620px){.card{padding:18px 14px}td,th{padding:6px 4px;font-size:11px}h1{font-size:27px}}
 </style></head><body><div class="wrap">
 
 <div class="card">
-  <h1>Portfolio dashboard</h1>
+  <a href="/" style="display:inline-block;margin-bottom:14px;color:#335c44;text-decoration:none">&larr; Lens workspace</a>
+  <h1>Monthly investing</h1>
+  <p class="muted">Monthly investing uses the targets in manual.json. Your Lens research draft is separate.</p>
   <div id="banner" class="banner paper">PAPER account &middot; port 4002 &middot;
     nothing is sent without the confirmation phrase</div>
   <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
     <span id="modebox"></span>
-    <span><label>contribute &euro;</label>
+    <span><label for="contribute">Add new money &euro;</label>
       <input type="number" id="contribute" value="600" step="50"></span>
-    <span><label>deploy &euro;</label>
+    <span><label for="deploy" title="Sell this amount of the parked XEON cash sleeve to fund purchases">Use parked cash &euro;</label>
       <input type="number" id="deploy" value="0" step="50"></span>
-    <span><label>min order &euro;</label>
+    <span><label for="minorder">Minimum order &euro;</label>
       <input type="number" id="minorder" placeholder="100"></span>
     <span><label><input type="checkbox" id="fetch" checked>
       refresh prices</label></span>
@@ -330,7 +343,7 @@ details summary{cursor:pointer;color:#718096;font-size:13px}
 </div>
 
 <div class="card" id="logcard" style="display:none">
-  <h2>Log</h2><details open><summary>run output</summary>
+  <h2>Technical log</h2><details><summary>run output</summary>
   <pre id="log"></pre></details>
 </div>
 
@@ -585,13 +598,15 @@ class Handler(BaseHTTPRequestHandler):
         body = json.dumps(obj).encode()
         self.send_response(code)
         self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
 
     def do_GET(self):
-        if self.path in ("/", "/index.html"):
-            body = PAGE.encode()
+        if self.path in ("/", "/index.html", "/rebalance"):
+            body = PAGE.encode() if self.path == "/rebalance" else (HERE / "workspace.html").read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -601,13 +616,35 @@ class Handler(BaseHTTPRequestHandler):
             self._json({"ok": False, "log": "not found"}, 404)
 
     def do_POST(self):
-        n = int(self.headers.get("Content-Length") or 0)
+        # Reject cross-site posts to this localhost app, including requests to
+        # order endpoints. Same-origin browser calls and local CLI calls work.
+        origin = self.headers.get("Origin")
+        host = self.headers.get("Host", "")
+        if host not in (f"127.0.0.1:{SERVER_PORT}", f"localhost:{SERVER_PORT}") or (
+                origin and urlsplit(origin).netloc != host):
+            self._json({"ok": False, "error": "Cross-origin request refused."}, 403)
+            return
+        if self.headers.get("Content-Type", "").split(";", 1)[0].strip() != "application/json":
+            self._json({"ok": False, "error": "Use application/json."}, 415)
+            return
+        try:
+            n = int(self.headers.get("Content-Length") or 0)
+            if not 0 <= n <= 256000:
+                raise ValueError()
+        except ValueError:
+            self._json({"ok": False, "error": "Request too large or invalid length."}, 413)
+            return
         try:
             payload = json.loads(self.rfile.read(n) or b"{}")
+            if not isinstance(payload, dict):
+                raise ValueError()
         except Exception:
-            payload = {}
+            self._json({"ok": False, "error": "Expected a JSON object."}, 400)
+            return
         try:
-            if self.path == "/api/prepare":
+            if self.path.startswith("/api/workspace/"):
+                self._json(workspace.api(self.path.rsplit("/", 1)[-1], payload))
+            elif self.path == "/api/prepare":
                 self._json(api_prepare(payload))
             elif self.path == "/api/execute":
                 self._json(api_execute(payload))
@@ -624,6 +661,8 @@ class Handler(BaseHTTPRequestHandler):
                     []))
             else:
                 self._json({"ok": False, "log": "unknown endpoint"}, 404)
+        except ValueError as e:
+            self._json({"ok": False, "error": str(e)}, 400)
         except Exception as e:
             self._json({"ok": False, "log": f"server error: {e}"}, 500)
 

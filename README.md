@@ -85,8 +85,31 @@ Automatic sources currently cover the original iShares, Global X and SPDR
 funds (10 equity ETFs). Other funds retain their existing files or accept a
 provider download link. Missing data is explicitly counted as unknown.
 Research drafts stay separate from the monthly investing policy; **Monthly
-investing** opens the existing order workflow. Export/import a JSON investment
+investing** opens a guided contribution → preview → approval flow. Export/import a JSON investment
 list to exchange a draft with someone running their own copy.
 
 See [UI-NOTES.md](UI-NOTES.md) for supported sources, limitations and tests.
 The AI advisor questionnaire remains deferred.
+
+
+## Monthly investing
+
+Open [Monthly investing](http://127.0.0.1:8642/rebalance). It starts in paper mode.
+
+1. Choose a contribution and press **Preview my plan**. Optional cash-fund
+   deployment, minimum purchases and price updates are under **Plan options**.
+2. Review estimated purchases, money left from the plan, and each proposed
+   order. **Portfolio balance** compares current holdings with policy targets;
+   **Checks & activity** explains flagged checks, market context and snapshots.
+3. Tick the individual orders you approve, open **Review selected orders**, and
+   type `EXECUTE` for paper or `EXECUTE LIVE` for live before sending.
+
+The account menu requires typing `LIVE` to switch to real money. The `•••`
+**Account tools** menu contains saved-snapshot reload, discard of an unsubmitted
+preview, and a deliberate tracking reset. A tracking reset clears the market
+peak and deployment steps, so it should not be used to hide a market decline.
+
+Values are dated snapshots, exclude broker cash, and are not live valuations.
+The cash breakdown is contribution plus proposed sales minus proposed purchases,
+not the broker's available-cash balance. Prices and fees can change. After
+submission, order outcomes remain visible; there is no automatic new preview.

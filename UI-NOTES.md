@@ -65,7 +65,8 @@ prefixes when provider country data is absent. Unknowns remain unknown.
 
 ## Files and dependencies
 
-- `webdash.py`: existing HTTP server and monthly investing UI, plus routing.
+- `webdash.py`: HTTP server, investing actions and structured snapshot data.
+- `investing.html`: guided monthly investing UI; no build step or framework.
 - `workspace.html`: responsive UI, system fonts, vanilla JS and CSS; no build,
   framework, external scripts, or CDN.
 - `workspace.py`: identity resolution, provider adapters, local draft/snapshot
@@ -92,3 +93,57 @@ failed-refresh preservation, current provider headers, signed cash, country
 inference, local HTTP origin checks and existing execution confirmation gates.
 Real provider downloads and real paper-broker identity lookup were tested
 separately. No orders were placed for this UI work.
+
+
+## Monthly investing redesign — 7 September 2026
+
+The investing page now shares Lens navigation and has three separate views:
+
+- **This month's plan:** contribution composer, optional plan settings, readable
+  proposals with fund names and estimated cash flow, individual unchecked order
+  approvals, then a dedicated account-specific confirmation dialog.
+- **Portfolio balance:** searchable/sortable funds, current/target percentages,
+  common-scale bars and target markers, explicit percentage-point differences,
+  and the date and cash exclusions of the saved snapshot.
+- **Checks & activity:** flagged items first, plain-language explanations,
+  collapsed judgment reminders and successful checks, market context with the
+  limitations of the equity tracking measure, recent snapshots and outcomes.
+
+Account switching and occasional maintenance are outside the main flow. The
+research navigation supports direct links to `/#portfolio`, `/#xray`, `/#sources`.
+The latest submission result remains in view rather than immediately being
+replaced by another prepare run. Partial and working orders never say completed.
+
+Server approval now requires an active preview ID bound to the account, exact
+orders, report and policy. Changed or replayed plans are refused; mutations are
+serialized. Invalid numeric inputs cannot reach the engine. Discard only applies
+to an unsubmitted preview, including a first-ever preview with no prior state.
+A preview is invalidated in the UI when its inputs change or the account changes,
+and saved previews must be refreshed before they can be approved.
+
+Known preflight refusals (unavailable Gateway, wrong account, open orders) restore
+the preview backup and preserve the existing market reference. They clearly say
+that no orders were sent.
+
+A process interrupted during submission gets a durable uncertain marker (`2` in
+that account's existing pending file). It cannot be replayed or discarded, and
+planning pauses rather than using the preview's optimistic tracking units.
+After checking broker orders and holdings, a deliberate tracking reset can clear
+this state; its dialog explains that the old market reference is erased. Normal
+partial/working/failed order results are still handled by the existing engine.
+The engine's ISIN/conId resolution, account verification, order routing, cash
+checks, sell-before-buy ordering and open-order block are unchanged.
+
+The displayed cash estimate is input contribution + estimated sales − estimated
+purchases, before fees; it is not available broker cash. Historical report
+contributions/NAV are rounded to euros by the engine. Snapshot history is not a
+performance chart and previews are not confirmed deposits.
+
+Validation: 36 offline tests pass, including 14 investing regressions covering
+cash-flow arithmetic, unknown metadata, changed policies/orders, replay, exact
+selection, invalid inputs, interrupted submissions and discard behavior. Browser
+QA covered desktop and a real 390px iframe viewport, empty and populated plans,
+partial/working/filled fixture outcomes, input-change invalidation, connection
+failure, individual selection, paper/live arming and the different typed phrases.
+Phone balance rows and approval dialogs have no horizontal overflow. Test order
+submissions used an isolated mock server; no actual broker orders were placed.

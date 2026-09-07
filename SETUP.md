@@ -60,16 +60,16 @@ In the browser:
 - the page **always opens on PAPER** (port 4002 under the hood). One folder
   serves both accounts: paper and live keep separate memory
   (`state.paper.json` vs `state.live.json`), so they can never mix.
-- to go live you press **switch to LIVE…** and type `LIVE` when prompted;
+- to go live, open the account menu, type `LIVE`, and press **Switch to live account**;
   the page turns red. Reloading the page always drops back to paper.
 - as a hard backstop the tool asks IB Gateway which account is actually
   connected (paper IDs start with `DU`) and **refuses to run on a mismatch** —
   so picking LIVE while Gateway is on paper stops with `ACCOUNT MISMATCH`
   instead of doing something surprising.
-- set **contribute €** (e.g. 6145 to simulate the whole starting pot)
-- **Prepare (dry run)** — nothing is sent; you get regime, staged orders,
-  current-vs-target bars, and the compliance checklist
-- tick the orders you approve, type **EXECUTE**, press **Execute selected**
+- set your **Monthly contribution** (e.g. 6145 to simulate the whole starting pot)
+- **Preview my plan** — nothing is sent; you get an estimated purchase/cash breakdown and readable order proposals.
+  **Portfolio balance** and **Checks & activity** provide the supporting context
+- tick the orders you approve, open **Review selected orders**, type **EXECUTE**, press **Send paper orders**
 - results repaint green (filled) / yellow (partial or still working at its
   limit) / red (skipped or failed, with the reason)
 

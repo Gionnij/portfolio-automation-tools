@@ -99,9 +99,10 @@ then tick orders + type `EXECUTE` + press Execute.
   routing** — direct-to-exchange routing gets rejected by Gateway's
   precautionary settings, and ticker/localSymbol mismatches (UMDV→U5MD,
   BOTZ→XB0T) break plain-ticker orders.
-- Limit prices must be rounded to the contract's **minTick** (from
-  `reqContractDetails`), or IBKR rejects with `Error 110`. Buys round up,
-  sells round down.
+- Limit prices must be rounded to the tick size IBKR actually enforces, or it
+  rejects with `Error 110`. `ContractDetails.minTick` is **not** it for EU
+  ETFs (it reports ~0.0001); the real increment comes from `reqMarketRule()`
+  price bands. Buys round up, sells round down.
 - Historical-data requests (`reqHistoricalData`) hang for ~60s per contract on
   EU venues — the tool deliberately does not use them.
 

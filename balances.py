@@ -1,4 +1,4 @@
-"""Read-only funding context for monthly investing; never prepares or submits orders.
+"""Read-only cash and holdings for monthly investing; never prepares or submits orders.
 
 CashBalance is the EUR currency ledger, not AvailableFunds or BuyingPower.
 IBKR supports both CashBalance and $LEDGER-CashBalance (Gateway setting).
@@ -49,36 +49,36 @@ def summarize(cfg, values, account, positions, complete=True):
     cash = ledger_value(values, account, 'CashBalance')
     sleeves = cfg.get('sleeves', {})
     policy_isins = {s.get('isin') for s in sleeves.values() if s.get('isin')}
-    xeon = sleeves.get('XEON', {})
-    xeon_isin = xeon.get('isin')
-    nav, xeon_value, xeon_shares = 0.0, 0.0, 0.0
-    xeon_known = complete and bool(xeon_isin)
-    nav_known = complete
+    identified = complete and all(p.get('isin') for p in positions)
+    totals = {isin: {'shares': 0.0, 'value': 0.0} for isin in policy_isins}
     for pos in positions:
         isin = pos.get('isin')
-        if not isin:
-            nav_known = xeon_known = False
-            continue
         if isin not in policy_isins:
             continue
         qty, px = number(pos.get('shares')), number(pos.get('price_eur'))
-        valid = qty is not None and px is not None and px > 0
-        if not valid:
-            nav_known = False
-        if isin == xeon_isin:
-            if not valid:
-                xeon_known = False
-            else:
-                xeon_value += qty * px
-                xeon_shares += qty
-        if valid:
-            nav += qty * px
+        total = totals[isin]
+        total['shares'] = total['shares'] + qty if total['shares'] is not None and qty is not None else None
+        value = number(qty * px) if qty is not None and px is not None and px > 0 else None
+        total['value'] = total['value'] + value if total['value'] is not None and value is not None else None
+    nav = sum(t['value'] for t in totals.values()) if identified and all(t['value'] is not None for t in totals.values()) else None
+    nav = nav if nav is not None and nav >= 0 else None
+    holdings = []
+    for ticker, sleeve in sleeves.items():
+        total = totals.get(sleeve.get('isin'), {}) if identified else {}
+        value, shares = total.get('value'), total.get('shares')
+        holdings.append({'ticker': ticker, 'isin': sleeve.get('isin'),
+                         'name': sleeve.get('name', ''), 'shares': shares,
+                         'value': round(value, 2) if value is not None else None,
+                         'current_pct': value / nav * 100 if nav and value is not None else 0.0 if nav == 0 and shares == 0 else None,
+                         'target_pct': number(sleeve.get('target'))})
+    xeon = next((h for h in holdings if h['ticker'] == 'XEON'), {})
     return {
         'currency': 'EUR', 'cash': cash,
-        'nav': round(nav, 2) if nav_known and nav >= 0 else None,
-        'xeon': {'value': round(xeon_value, 2) if xeon_known else None,
-                 'shares': xeon_shares if xeon_known else None,
-                 'target_pct': number(xeon.get('target')),
+        'nav': round(nav, 2) if nav is not None else None,
+        'holdings': holdings,
+        'xeon': {'value': xeon.get('value'),
+                 'shares': xeon.get('shares'),
+                 'target_pct': xeon.get('target_pct'),
                  'floor_pct': number(cfg.get('rules', {}).get('xeon_floor_pct'))},
     }
 
@@ -111,7 +111,7 @@ def read_broker(ib, cfg, mode):
                           'price_eur': px * rate if px is not None and rate is not None and rate > 0 else None})
     result = summarize(cfg, values, account, positions, complete)
     if result['nav'] is None:
-        warnings.append('Some holdings could not be valued or identified. XEON target amounts are unavailable until all policy holdings can be checked.')
+        warnings.append('Some holdings could not be valued or identified. Portfolio percentages and XEON target amounts are unavailable until all policy holdings can be checked.')
     if result['cash'] is None:
         warnings.append('IBKR did not provide a usable EUR cash balance. Other currencies and buying power are not substituted.')
     try:

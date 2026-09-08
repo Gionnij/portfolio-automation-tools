@@ -193,3 +193,28 @@ read-only connections and unchanged saved state. The connected paper Gateway
 was checked read-only. Browser QA covered cash/XEON display, target updates,
 live-mode clearing and colors, failed-refresh labeling, and a 390px phone
 viewport without horizontal overflow. No broker orders were submitted.
+
+## Refresh portfolio holdings after fills — 8 September 2026
+
+The portfolio chart previously kept reading the pre-trade preview report even
+after an order filled, while only cash and XEON refreshed. Portfolio balance
+and the invested-value header now use the same read-only Gateway response as
+cash. Each policy holding includes verified shares, estimated EUR value, current
+weight and target. Cash and unrelated holdings remain outside the denominator.
+The chart works without creating a preview, refreshes after submission, and has
+a direct Refresh holdings button. Reopening the tab refreshes reads older than
+30 seconds. The order receipt and policy checks remain associated with the
+approved preview; balance refreshes never prepare another plan or reset tracking.
+
+A saved preview is an explicitly dated fallback when Gateway cannot be read.
+Failed refreshes retain labeled last-known broker holdings. Incomplete valuations
+show unknown percentages rather than reporting held funds as zero. Verified
+share counts remain visible even when a price is unavailable. Account changes
+clear the previous account’s figures.
+
+Validation: 54 Python tests and 6 JavaScript presentation regressions pass. The
+JavaScript tests reproduce the zero-weight preview followed by a filled purchase,
+automatic post-submit chart refresh, preserved receipts/approval, disconnected
+Gateway, account separation and unknown valuations. A read-only live Gateway
+check and browser verification confirmed the user’s newly held 4COP shares in
+the chart, with matching red bars/legend. No broker orders were submitted.

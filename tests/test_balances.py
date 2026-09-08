@@ -60,6 +60,38 @@ class BalanceTests(unittest.TestCase):
         self.assertEqual(result['xeon'], dict(value=1800, shares=12, target_pct=6.5, floor_pct=3))
         self.assertEqual(result['nav'] * result['xeon']['target_pct'] / 100, 650)
         self.assertEqual(result['nav'] * result['xeon']['floor_pct'] / 100, 300)
+        self.assertEqual({h['ticker']: h['current_pct'] for h in result['holdings']}, {'XEON': 18, 'FUND': 82})
+
+    def test_filled_new_position_appears_in_holdings_without_another_preview(self):
+        cfg = {'sleeves': {'4COP': {'isin': 'IE-COPPER', 'target': 1.5, 'name': 'Copper fund'},
+                            'FUND': {'isin': 'IE-FUND', 'target': 98.5}}}
+        before = balances.summarize(cfg, [], 'DU123', [position('IE-FUND', 100, 100)])
+        after = balances.summarize(cfg, [], 'DU123',
+            [position('IE-FUND', 100, 100), position('IE-COPPER', 2, 62)])
+        self.assertEqual(before['holdings'][0]['shares'], 0)
+        copper = after['holdings'][0]
+        self.assertEqual(copper['shares'], 2)
+        self.assertEqual(copper['value'], 124)
+        self.assertEqual(copper['name'], 'Copper fund')
+        self.assertAlmostEqual(copper['current_pct'], 124 / 10124 * 100)
+        self.assertEqual(copper['target_pct'], 1.5)
+
+    def test_known_shares_without_prices_never_look_like_an_unheld_fund(self):
+        result = balances.summarize(CONFIG, [], 'DU123', [position('IE-FUND', 2, None)])
+        fund = next(h for h in result['holdings'] if h['ticker'] == 'FUND')
+        self.assertEqual(fund['shares'], 2)
+        self.assertIsNone(fund['value'])
+        self.assertIsNone(fund['current_pct'])
+        self.assertTrue(all(h['current_pct'] is None for h in result['holdings']))
+
+    def test_unidentified_holdings_do_not_turn_other_sleeves_into_zero_positions(self):
+        result = balances.summarize(CONFIG, [], 'DU123', [position(None, 2, 62)])
+        self.assertTrue(all(h['shares'] is None and h['current_pct'] is None for h in result['holdings']))
+
+    def test_empty_verified_portfolio_has_zero_shares_and_percentages(self):
+        result = balances.summarize(CONFIG, [], 'DU123', [])
+        self.assertEqual(result['nav'], 0)
+        self.assertTrue(all(h['shares'] == 0 and h['current_pct'] == 0 for h in result['holdings']))
 
     def test_no_xeon_holding_is_zero_only_when_position_sync_is_complete(self):
         positions = [position('IE-FUND', 100, 100)]

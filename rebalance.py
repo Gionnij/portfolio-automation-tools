@@ -29,6 +29,7 @@ from datetime import date
 from pathlib import Path
 
 import pandas as pd
+from balances import ledger_value
 
 HERE = Path(__file__).resolve().parent
 
@@ -898,7 +899,7 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
     Phase 1 - all SELLs, aggressive limits (est - 0.5%); IBKR's price-cap
               control (msg 2161) clips them to the reference price, so they
               act like protected market orders. We WAIT for each fill.
-    Phase 2 - BUYs, each gated on AvailableFunds: if the cash isn't there
+    Phase 2 - BUYs, each gated on EUR cash: if the cash isn't there
               (sell shortfall), the buy is SKIPPED loudly instead of
               bouncing off 'insufficient funds' at the broker.
     Writes orders_result.json: per-order status for the dashboard
@@ -935,9 +936,9 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
 
     def _available_eur():
         try:
-            for v in ib.accountValues():
-                if v.tag == "AvailableFunds" and v.currency == "EUR":
-                    return float(v.value)
+            accounts = ib.managedAccounts()
+            if len(accounts) == 1:
+                return ledger_value(ib.accountValues(accounts[0]), accounts[0], 'CashBalance')
         except Exception:
             pass
         return None
@@ -1021,6 +1022,7 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
 
     # ---- phase 2: buys, each gated on real available cash ------------------
     placed = []
+    cash_remaining = _available_eur()
     for o in buys:
         if not _approved(o):
             _rec(o, "skipped", note="not approved")
@@ -1033,7 +1035,12 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         lim = _round_tick(raw, _tick_at(con.conId, raw), up=True)
         cost = o["qty"] * lim
         avail = _available_eur()
-        if avail is not None and cost > avail - 5:
+        if avail is None or cash_remaining is None:
+            print(f"  !! SKIPPED {o['ticker']}: EUR cash could not be verified")
+            _rec(o, "skipped", note="EUR cash unavailable - refresh balances before trying again")
+            continue
+        avail = min(avail, cash_remaining)
+        if cost > avail - 5:
             print(f"  !! SKIPPED {o['ticker']}: needs ~{cost:.0f}, only "
                   f"{avail:.0f} EUR available")
             _rec(o, "skipped",
@@ -1044,6 +1051,9 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
             trade = ib.placeOrder(con, LimitOrder("BUY", o["qty"], lim))
             print(f"  sent (limit {lim})")
             placed.append((o, trade))
+            # Account updates can lag order placement. Reserve limit cost and
+            # the existing EUR 5 fee cushion before considering the next buy.
+            cash_remaining = avail - cost - 5
         except Exception as e:
             print(f"  !! buy {o['ticker']} failed: {e}")
             _rec(o, "failed", note=str(e)[:140])

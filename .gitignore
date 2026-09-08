@@ -42,3 +42,6 @@ venv/
 
 # local convenience copies
 state.backup.json
+
+# Lens research drafts and downloaded provider snapshots (private, local)
+.workspace/

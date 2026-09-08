@@ -1,5 +1,9 @@
 # Portfolio toolkit
 
+For the current Lens UI test build, use branch **`codex/lens-testing`**.
+Start with [SYNC.md](SYNC.md) to download it and [SETUP.md](SETUP.md) to run it
+against your own paper account. `main` still contains the earlier interface.
+
 Two tools: **X-Ray** (look-through analysis) and **Rebalancer** (monthly prep per the Operating Manual).
 
 # Rebalancer (rebalance.py + manual.json)
@@ -68,3 +72,51 @@ Caveat: ISIN country = legal domicile, not economic exposure (many Chinese ADRs 
 - ETFs with no holdings file are counted as "Unknown" in every exposure so totals stay honest — the Summary tab flags them.
 - Currency exposure uses each holding's trading currency, not the ETF listing currency.
 - Weights entered as `17.5` or `17,5%` or Excel-percent all work.
+
+## Lens: the integrated research UI
+
+```sh
+python -m pip install -r requirements.txt
+python webdash.py
+```
+
+Open [Lens locally](http://127.0.0.1:8642). Add tickers or search by ISIN,
+choose the right listing, and enter percentages totaling 100%. Run X-Ray to
+see combined holdings and overlap. **Data sources** lets you verify all fund
+identities with the paper Gateway and refresh supported provider downloads.
+
+Automatic sources currently cover the original iShares, Global X and SPDR
+funds (10 equity ETFs). Other funds retain their existing files or accept a
+provider download link. Missing data is explicitly counted as unknown.
+Research drafts stay separate from the monthly investing policy; **Monthly
+investing** opens a guided contribution → preview → approval flow. Export/import a JSON investment
+list to exchange a draft with someone running their own copy.
+
+See [UI-NOTES.md](UI-NOTES.md) for supported sources, limitations and tests.
+The AI advisor questionnaire remains deferred.
+
+
+## Monthly investing
+
+Open [Monthly investing](http://127.0.0.1:8642/rebalance). It starts in paper mode.
+
+1. Choose a cash budget and press **Generate investment preview**. Optional cash-fund
+   deployment, minimum purchases and price updates are under **Plan options**.
+2. Review estimated purchases, money left from the plan, and each proposed
+   order. **Portfolio balance** compares current holdings with policy targets;
+   **Checks & activity** explains flagged checks, market context and snapshots.
+3. Tick the individual orders you approve, open **Review selected orders**, and
+   type `EXECUTE` for paper or `EXECUTE LIVE` for live before sending.
+
+The account menu requires typing `LIVE` to switch to real money. The `•••`
+**Account tools** menu contains saved-snapshot reload, discard of an unsubmitted
+preview, and a deliberate tracking reset. A tracking reset clears the market
+peak and deployment steps, so it should not be used to hide a market decline.
+
+The amount card shows broker EUR cash and the XEON holding/target. Portfolio
+balance reads Gateway holdings with a timestamp and labels saved fallback
+snapshots. Its percentages exclude cash. The preview's cash breakdown is the
+entered budget plus proposed sales minus proposed purchases; prices and fees
+can change. Hypothetical budgets remain previewable, but review and submission
+check available funds. After submission, order outcomes remain visible while
+holdings refresh; there is no automatic new preview.

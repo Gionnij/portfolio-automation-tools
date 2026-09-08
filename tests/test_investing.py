@@ -44,9 +44,14 @@ class InvestingTests(unittest.TestCase):
         self.paths['orders'].write_text(json.dumps(ORDERS))
         self.paths['state'].write_text(json.dumps({'history':[{'date':'2026-09-07','nav':10000,'unit':90,'contribution':600}]}))
         self.paths['pending'].write_text('1')
+        self.paths['inputs'].write_text(json.dumps({'contribute': 600, 'deploy': 0}))
+        self.broker = patch.object(app, 'api_balances', return_value={
+            'ok': True, 'account': 'paper', 'cash': 10000, 'open_orders': 0,
+            'nav': 10000, 'xeon': {'value': 1500, 'floor_pct': 3}, 'read_at': '2026-09-08T10:00:00Z'})
+        self.broker.start()
 
     def tearDown(self):
-        self.patch.stop();self.temp.cleanup()
+        self.broker.stop();self.patch.stop();self.temp.cleanup()
 
     def approve(self, **extra):
         return dict(account='paper',confirm='EXECUTE',plan_id=app.plan_id('paper'),selected=[1],**extra)
@@ -65,9 +70,75 @@ class InvestingTests(unittest.TestCase):
         self.assertNotIn('available_cash',p)
 
     def test_missing_metadata_stays_unknown(self):
+        self.paths['inputs'].unlink()
         self.paths['report'].write_text(REPORT.replace('NAV EUR 10,000 | contribution EUR 600','No valuation available'))
         p=app.report_payload('paper',[])
         self.assertIsNone(p['nav']);self.assertIsNone(p['estimates']['cash_left'])
+
+    def test_underfunded_review_reports_exact_shortfall_and_never_submits(self):
+        self.paths['inputs'].write_text(json.dumps({'contribute': 600.58, 'deploy': 0}))
+        app.api_balances.return_value['cash'] = 50.46
+        before = {p.name: (p.read_bytes(), p.stat().st_mtime_ns) for p in self.root.iterdir()}
+        review = app.api_review(self.approve())
+        self.assertFalse(review['funding']['allowed'])
+        self.assertEqual(review['funding']['shortfall'], 550.12)
+        self.assertTrue(review['funding']['xeon_can_replace'])
+        with patch.object(app, 'run_step') as run:
+            result = app.api_execute({**self.approve(), 'contribute': 0})
+            self.assertTrue(result['funding_blocked'])
+            self.assertTrue(result['not_submitted'])
+            run.assert_not_called()
+        self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mtime_ns) for p in self.root.iterdir()})
+
+    def test_hypothetical_preview_remains_available_without_sufficient_cash(self):
+        app.api_balances.return_value['cash'] = 50
+        with patch.object(app, 'run_step', return_value=(True, 'fixture preview')):
+            self.assertTrue(app.api_prepare({'account': 'paper', 'contribute': 600, 'fetch': False})['ok'])
+        app.api_balances.assert_not_called()
+
+    def test_budget_over_cash_is_blocked_even_if_selected_purchases_cost_less(self):
+        app.api_balances.return_value['cash'] = 500
+        f = app.api_review(self.approve())['funding']
+        self.assertEqual(f['reason'], 'budget')
+        self.assertEqual(f['budget_shortfall'], 100)
+        self.assertEqual(f['order_shortfall'], 0)
+
+    def test_only_selected_sales_can_fund_selected_purchases(self):
+        self.paths['inputs'].write_text(json.dumps({'contribute': 250, 'deploy': 140}))
+        app.api_balances.return_value['cash'] = 250
+        self.assertEqual(app.api_review(self.approve())['funding']['order_shortfall'], 140)
+        p = self.approve();p['selected'] = [0, 1]
+        self.assertTrue(app.api_review(p)['funding']['allowed'])
+
+    def test_cash_change_after_review_is_rechecked_before_submission(self):
+        self.assertTrue(app.api_review(self.approve())['funding']['allowed'])
+        app.api_balances.return_value['cash'] = 20
+        with patch.object(app, 'run_step') as run:
+            self.assertTrue(app.api_execute(self.approve())['funding_blocked'])
+            run.assert_not_called()
+
+    def test_unavailable_or_wrong_account_cash_and_open_orders_block_submission(self):
+        for overrides in ({'cash': None}, {'account': 'live'}, {'open_orders': 1}, {'open_orders': None}):
+            with self.subTest(overrides=overrides), patch.object(app, 'api_balances', return_value={
+                'account': 'paper', 'cash': 10000, 'open_orders': 0, **overrides}), patch.object(app, 'run_step') as run:
+                self.assertTrue(app.api_execute(self.approve())['funding_blocked'])
+                run.assert_not_called()
+
+    def test_preview_budget_cents_are_preserved_and_bound_to_approval(self):
+        token = self.approve()
+        self.paths['inputs'].write_text(json.dumps({'contribute': 177.58, 'deploy': 0}))
+        self.assertEqual(app.report_payload('paper',[])['contribution'], 177.58)
+        with patch.object(app, 'run_step') as run:
+            self.assertFalse(app.api_execute(token)['ok'])
+            run.assert_not_called()
+
+    def test_xeon_replacement_respects_reserve_and_existing_deployment(self):
+        app.api_balances.return_value['cash'] = 50
+        self.paths['inputs'].write_text(json.dumps({'contribute': 600, 'deploy': 700}))
+        f = app.api_review(self.approve())['funding']
+        self.assertEqual(f['xeon_available'], 1200)
+        self.assertEqual(f['replacement_deploy'], 1250)
+        self.assertFalse(f['xeon_can_replace'])
 
     def test_first_visit_without_report_still_returns_fund_names_and_settings(self):
         self.paths['report'].unlink()

@@ -60,6 +60,7 @@ def P(acct):
         approved=HERE / f"orders_approved.{a}.json",
         result=HERE / f"orders_result.{a}.json",
         report=HERE / f"prep_report.{a}.md",
+        inputs=HERE / f"state.{a}.preview.json",
     )
 
 
@@ -136,7 +137,7 @@ def section_by_prefix(sections, prefix):
 def plan_id(acct):
     """Bind approval to exactly the snapshot, orders and policy reviewed."""
     digest = hashlib.sha256(acct.encode())
-    for path in (P(acct)["report"], P(acct)["orders"], HERE / "manual.json"):
+    for path in (P(acct)["report"], P(acct)["orders"], HERE / "manual.json", P(acct)["inputs"]):
         if not path.exists():
             return None
         digest.update(path.read_bytes())
@@ -181,6 +182,10 @@ def report_payload(acct, run_logs):
         found = re.search(pattern, meta)
         return float(found.group(1).replace(",", "")) if found else None
     contribution = amount(r"contribution EUR ([\d,.-]+)")
+    try:
+        contribution = json.loads(pp['inputs'].read_text())['contribute']
+    except (OSError, ValueError, KeyError):
+        pass
     buys = round(sum(o["qty"] * o["est_price"] for o in orders if o["side"] == "BUY"), 2)
     sells = round(sum(o["qty"] * o["est_price"] for o in orders if o["side"] == "SELL"), 2)
     date_match = re.search(r"\d{4}-\d{2}-\d{2}", title)
@@ -250,12 +255,66 @@ def api_prepare(p):
     if not ok:
         return {"ok": False, "account": account,
                 "log": "\n\n".join(f"$ {c}\n{o}" for c, o in logs)}
+    pp['inputs'].write_text(json.dumps({'contribute': p.get('contribute', 0) or 0,
+                                       'deploy': p.get('deploy', 0) or 0}))
     payload = report_payload(account, logs)
     if payload.get("ok"):
         # a "pending preview" only exists when something was actually staged
         pp["pending"].write_text("1" if payload.get("orders") else "0")
         payload["pending"] = _pending(account)
     return payload
+
+
+def reviewed_orders(p):
+    account = 'live' if p.get('account') == 'live' else 'paper'
+    if not _pending(account) or not p.get('plan_id') or p['plan_id'] != plan_id(account):
+        raise ValueError('This preview has changed or is no longer active. Generate a new investment preview.')
+    orders = json.loads(P(account)['orders'].read_text())
+    sel = p.get('selected', [])
+    if not isinstance(sel, list) or any(type(i) is not int or i < 0 or i >= len(orders) for i in sel):
+        raise ValueError('Choose valid orders from this preview.')
+    chosen = [o for i, o in enumerate(orders) if i in sel]
+    if not chosen:
+        raise ValueError('No orders selected.')
+    return account, orders, chosen
+
+
+def check_funding(account, chosen):
+    """Fresh, read-only check. Never treats margin buying power as cash."""
+    inputs = json.loads(P(account)['inputs'].read_text())
+    budget = inputs.get('contribute')
+    if type(budget) not in (int, float) or not math.isfinite(budget) or budget < 0:
+        raise ValueError('Generate a new investment preview to verify its cash budget.')
+    try:
+        b = api_balances({'account': account})
+    except (ValueError, OSError, ConnectionError) as exc:
+        return {'allowed': False, 'reason': 'unavailable', 'message': str(exc)}, None
+    cash = b.get('cash')
+    if b.get('account') != account or cash is None or not math.isfinite(cash):
+        return {'allowed': False, 'reason': 'unavailable', 'message': 'EUR cash could not be verified for this account.'}, b
+    buys = round(sum(o['qty'] * o['est_price'] for o in chosen if o['side'] == 'BUY'), 2)
+    sells = round(sum(o['qty'] * o['est_price'] for o in chosen if o['side'] == 'SELL'), 2)
+    budget_gap = max(0, round(budget - cash, 2))
+    order_gap = max(0, round(buys - sells - cash, 2))
+    x = b.get('xeon', {})
+    reserve = b['nav'] * x['floor_pct'] / 100 if b.get('nav') is not None and x.get('floor_pct') is not None else None
+    xeon_available = max(0, x['value'] - reserve) if x.get('value') is not None and reserve is not None else None
+    reason = 'orders' if b.get('open_orders') != 0 else 'budget' if budget_gap else 'purchases' if order_gap else 'funded'
+    return {'allowed': reason == 'funded', 'reason': reason,
+            'cash': cash, 'cash_budget': budget, 'budget_shortfall': budget_gap,
+            'order_shortfall': order_gap, 'buys': buys, 'sells': sells,
+            'shortfall': max(budget_gap, order_gap),
+            'xeon_available': xeon_available,
+            'xeon_can_replace': bool(budget_gap and cash >= 0 and xeon_available is not None
+                                     and xeon_available >= inputs.get('deploy', 0) + budget_gap),
+            'replacement_deploy': round(inputs.get('deploy', 0) + budget_gap, 2),
+            'checked_at': b.get('read_at')}, b
+
+
+def api_review(p):
+    account, _, chosen = reviewed_orders(p)
+    funding, b = check_funding(account, chosen)
+    return {'ok': True, 'account': account, 'plan_id': p['plan_id'], 'funding': funding, 'balances': b}
 
 
 def api_execute(p):
@@ -265,18 +324,14 @@ def api_execute(p):
     if phrase != CONFIRM[account]:
         return {"ok": False, "not_submitted": True, "log": f"confirmation phrase wrong - type "
                                     f"exactly: {CONFIRM[account]}"}
-    if not _pending(account) or not p.get("plan_id") or p["plan_id"] != plan_id(account):
-        return {"ok": False, "not_submitted": True, "log": "This preview has changed or is no longer active. Create a new preview before approving orders."}
     try:
-        orders = json.loads(pp["orders"].read_text())
-    except Exception:
-        return {"ok": False, "not_submitted": True, "log": "no staged orders found"}
-    sel = p.get("selected", [])
-    if not isinstance(sel, list) or any(type(i) is not int or i < 0 or i >= len(orders) for i in sel):
-        return {"ok": False, "not_submitted": True, "log": "Choose valid orders from this preview."}
-    chosen = [o for i, o in enumerate(orders) if i in sel]
-    if not chosen:
-        return {"ok": False, "not_submitted": True, "log": "no orders selected"}
+        account, orders, chosen = reviewed_orders(p)
+        funding, b = check_funding(account, chosen)
+    except (ValueError, OSError) as exc:
+        return {'ok': False, 'not_submitted': True, 'log': str(exc)}
+    if not funding['allowed']:
+        return {'ok': False, 'not_submitted': True, 'funding_blocked': True,
+                'funding': funding, 'balances': b, 'account': account, 'plan_id': p['plan_id']}
     pp["approved"].write_text(json.dumps(chosen, indent=1))
     pp["result"].write_text("[]")            # clear stale results
     # Mark submission in progress durably. If it aborts, optimistic preview
@@ -398,12 +453,12 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if self.path.startswith("/api/workspace/"):
                 self._json(workspace.api(self.path.rsplit("/", 1)[-1], payload))
-            elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo", "/api/balances"):
+            elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo", "/api/balances", "/api/review"):
                 if not ACTION_LOCK.acquire(blocking=False):
                     self._json({"ok": False, "log": "Another investing action is running. Wait for it to finish."}, 409)
                     return
                 try:
-                    action = {"/api/balances": api_balances, "/api/prepare": api_prepare, "/api/execute": api_execute,
+                    action = {"/api/review": api_review, "/api/balances": api_balances, "/api/prepare": api_prepare, "/api/execute": api_execute,
                               "/api/resync": api_resync, "/api/undo": api_undo}[self.path]
                     self._json(action(payload))
                 finally:

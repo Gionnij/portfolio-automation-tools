@@ -218,3 +218,40 @@ automatic post-submit chart refresh, preserved receipts/approval, disconnected
 Gateway, account separation and unknown valuations. A read-only live Gateway
 check and browser verification confirmed the user’s newly held 4COP shares in
 the chart, with matching red bars/legend. No broker orders were submitted.
+
+## Predictable ordering and funding review — 8 September 2026
+
+Portfolio balance defaults to held EUR value descending, then target descending,
+then ticker A–Z. Unheld funds stay below held funds. The other sort options remain
+available. The primary planning button is now Generate investment preview.
+
+Hypothetical previews remain available. Review selected orders now performs a
+fresh read-only funding check before exposing the confirmation field. If the
+chosen cash budget exceeds EUR cash, it shows the exact shortfall and prevents
+submission. Selected purchases are also checked against cash plus only selected
+sales. Unknown cash, mismatched accounts and pending/unverified orders block
+approval. Deposits must appear at IBKR before checking again. When the reserve
+permits, Use XEON instead lowers the cash input and moves the replacement amount
+to the deployment input; it invalidates approval and requires a new preview.
+It never submits a sale automatically. Estimates exclude fees and price changes.
+
+The server repeats the funding check before writing approval/results/state or
+starting execution. A failed check preserves the unsubmitted preview. Exact
+cash/deployment inputs are saved in ignored `state.<account>.preview.json` files
+and included in the approval hash. Older previews require regeneration. Final
+buy checks use actual EUR ledger cash, fail closed when cash is unknown, and
+reserve each sent order's limit cost plus the existing EUR 5 fee cushion so
+delayed account updates cannot spend the same cash twice. Unfilled sale proceeds
+and margin allowance cannot fund those checks.
+
+The cash-leftover disclosure also explains that every budget recalculates target
+gaps before whole-share rounding, and rounding leftovers are not redistributed
+in a second pass. A smaller budget can change the proposed basket even when the
+previous basket would still fit. The allocation algorithm is unchanged.
+
+Validation: 65 Python and 11 JavaScript tests pass. Coverage includes exact
+shortfalls, selected versus unselected sales, hypothetical previews, cash changes
+between review and submission, preserved state on refusal, XEON reserve limits,
+ordering, missing cash, margin allowance and delayed broker updates. Isolated
+browser fixtures verified blocked review and the XEON shortcut on desktop and a
+390px phone viewport, including live colors. No broker orders were submitted.

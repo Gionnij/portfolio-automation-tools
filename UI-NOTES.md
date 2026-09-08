@@ -147,3 +147,14 @@ partial/working/filled fixture outcomes, input-change invalidation, connection
 failure, individual selection, paper/live arming and the different typed phrases.
 Phone balance rows and approval dialogs have no horizontal overflow. Test order
 submissions used an isolated mock server; no actual broker orders were placed.
+
+
+## Account theme consistency — 8 September 2026
+
+Monthly investing now uses a complete set of paper/live color tokens, including
+icons, chart tracks, illustrations, hover/focus colors, tinted surfaces, toast
+and dialog styling. Both the current-share bars and their legend use the same
+accent token; target ticks and their legend share a target-color token. Browser
+computed-style checks confirmed matching chart/legend colors in both modes and
+red live accents across the remaining controls and dialogs. Trading JavaScript
+and backend behavior are unchanged.

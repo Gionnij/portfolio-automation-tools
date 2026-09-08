@@ -1,5 +1,9 @@
 # Portfolio toolkit
 
+For the current Lens UI test build, use branch **`codex/lens-testing`**.
+Start with [SYNC.md](SYNC.md) to download it and [SETUP.md](SETUP.md) to run it
+against your own paper account. `main` still contains the earlier interface.
+
 Two tools: **X-Ray** (look-through analysis) and **Rebalancer** (monthly prep per the Operating Manual).
 
 # Rebalancer (rebalance.py + manual.json)
@@ -72,7 +76,7 @@ Caveat: ISIN country = legal domicile, not economic exposure (many Chinese ADRs 
 ## Lens: the integrated research UI
 
 ```sh
-pip install pandas openpyxl ib_async
+python -m pip install -r requirements.txt
 python webdash.py
 ```
 
@@ -96,7 +100,7 @@ The AI advisor questionnaire remains deferred.
 
 Open [Monthly investing](http://127.0.0.1:8642/rebalance). It starts in paper mode.
 
-1. Choose a contribution and press **Preview my plan**. Optional cash-fund
+1. Choose a cash budget and press **Generate investment preview**. Optional cash-fund
    deployment, minimum purchases and price updates are under **Plan options**.
 2. Review estimated purchases, money left from the plan, and each proposed
    order. **Portfolio balance** compares current holdings with policy targets;
@@ -109,7 +113,10 @@ The account menu requires typing `LIVE` to switch to real money. The `•••`
 preview, and a deliberate tracking reset. A tracking reset clears the market
 peak and deployment steps, so it should not be used to hide a market decline.
 
-Values are dated snapshots, exclude broker cash, and are not live valuations.
-The cash breakdown is contribution plus proposed sales minus proposed purchases,
-not the broker's available-cash balance. Prices and fees can change. After
-submission, order outcomes remain visible; there is no automatic new preview.
+The amount card shows broker EUR cash and the XEON holding/target. Portfolio
+balance reads Gateway holdings with a timestamp and labels saved fallback
+snapshots. Its percentages exclude cash. The preview's cash breakdown is the
+entered budget plus proposed sales minus proposed purchases; prices and fees
+can change. Hypothetical budgets remain previewable, but review and submission
+check available funds. After submission, order outcomes remain visible while
+holdings refresh; there is no automatic new preview.

@@ -1,127 +1,78 @@
-# Sharing + updating workflow (Giovanni ↔ Giulio)
+# Sharing Lens with Giulio
 
-No more zip-and-airdrop. Code lives in one git repository; **personal data
-never travels**. `.gitignore` excludes `state.json`, `orders*.json`,
-`prep_report.md`, `report.html`, `prices.csv` — so pulling an update can
-never overwrite your portfolio's memory or your last run's results.
+The private repository is **Gionnij/portfolio-automation-tools**.
+The current UI test build is on **`codex/lens-testing`**. Pulling `main`
+alone will not get the Lens changes. Accept the repository collaborator
+invitation and authenticate Git with your own GitHub account first.
 
-| stays local, per person | shared in the repo |
-|---|---|
-| `state.json` (units, ATH, ladder) | the five `.py` scripts |
-| `orders*.json`, `prep_report.md`, `report.html` | `manual.json` (the policy) |
-| `prices.csv` (regenerate: `python fetch_prices.py`) | `holdings/`, `portfolio.xlsx` |
-| `state.undo.json`, `state.pending` | `SETUP.md`, `README.md`, docs |
+## First download
 
----
-
-## One-time: Giovanni publishes
+Use a new folder so an older installation can stay intact:
 
 ```bash
-cd ~/Desktop/Finance/portfolio
-git init
-git add .
-git commit -m "Portfolio rebalancer"
+git clone --branch codex/lens-testing https://github.com/Gionnij/portfolio-automation-tools.git ~/lens-testing
+cd ~/lens-testing
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python webdash.py
 ```
 
-Check that nothing personal got staged — this must print **nothing**:
+Use Python 3.12 for the tested environment. On Windows, create the environment
+with `py -3.12 -m venv .venv` and activate with
+`.venv\Scripts\Activate.ps1` in PowerShell instead of `source`.
+
+See [SETUP.md](SETUP.md) for the paper Gateway settings and a short test route.
+If Git cannot authenticate, the same branch can be downloaded via GitHub's
+**Code → Download ZIP** while signed in; unzip, open that folder in a terminal,
+and follow the environment/install/run steps above. A ZIP copy cannot use
+`git pull` for later updates.
+
+## Update an existing Git clone
+
+Stop its server with Ctrl+C and open a terminal inside the repository. Save
+or commit any local edits before switching branches; do not discard them.
 
 ```bash
-git ls-files | grep -E "state|orders|prep_report|report.html|prices.csv"
+git status
+git fetch origin
+git switch codex/lens-testing
+git pull --ff-only origin codex/lens-testing
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python webdash.py
 ```
 
-Then create an empty **private** repo on github.com (no README), and:
+Create `.venv` as above if this installation does not have one. Restart the
+server and refresh the browser after updates. Keep only one local server
+running on port 8642.
 
-```bash
-git remote add origin git@github.com:<you>/portfolio-tool.git
-git branch -M main
-git push -u origin main
-```
+## What is shared
 
-Invite Giulio: repo → Settings → Collaborators.
+Code, tests, documentation, `manual.json`, `portfolio.xlsx` and the original
+provider files in `holdings/` are shared. The investing policy in
+`manual.json` is the same for everyone using this branch; research drafts
+do not change it.
 
-## One-time: Giulio clones
+Account state (`state.paper.json`, `state.live.json` and related preview/undo
+files), orders, generated reports, `prices.csv`, `.workspace/` drafts and
+download caches are ignored by Git. Use your own Gateway and account data;
+there is no need to copy Giovanni's local state. Research drafts can be
+shared deliberately using the UI's JSON export/import.
 
-**Prerequisites:** a GitHub account, accepted collaborator invite, and git
-able to authenticate. Easiest on macOS:
+## Publication note for maintainers
 
-```bash
-brew install gh          # GitHub CLI (skip if you already use SSH keys)
-gh auth login            # choose GitHub.com -> HTTPS -> login via browser
-```
+The first `codex/lens-testing` build is a snapshot published through the
+authenticated GitHub connector because local SSH authentication was unavailable.
+Its file tree is verified against the local development commit. Giovanni's
+development history remains on `codex/lens-portfolio-workspace`; `main` is
+unchanged. The snapshot and development branch have different commit histories.
+Do not force-push one over the other; publish subsequent testing updates on
+top of the existing testing branch, or merge their histories deliberately.
 
-Then:
+## Useful feedback
 
-```bash
-git clone https://github.com/<giovanni>/<repo>.git ~/portfolio
-cd ~/portfolio
-pip install ib_async pandas openpyxl
-```
-
-One folder is all you need — it runs **both** paper and live, keeping their
-state in separate files. There is no second "paper folder" any more.
-
-Carrying over an existing paper portfolio's memory (note the new name):
-
-```bash
-cp "~/Investment package/portfolio-paper/state.json" ~/portfolio/state.paper.json
-```
-
-(Folder location is free — the tool has no hardcoded paths. Giovanni keeps
-his at `~/Desktop/Finance/portfolio`.)
-
-Then work only in the cloned folder and delete the old ones.
-
----
-
-## The loop, from now on
-
-**Giovanni, after Claude changes something:**
-
-```bash
-cd ~/Desktop/Finance/portfolio
-git add -A
-git commit -m "fix: round limit prices to the contract's minTick (IBKR 110)"
-git push
-```
-
-**Giulio, to get it:**
-
-```bash
-cd ~/Desktop/Finance/portfolio
-git pull
-```
-
-That's it. His `state.json`, his orders, his reports: untouched. If he has
-uncommitted local edits to a *code* file, git will say so instead of
-silently clobbering them.
-
-**Giulio, to report a bug:** open an Issue on the repo (or send the run log).
-The log is far more useful than a screenshot — it contains the IBKR error
-codes.
-
----
-
-## If Giulio wants a different allocation
-
-`manual.json` is shared, so pulling would overwrite his targets. Two options:
-
-1. **Same portfolio** (current situation): change nothing, pull normally.
-2. **Own allocation**: he copies it once and points the tool at his copy —
-   `cp manual.json my-manual.json`, add `my-manual.json` to `.gitignore`,
-   and run with `--config my-manual.json`. The dashboard doesn't expose that
-   flag yet; ask Claude to add it if it becomes necessary.
-
----
-
-## Useful git safety nets
-
-```bash
-git status              # what changed since the last commit
-git diff                # exactly what changed, line by line
-git log --oneline       # history of updates
-git checkout -- <file>  # throw away local edits to one file
-git revert <commit>     # undo a bad update, keeping history
-```
-
-Because every version is recorded, a bad change is one command away from
-being undone — which is worth more than the whole zip dance it replaces.
+Report the branch and `git rev-parse --short HEAD`, the steps that led to the
+problem, and the expected versus actual result. A screenshot plus relevant
+**Checks & activity** log lines helps. Remove account identifiers before
+sharing logs.

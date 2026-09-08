@@ -1,129 +1,102 @@
-# Setup guide — portfolio rebalancer
+# Run and test Lens
 
-Everything you need to run this on your own laptop against **your own IBKR
-paper account**. Nothing in the Python code needs editing.
+Start with [SYNC.md](SYNC.md) to download **`codex/lens-testing`** from the
+private repository. The tested environment is **Python 3.12**, with package
+versions recorded in `requirements.txt`. No Node.js or frontend build is
+needed to run the app.
 
-Safety model, up front: the tool **never places an order on its own**. It
-stages orders to `orders.json` and shows them to you; an order is only sent
-after you tick it and type a confirmation phrase. Keep it on the paper
-account (port 4002) for testing.
+## Install and start
 
----
-
-## 1. Install
-
-Python 3.10+ (3.11–3.13 fine), then:
+Inside your downloaded repository:
 
 ```bash
-pip install pandas ib_async openpyxl
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python webdash.py
 ```
 
-`openpyxl` is only needed for the x-ray tool (`xray.py`), not the rebalancer.
+On later runs, activate the environment and run `python webdash.py` again.
+Leave the terminal open. Ctrl+C stops the app.
 
-Put the folder wherever you like and always run from inside it:
+Open **http://127.0.0.1:8642** for research and X-Ray, or
+**http://127.0.0.1:8642/rebalance** for monthly investing. These addresses
+refer to your own laptop. Nothing connects to Giovanni's running app.
+
+## Connect your paper account
+
+1. Open IB Gateway and sign in to **your own paper account**.
+2. In the API settings, enable socket clients where that setting is shown,
+   set the socket port to **4002**, and allow `127.0.0.1` as a trusted IP.
+3. Leave Gateway open. Keep Lens in its default green **paper** mode.
+4. To test sending paper orders, turn off **Read-Only API** in the paper
+   Gateway. The cash/holdings display only reads the account.
+
+Lens uses port 4002 for paper and 4001 for live. It checks the account type
+reported by the broker and rejects a mismatch. Order submission requires
+individual order selections plus a typed confirmation. The test route below
+uses paper mode throughout.
+
+Research drafts and saved provider files can be explored without Gateway.
+IBKR instrument verification, fresh account balances, and investment previews
+need a working Gateway connection. Provider downloads need internet access
+and some funds still require a manual file or download link.
+
+## Suggested test route
+
+1. **Research:** enter tickers or ISINs, resolve the correct listings, and
+   set percentages totaling 100%. Check **Data sources**, refresh supported
+   ETF holdings, and run **X-Ray**. Missing data remains labelled unknown.
+2. **Choose an amount:** check the EUR cash figure. Under **Plan options**,
+   inspect the XEON holding and target. Enter a total cash budget, including
+   any uninvested cash you intend to reuse.
+3. **Generate investment preview:** check proposed purchases and leftover
+   cash. This stages a plan and does not send orders. If prices are missing,
+   try `python fetch_prices.py` from another terminal with the same environment
+   active, then regenerate. Availability of external price sources can vary.
+4. **Funding check:** try a budget above your paper EUR cash, tick proposed
+   orders and choose **Review selected orders**. The preview should remain
+   usable, but submission should be blocked with the exact funding gap and
+   the available funding options.
+5. **Paper orders:** generate a funded preview, select the orders you want,
+   choose **Review selected orders**, type `EXECUTE`, then **Send paper orders**.
+   Inspect broker results and refresh **Portfolio balance** to check holdings.
+
+The portfolio table defaults to held value descending, then target descending,
+then ticker alphabetically. Unheld positions appear at the bottom. Gateway
+read times are shown; saved snapshots are explicitly labelled when fresh
+values are unavailable.
+
+## How to interpret the preview
+
+- The plan uses the shared policy in `manual.json`; editing a research draft
+  does not replace that policy.
+- The entered cash budget may include money already deposited. Do not add
+  the displayed cash balance a second time. XEON deployment is separate and
+  proposes selling some of that holding.
+- Whole shares, minimum purchases and allocation rules leave cash uninvested.
+  Changing the budget recalculates each fund's allocation before rounding;
+  leftover cash is not automatically redistributed in a second pass.
+- Portfolio percentages cover policy holdings and exclude uninvested cash.
+  Prices, execution amounts and fees can differ from preview estimates.
+- Orders already open at IBKR block another submission. Check broker status
+  before preparing another set. A missing quote or unavailable balance is
+  not treated as zero.
+
+## Local files and tests
+
+Paper and live state, preview inputs, orders, reports, price caches and
+research drafts are local and Git-ignored. A fresh clone creates its own
+state. Keep older state files if migrating an existing installation; do not
+delete them as part of an update. See [SYNC.md](SYNC.md).
+
+Optional developer checks (mocked broker; no real trades):
 
 ```bash
-cd ~/portfolio          # or wherever you keep it - no paths are hardcoded
+python -m unittest discover -s tests
+node --test tests/test_investing_ui.cjs
 ```
 
-## 2. IB Gateway (or TWS)
-
-1. Download **IB Gateway** from IBKR, log in with your **paper** credentials.
-2. Configure → Settings → **API → Settings**:
-   - tick **Enable ActiveX and Socket Clients**
-   - **untick Read-Only API**  (needed to place orders; leave it TICKED on a
-     live account except when you actually execute)
-   - Socket port: **4002** for paper (4001 = live)
-   - Trusted IPs: `127.0.0.1`
-3. Leave Gateway running while you use the tool.
-
-Market data: **you don't need a subscription.** The tool tries IBKR live
-prices first, then free end-of-day data from justETF/Yahoo. If you see
-`Error 354 / 10197 / 10168` in the log, that's expected — it just means
-prices came from the free source instead. Run `python fetch_prices.py`
-first (see below) and everything works regardless.
-
-One gotcha: IBKR gives your login **one** market-data line. If you're logged
-into Client Portal or the mobile app at the same time, you'll get
-`Error 10197 (competing live session)`. Harmless here, but log out of those
-if you want live prices.
-
-## 3. First run
-
-```bash
-python fetch_prices.py        # fills prices.csv from justETF/Yahoo (free)
-python webdash.py             # opens http://127.0.0.1:8642
-```
-
-In the browser:
-
-- the page **always opens on PAPER** (port 4002 under the hood). One folder
-  serves both accounts: paper and live keep separate memory
-  (`state.paper.json` vs `state.live.json`), so they can never mix.
-- to go live, open the account menu, type `LIVE`, and press **Switch to live account**;
-  the page turns red. Reloading the page always drops back to paper.
-- as a hard backstop the tool asks IB Gateway which account is actually
-  connected (paper IDs start with `DU`) and **refuses to run on a mismatch** —
-  so picking LIVE while Gateway is on paper stops with `ACCOUNT MISMATCH`
-  instead of doing something surprising.
-- set your **Monthly contribution** (e.g. 6145 to simulate the whole starting pot)
-- **Preview my plan** — nothing is sent; you get an estimated purchase/cash breakdown and readable order proposals.
-  **Portfolio balance** and **Checks & activity** provide the supporting context
-- tick the orders you approve, open **Review selected orders**, type **EXECUTE**, press **Send paper orders**
-- results repaint green (filled) / yellow (partial or still working at its
-  limit) / red (skipped or failed, with the reason)
-
-Monthly after that: `contribute 600` and repeat. `deploy N` additionally
-sells up to €N of the XEON cash-parking sleeve to fund buys (used during the
-ramp; leave at 0 normally).
-
-## 4. Files — what's what
-
-| file | role |
-|---|---|
-| `webdash.py` | the dashboard (start here) |
-| `rebalance.py` | the engine: regime, routing, staging, execution |
-| `fetch_prices.py` | free EOD prices → `prices.csv` |
-| `manual.json` | **the policy**: sleeve targets, ISINs, all rules |
-| `holdings/` | ETF holdings files, for the semi-cluster / TSMC checks |
-| `xray.py` + `portfolio.xlsx` | look-through analysis (separate tool) |
-| `dashboard.py` | static HTML report generator (pre-webdash, optional) |
-
-Files the tool creates: `state.json` (memory: units, all-time high, ladder),
-`orders.json`, `orders_result.json`, `prep_report.md`. **Start with none of
-them** — a fresh `state.json` is created on first run, which is what you want
-for a from-zero test.
-
-## 5. Things worth knowing before you judge the output
-
-- **NAV counts sleeves only, not cash.** Right after you fund the account (or
-  mid-wave, with orders still working), NAV looks low and the drawdown `D`
-  can read as "Correction". It corrects itself once the buys fill.
-- **Whole shares only**, and a €100 minimum per order — so small sleeves
-  (1–1.5% targets) don't open until the pot is big enough. That's intended:
-  smallest convictions onboard last.
-- **Leftover cash is normal** — rounding remainders roll into the next run.
-- Sells execute **before** buys, and each buy is checked against actually
-  available cash, so a sell that doesn't fill can't cause failed buys.
-- If orders are still open at the broker, prepare warns and execute
-  **refuses** (they'd be double-counted). Wait for fill/expiry.
-- In the raw log, `Error 10349 "TIF was set to DAY"` and the
-  `Canceled order:` blocks that follow are an ib_async labelling quirk — the
-  colored results table shows the real final status.
-
-## 6. What to change if you want your own allocation
-
-Everything policy-ish lives in `manual.json`: each sleeve's `target` %,
-`isin`, `exchange`, `currency`, `ter`, plus the `rules` block (min order,
-thematic cap, XEON floor, regime thresholds, ladder levels…). Targets must
-sum to 100 — the checklist tells you if they don't. If you change a ticker,
-set its ISIN correctly: contracts are resolved by ISIN, which is what makes
-cross-venue ticker differences (e.g. UMDV listing as U5MD on Xetra) a
-non-issue.
-
-## 7. Feedback that would help most
-
-- Does a from-zero run stage sensible orders at your account size?
-- Any sleeve that fails to resolve or price on your machine?
-- Anything in the dashboard that's ambiguous or mis-labelled?
-- Any order rejected by *your* Gateway's precautionary settings?
+Node.js is needed only for the second test command. The current app changes
+passed 65 Python tests and 11 JavaScript tests on Giovanni's machine.
+See [UI-NOTES.md](UI-NOTES.md) for implementation details and limitations.

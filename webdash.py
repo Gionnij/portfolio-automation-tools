@@ -6,6 +6,7 @@
 From the page you can:
   * pick Paper (port 4002) or LIVE (port 4001)  - host fixed to 127.0.0.1
   * set contribution / deploy / min-order
+  * read EUR cash and XEON holdings from Gateway without preparing a plan
   * "Preview my plan" -> runs fetch_prices.py + rebalance.py DRY RUN, shows the
     staged orders, weights vs target, regime and compliance checklist
   * tick/untick individual orders, type the confirmation phrase, "Execute"
@@ -20,7 +21,7 @@ Safety model (same human gate as the terminal, different skin):
   * per-order approval = the checkboxes; unticked orders are never sent
   * Gateway's own Read-Only API toggle stays your hardware-level safety
 
-Requires: standard library only (rebalance.py itself needs pandas/ib_async).
+Requires: ib_async for balances (rebalance.py also needs pandas).
 """
 
 import json
@@ -38,6 +39,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 import workspace
+import balances
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
@@ -203,6 +205,12 @@ def report_payload(acct, run_logs):
 
 
 # ------------------------------------------------------------------ actions
+
+def api_balances(p):
+    account = 'live' if p.get('account') == 'live' else 'paper'
+    cfg = json.loads((HERE / 'manual.json').read_text())
+    return balances.fetch(account, cfg)
+
 
 def api_prepare(p):
     account = "live" if p.get("account") == "live" else "paper"
@@ -390,12 +398,12 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if self.path.startswith("/api/workspace/"):
                 self._json(workspace.api(self.path.rsplit("/", 1)[-1], payload))
-            elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo"):
+            elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo", "/api/balances"):
                 if not ACTION_LOCK.acquire(blocking=False):
                     self._json({"ok": False, "log": "Another investing action is running. Wait for it to finish."}, 409)
                     return
                 try:
-                    action = {"/api/prepare": api_prepare, "/api/execute": api_execute,
+                    action = {"/api/balances": api_balances, "/api/prepare": api_prepare, "/api/execute": api_execute,
                               "/api/resync": api_resync, "/api/undo": api_undo}[self.path]
                     self._json(action(payload))
                 finally:

@@ -158,3 +158,38 @@ accent token; target ticks and their legend share a target-color token. Browser
 computed-style checks confirmed matching chart/legend colors in both modes and
 red live accents across the remaining controls and dialogs. Trading JavaScript
 and backend behavior are unchanged.
+
+## Cash and XEON at investing time — 8 September 2026
+
+Choose an amount now shows uninvested EUR cash from the selected account’s
+Gateway. Plan options show XEON’s current value and shares, current policy
+target, protected reserve, and the target after the entered cash amount.
+The input means the total cash budget for this plan, including leftovers.
+Already-credited deposits are included in broker cash; they are not added again
+automatically, and the full balance never becomes the investment amount by default.
+
+The new `/api/balances` endpoint uses a read-only IBKR connection. It does not
+prepare a plan or modify orders, policy, or tracking files. Balances refresh on
+page load, account changes, after planning/submission/tracking reset, and with
+the refresh button. Each read is dated. Switching accounts clears the previous
+figures; failed refreshes retain only explicitly labeled last-known values.
+Missing cash or incomplete holdings stay unknown rather than displaying zero.
+Reads share the investing action lock; the UI prevents competing actions during
+a refresh while still allowing the amount to be edited.
+
+Cash comes from the EUR `CashBalance` ledger, supporting both standard and
+`$LEDGER-` tags. It excludes BASE aggregates, other currencies and margin-based
+buying power. This is cash context, not a settlement-adjusted spending guarantee;
+the UI explains this and flags pending orders. See IBKR’s
+[account value definitions](https://www.interactivebrokers.com/docs/tws-api/doc/account-portfolio-data/account-updates/account-value-keys)
+and [per-currency prefix documentation](https://www.interactivebrokers.com/docs/tws-api/doc/tws-settings/per-currency-account-value-prefix).
+Broker contract details verify each holding by conId/ISIN. XEON targets and the
+floor use policy holdings only, excluding cash and unrelated investments,
+matching the engine’s NAV basis. Valuations are estimates and may be delayed.
+
+Validation: 50 regression tests pass, including 14 balance tests for account and
+currency separation, incomplete valuations, missing FX, connection failures,
+read-only connections and unchanged saved state. The connected paper Gateway
+was checked read-only. Browser QA covered cash/XEON display, target updates,
+live-mode clearing and colors, failed-refresh labeling, and a 390px phone
+viewport without horizontal overflow. No broker orders were submitted.

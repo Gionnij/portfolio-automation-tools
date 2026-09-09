@@ -611,9 +611,7 @@ def prepare(cfg, state, snap, contribution, deploy=0.0):
     for t, v in a.items():
         if v > 0:
             plan[t] = plan.get(t, 0) + v
-    if left > 0.01:
-        notes.append(f"EUR {left:,.0f} of the contribution had no positive "
-                     "gap to fill; leave in cash.")
+    unallocated = left      # gaps below the minimum order - never routed
 
     # ----- dry powder ladder (section 3 step 3, crash regime only)
     ladder_orders, gold_proposal = [], None
@@ -669,7 +667,7 @@ def prepare(cfg, state, snap, contribution, deploy=0.0):
     for t, eur in sorted(plan.items(), key=lambda x: -x[1]):
         px = snap[t][1]
         qty = math.floor(eur / px)
-        if qty < 1 or eur < R["min_order_eur"]:
+        if qty < 1 or qty * px < R["min_order_eur"]:
             skipped.append((t, eur))
             continue
         if snap[t][0] == 0 and eur < R["min_position_pct"] / 100 * nav_after:
@@ -680,6 +678,68 @@ def prepare(cfg, state, snap, contribution, deploy=0.0):
         orders.append(dict(ticker=t, side="BUY", qty=qty,
                            est_price=round(px, 2), review=False,
                            reason=f"gap fill ({regime.lower()})"))
+    # ----- second pass: put the leftover to work (section 3, step 2 tail)
+    # Pass 1 fills the largest gaps and stops; whole-share rounding and the
+    # minimum order then strand cash - 56% of a EUR 1,000 contribution in
+    # testing. This offers that leftover to the still-underweight sleeves, in
+    # the same most-underweight-first order, buying the SMALLEST whole-share
+    # order that clears the minimum. Every original law still holds: minimum
+    # order, 1% new-position floor, XEON's floor (it is never topped up here -
+    # it is the cash sleeve, and overshooting it just re-parks the money),
+    # SGLD's cap, and the thematic cap.
+    #
+    # The guard is rules.second_pass_max_target_multiple: a sleeve may not end
+    # up above that multiple of its target weight. On an established portfolio
+    # it never binds (worst case ~1.26x at NAV 10k, ~1.13x at 20k). On an empty
+    # one it stops a EUR 100 minimum order from making a 3.5% sleeve 13% of the
+    # book. Set it to 0 to disable the second pass entirely.
+    cap_mult = R.get("second_pass_max_target_multiple", 0) or 0
+    second_pass = []
+    if cap_mult > 0:
+        def _buys():
+            return sum(o["qty"] * o["est_price"] for o in orders
+                       if o["side"] == "BUY" and not o["review"])
+        available = contribution + deploy_amt + ladder_total - _buys()
+        bought = {o["ticker"] for o in orders if o["side"] == "BUY"}
+        them_now = sum(val[t] for t, mm in sleeves.items() if mm["thematic"])
+        rem = {t: gap[t] - (plan.get(t, 0) if t in bought else 0.0)
+               for t in sleeves if t in priceable}
+        for t, g in sorted(rem.items(), key=lambda x: -x[1]):
+            if available < R["min_order_eur"]:
+                break
+            if g <= 0 or t in bought or t == "XEON":
+                continue
+            px_t = snap[t][1]
+            qty = math.ceil(R["min_order_eur"] / px_t)
+            cost = qty * px_t
+            if cost > available or nav_after <= 0:
+                continue
+            after = val[t] + cost
+            if after > cap_mult * sleeves[t]["target"] / 100 * nav_after:
+                continue                                   # would overshoot too far
+            if t == "SGLD" and after > R["sgld_cap_pct"] / 100 * nav_after:
+                continue                                   # section 4 gold cap
+            if sleeves[t]["thematic"] and (them_now + cost) > \
+                    R["thematic_cap_pct"] / 100 * nav_after:
+                continue                                   # section 2 thematic cap
+            if snap[t][0] == 0 and cost < R["min_position_pct"] / 100 * nav_after:
+                continue                                   # section 2 1% floor
+            orders.append(dict(ticker=t, side="BUY", qty=qty,
+                               est_price=round(px_t, 2), review=False,
+                               reason="second pass (leftover cash)"))
+            plan[t] = plan.get(t, 0) + cost      # so unit tracking counts it
+            available -= cost
+            if sleeves[t]["thematic"]:
+                them_now += cost
+            second_pass.append(t)
+            skipped[:] = [(k, v) for k, v in skipped if k != t]
+        if second_pass:
+            notes.append("Second pass: leftover cash routed to " +
+                         ", ".join(second_pass) +
+                         f" (smallest whole-share order clearing EUR "
+                         f"{R['min_order_eur']:,.0f}; no sleeve taken above "
+                         f"{cap_mult:g}x its target).")
+
     # XEON ramp sale sized to what the buys actually need beyond the
     # contribution - never sell more dry powder than gets invested
     if deploy_amt > 0:
@@ -697,6 +757,25 @@ def prepare(cfg, state, snap, contribution, deploy=0.0):
                            est_price=round(snap["SGLD"][1], 2), review=True,
                            reason="ladder -30%: sell gold strength "
                                   "(CONDITIONAL - your call)"))
+
+    # What actually stays in cash. Computed AFTER staging so it includes
+    # whole-share rounding and sleeves that could not buy a single share -
+    # neither of which exists yet at allocate() time. Conditional (review)
+    # orders are excluded: they are the user's call, not committed cash.
+    buys_eur = sum(o["qty"] * o["est_price"] for o in orders
+                   if o["side"] == "BUY" and not o["review"])
+    sells_eur = sum(o["qty"] * o["est_price"] for o in orders
+                    if o["side"] == "SELL" and not o["review"])
+    left_real = contribution + sells_eur - buys_eur
+    held_back = sum(v for _, v in skipped)
+    rounding = max(0.0, left_real - unallocated - held_back)
+    if left_real > 0.01:
+        notes.append(
+            f"EUR {left_real:,.0f} stays in cash and rolls into the next run: "
+            f"EUR {unallocated:,.0f} in sleeves whose gap was below the "
+            f"EUR {R['min_order_eur']:,.0f} minimum order, "
+            f"EUR {held_back:,.0f} held back at staging, "
+            f"EUR {rounding:,.0f} left by rounding down to whole shares.")
 
     state["history"].append(dict(date=str(date.today()), nav=round(nav, 2),
                                  unit=round(unit, 4), D=round(D, 2),

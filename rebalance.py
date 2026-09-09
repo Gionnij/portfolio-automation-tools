@@ -787,6 +787,31 @@ def build_checklist(cfg, res, holdings_dir):
         f"current {them:.1f}% (target {them_t:.1f}%)")
     add("2", "Max one allocation change per quarter", info,
         "not machine-checkable - keep the change log")
+    if 'china_cap_pct' in R or 'us_equity_floor_pct' in R:
+        from policy import allocation_checks
+        allocation = [dict(ticker=t, isin=m['isin'], name=m['name'],
+                           weight=w.get(t, 0), currency=m['currency'], exchange=m['exchange'])
+                      for t, m in sleeves.items() if w.get(t, 0) > 0]
+        try:
+            import workspace
+            research = workspace.analyze_rows(allocation, auto_fetch=False)
+            holdings = research['holdings']
+        except Exception as exc:
+            holdings = None
+        checks = allocation_checks(cfg, allocation, holdings or [])
+        for check in checks:
+            if check['label'] == 'Positions':
+                continue  # Already checked above against configured sleeves.
+            geographic = 'look-through' in check['label']
+            label = f"{check['label']} {check['relation']} {check['limit']:g}%"
+            if geographic:
+                detail = ('Holdings unavailable; run the X-Ray and verify country classifications.'
+                          if holdings is None else f"Model estimate {check['value']:.2f}%. "
+                          'Mixed-date holdings and inferred domiciles require review; not a verified policy pass.')
+                add('2', label, warn, detail)
+            else:
+                add('2', label, okc if check['status'] == 'PASS' else warn,
+                    f"Current {check['value']:.2f}% (QDVB, ZPRV and UMDV)")
     add("3", "Regime measured and routing applied", okc,
         f"D = {res['D']:.1f}% -> {res['regime']}; contribution routed by rule")
     add("3", f"XEON floor {R['xeon_floor_pct']}% never touched",
@@ -811,6 +836,10 @@ def build_checklist(cfg, res, holdings_dir):
         "MTPI holdings file not found" if tsmc is None else f"{tsmc:.1f}%")
     add("4", "Kill criteria (fundamental judgments)", info,
         "by design not automated - §4 reviews due are listed in §7 output")
+    if 'ICHN' in sleeves:
+        add('4', 'ICHN offshore-China exit criteria', info,
+            'Review annually. Immediate exit trigger: VIE/P-chip legal impairment, forced delisting or capital controls. '
+            '2030 deadline: payouts and buybacks must have structurally improved. See operating manual §4.')
     add("4", f"SGLD cap {R['sgld_cap_pct']}%",
         okc if w.get("SGLD", 0) <= R["sgld_cap_pct"] else warn,
         f"SGLD = {w.get('SGLD', 0):.1f}%")

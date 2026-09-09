@@ -1,9 +1,9 @@
 {
-  "manual_version": "1.0 - July 2026",
+  "manual_version": "1.1 - July 2026",
   "sleeves": {
     "QDVB": {
       "name": "iShares Edge MSCI USA Quality Factor",
-      "target": 12.0,
+      "target": 11.0,
       "kind": "equity",
       "thematic": false,
       "exchange": "IBIS2",
@@ -43,7 +43,7 @@
     },
     "MTPI": {
       "name": "iShares MSCI EM ex-China Acc",
-      "target": 17.5,
+      "target": 15.5,
       "kind": "equity",
       "thematic": false,
       "exchange": "IBIS2",
@@ -60,6 +60,16 @@
       "currency": "EUR",
       "isin": "IE00BQT3WG13",
       "ter": 0.4
+    },
+    "ICHN": {
+      "name": "iShares MSCI China UCITS ETF",
+      "target": 3.0,
+      "kind": "equity",
+      "thematic": false,
+      "exchange": "AEB",
+      "currency": "EUR",
+      "isin": "IE00BJ5JPG56",
+      "ter": 0.28
     },
     "GRID": {
       "name": "First Trust Smart Grid Infrastructure",
@@ -173,7 +183,7 @@
     }
   },
   "rules": {
-    "max_lines": 17,
+    "max_lines": 18,
     "min_position_pct": 1.0,
     "thematic_cap_pct": 25.0,
     "band_relative": 0.25,
@@ -190,7 +200,15 @@
     "min_order_eur": 100.0,
     "avg_ter_flag": 0.3,
     "semi_cluster_cap_pct": 16.0,
-    "tsmc_in_mtpi_cap_pct": 22.0
+    "tsmc_in_mtpi_cap_pct": 22.0,
+    "us_equity_floor_pct": 25.0,
+    "us_direct_floor_pct": 14.0,
+    "us_direct_tickers": [
+      "QDVB",
+      "ZPRV",
+      "UMDV"
+    ],
+    "china_cap_pct": 10.0
   },
   "semi_pattern": "TAIWAN SEMICONDUCTOR|TSMC|NVIDIA|ASML|SAMSUNG ELECTRO|SK HYNIX|MEDIATEK|BROADCOM|ADVANCED MICRO|INTEL CORP|TEXAS INSTRUMENT|INFINEON|STMICRO|TOKYO ELECTRON|APPLIED MATERIAL|LAM RESEARCH|KLA CORP|MICRON|QUALCOMM|ARM HOLDINGS|ANALOG DEVICES|RENESAS|ADVANTEST|DISCO CORP|BE SEMICONDUCTOR|ASM INTERNATIONAL|ASMPT|NXP SEMI|MARVELL|SYNOPSYS|CADENCE DESIGN|UNITED MICROELECTRONICS|GLOBALFOUNDRIES|SUMCO|SILTRONIC"
 }

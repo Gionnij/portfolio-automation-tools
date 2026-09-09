@@ -137,6 +137,50 @@ class SecondPassTests(unittest.TestCase):
                           if o["reason"].startswith("second pass")])
 
 
+class ContributionSweepTests(unittest.TestCase):
+    """The rules are amount-independent: what changes with the contribution is
+    how much lands, not which laws apply. Checked across the whole realistic
+    range rather than at the two amounts that happened to be tested by hand."""
+
+    AMOUNTS = [100, 250, 500, 750, 1000, 1500, 2000, 3000, 5000,
+               7500, 10000, 15000, 25000, 50000, 100000]
+
+    def _check(self, res, contribution, sleeves, cap):
+        buys = [o for o in res["orders"] if o["side"] == "BUY"]
+        spent = sum(o["qty"] * o["est_price"] for o in buys)
+        for o in buys:
+            value = o["qty"] * o["est_price"]
+            self.assertGreaterEqual(value, MANUAL["rules"]["min_order_eur"] - 1e-9,
+                                    f"{o['ticker']} under the minimum at EUR {contribution}")
+            self.assertLessEqual(value / contribution * 100,
+                                 sleeves[o["ticker"]]["target"] * cap + 1e-6,
+                                 f"{o['ticker']} past the cap at EUR {contribution}")
+            if o["reason"].startswith("second pass"):
+                self.assertNotEqual(o["ticker"], "XEON",
+                                    f"cash sleeve topped up at EUR {contribution}")
+        self.assertLessEqual(spent, contribution + 1e-9,
+                             f"overspent at EUR {contribution}")
+        return spent
+
+    def test_invariants_hold_at_every_contribution_live_policy(self):
+        for c in self.AMOUNTS:
+            spent = self._check(run(c), c, MANUAL["sleeves"], 1.5)
+            alone = sum(o["qty"] * o["est_price"] for o in run(c, cap=0)["orders"]
+                        if o["side"] == "BUY")
+            self.assertGreaterEqual(spent, alone - 1e-9,
+                                    f"second pass spent less than pass 1 at EUR {c}")
+
+    def test_invariants_hold_at_every_contribution_synthetic(self):
+        for c in self.AMOUNTS:
+            self._check(run_syn(c), c, SYNTHETIC["sleeves"], 1.5)
+
+    def test_small_contributions_stage_nothing_rather_than_breaking(self):
+        """Below the point where any sleeve's gap reaches the minimum, the right
+        answer is an empty plan, not a tiny order."""
+        for o in run_syn(100)["orders"]:
+            self.assertNotEqual(o["side"], "BUY", "staged a buy it could not fund")
+
+
 class PinGateTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()

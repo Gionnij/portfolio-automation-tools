@@ -26,6 +26,7 @@ Requires: ib_async for balances (rebalance.py also needs pandas).
 
 import json
 import hashlib
+import html
 import hmac
 import secrets
 import time
@@ -242,6 +243,22 @@ def plan_id(acct):
     return digest.hexdigest()
 
 
+def preview_policy_current(acct):
+    """A new approval token must not bless orders generated under an old policy."""
+    cfg = json.loads((HERE / 'manual.json').read_text())
+    inputs = workspace.read_json(P(acct)['inputs'], {})
+    if inputs.get('policy_hash'):
+        return inputs['policy_hash'] == hashlib.sha256((HERE / 'manual.json').read_bytes()).hexdigest()
+    version = cfg.get('manual_version')
+    if not version:
+        return True
+    try:
+        _, meta, _ = parse_report(P(acct)['report'].read_text())
+    except OSError:
+        return False
+    return meta.split(' | ')[0] == 'Manual ' + version
+
+
 def report_payload(acct, run_logs):
     """Structured, source-backed display data; estimates exclude broker fees."""
     pp = P(acct)
@@ -250,6 +267,8 @@ def report_payload(acct, run_logs):
     except (OSError, ValueError):
         cfg = {}
     base = {"ok": True, "account": acct, "has_report": pp["report"].exists(),
+            "manual_version": cfg.get('manual_version'),
+            "policy_stale": pp['report'].exists() and not preview_policy_current(acct),
             "submission_uncertain": _uncertain(acct),
             "funds": cfg.get("sleeves", {}),
             "min_order": cfg.get("rules", {}).get("min_order_eur", 100),
@@ -316,6 +335,7 @@ def api_balances(p):
 
 def api_prepare(p):
     account = "live" if p.get("account") == "live" else "paper"
+    policy_hash = hashlib.sha256((HERE / 'manual.json').read_bytes()).hexdigest()
     for key in ("contribute", "deploy", "min_order"):
         value = p.get(key)
         if value is not None and (type(value) not in (int, float) or not math.isfinite(value) or value < 0):
@@ -352,7 +372,8 @@ def api_prepare(p):
     if not ok:
         return {"ok": False, "account": account,
                 "log": "\n\n".join(f"$ {c}\n{o}" for c, o in logs)}
-    pp['inputs'].write_text(json.dumps({'contribute': p.get('contribute', 0) or 0,
+    pp['inputs'].write_text(json.dumps({'policy_hash': policy_hash,
+                                       'contribute': p.get('contribute', 0) or 0,
                                        'deploy': p.get('deploy', 0) or 0}))
     payload = report_payload(account, logs)
     if payload.get("ok"):
@@ -364,6 +385,8 @@ def api_prepare(p):
 
 def reviewed_orders(p):
     account = 'live' if p.get('account') == 'live' else 'paper'
+    if not preview_policy_current(account):
+        raise ValueError('The operating manual has changed. Generate a new investment preview.')
     if not _pending(account) or not p.get('plan_id') or p['plan_id'] != plan_id(account):
         raise ValueError('This preview has changed or is no longer active. Generate a new investment preview.')
     orders = json.loads(P(account)['orders'].read_text())
@@ -510,6 +533,19 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        if self.path == '/manual':
+            source = (HERE / 'portfolio_operating_manual.md').read_text()
+            body = ('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
+                    '<title>Portfolio operating manual</title><style>body{max-width:1000px;margin:40px auto;padding:20px;'
+                    'font:16px/1.6 system-ui;background:#f7f8f2;color:#24382b}pre{white-space:pre-wrap;overflow-wrap:anywhere;'
+                    'font:14px/1.7 ui-monospace,monospace}a{color:#426348}</style><a href="/">← Portfolio</a><pre>'
+                    + html.escape(source) + '</pre>').encode()
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html; charset=utf-8')
+            self.send_header('Content-Length', str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
         if self.path in ("/", "/index.html", "/rebalance"):
             body = (HERE / ("investing.html" if self.path == "/rebalance" else "workspace.html")).read_bytes()
             self.send_response(200)

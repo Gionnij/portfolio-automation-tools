@@ -29,12 +29,14 @@ BROKER_LOCK = threading.Lock()
 JOBS = {}
 # Official product identifiers, verified against the issuer's ISIN field.
 ISHARES = {
+    'IE00BJ5JPG56': '308751',
     'IE00BD1F4L37': '285209', 'IE00B4K48X80': '251861',
     'IE00BMG6Z448': '315592', 'IE00BQT3WG13': '273192',
     'IE00BMX0DF60': '314925', 'IE00B6R52143': '251707',
     'IE00B1TXK627': '251913',
 }
 ISHARES_SLUGS = {
+    '308751': 'ishares-msci-china-ucits-etf',
     '285209': 'ishares-edge-msci-usa-quality-factor-ucits-etf-fund',
     '251861': 'ishares-msci-europe-ucits-etf-acc-fund',
     '315592': 'ishares-msci-em-ex-china-ucits-etf',
@@ -391,7 +393,8 @@ def bootstrap():
     rows = [{**r, **identities.get(r['isin']+':'+r['currency'], {})} for r in rows]
     return {'ok':True,'rows':[{**r,'source':source_meta(r)} for r in rows],
             'saved_at':draft.get('saved_at') if draft else None,
-            'origin':'saved' if draft else 'manual', 'catalog':catalog()}
+            'origin':'saved' if draft else 'manual', 'catalog':catalog(),
+            'manual_version':read_json(HERE/'manual.json',{}).get('manual_version')}
 
 
 def start_refresh(rows):
@@ -526,7 +529,11 @@ def analyze_rows(rows, auto_fetch=False):
     pairs.sort(key=lambda p:-p['weight'])
     if any(h['weight'] < 0 for h in holdings):
         warnings.append('Small negative cash / derivative balances are retained as signed exposure; charts show positive bars only.')
+    from policy import allocation_checks
+    cfg = read_json(HERE/'manual.json', {})
     return {'ok':True,'analyzed_at':now(),'rows':sources,'holdings':holdings,
+        'manual_version':cfg.get('manual_version'),
+        'policy_checks':allocation_checks(cfg, rows, holdings),
         'exposures':{k:sorted([{'name':n,'weight':float(w)} for n,w in v.items()],key=lambda x:-x['weight'])
                      for k,v in exposures.items()},
         'overlap':pairs,'warnings':list(dict.fromkeys(warnings)),

@@ -124,6 +124,93 @@ def read_broker(ib, cfg, mode):
                 open_orders=open_orders, warnings=warnings)
 
 
+def _order_rows(ib, account):
+    """Open orders as plain dicts. Read-only: never binds, cancels or places."""
+    rows = []
+    for t in ib.reqAllOpenOrders():
+        o, c, st = t.order, t.contract, t.orderStatus
+        if getattr(o, 'account', '') and o.account != account:
+            continue
+        rows.append({'symbol': getattr(c, 'localSymbol', '') or getattr(c, 'symbol', ''),
+                     'side': getattr(o, 'action', ''),
+                     'qty': float(getattr(o, 'totalQuantity', 0) or 0),
+                     'limit': float(getattr(o, 'lmtPrice', 0) or 0) or None,
+                     'filled': float(getattr(st, 'filled', 0) or 0),
+                     'status': getattr(st, 'status', ''),
+                     'client_id': getattr(o, 'clientId', None)})
+    return rows
+
+
+def _session(mode, client_id, readonly):
+    import asyncio as _a
+    loop = _a.new_event_loop()
+    _a.set_event_loop(loop)
+    from ib_async import IB
+    ib = IB()
+    ib.RequestTimeout = 10
+    ib.connect('127.0.0.1', 4002 if mode == 'paper' else 4001,
+               clientId=client_id, readonly=readonly, timeout=10, raiseSyncErrors=True)
+    return ib, loop
+
+
+def _close(ib, loop):
+    import asyncio as _a
+    ib.disconnect()
+    loop.close()
+    _a.set_event_loop(None)
+
+
+def _check_account(ib, mode):
+    acct = (ib.managedAccounts() or [''])[0]
+    if mode == 'paper' and not acct.startswith('DU'):
+        raise ValueError(f'Connected account {acct} is not a paper account - refusing.')
+    if mode == 'live' and acct.startswith('DU'):
+        raise ValueError(f'Connected account {acct} is a paper account - refusing to act as live.')
+    return acct
+
+
+def list_orders(mode):
+    """Read-only list of open orders with their broker status."""
+    if mode not in ('paper', 'live'):
+        raise ValueError('Choose paper or live.')
+    try:
+        ib, loop = _session(mode, 84, True)
+    except (TimeoutError, ConnectionError, OSError) as exc:
+        raise ValueError(f'Open IB Gateway connected to your {mode} account, then try again.') from exc
+    try:
+        return {'ok': True, 'account': mode, 'orders': _order_rows(ib, _check_account(ib, mode))}
+    finally:
+        _close(ib, loop)
+
+
+def cancel_open_orders(mode, client_id=7):
+    """Cancel every open order on this account. Never places or modifies one.
+
+    IBKR only lets the client that PLACED an order cancel it (Error 10147
+    otherwise), so this connects with the engine's clientId and then issues a
+    global cancel, which is account-wide and ignores clientId."""
+    if mode not in ('paper', 'live'):
+        raise ValueError('Choose paper or live.')
+    try:
+        ib, loop = _session(mode, client_id, False)
+    except (TimeoutError, ConnectionError, OSError) as exc:
+        raise ValueError(
+            f'Could not reach IB Gateway on the {mode} port with clientId {client_id}. '
+            'If a plan is running, wait for it to finish and try again.') from exc
+    try:
+        account = _check_account(ib, mode)
+        before = _order_rows(ib, account)
+        if not before:
+            return {'ok': True, 'account': mode, 'before': 0, 'cancelled': 0, 'remaining': []}
+        ib.reqGlobalCancel()
+        ib.sleep(3)
+        after = _order_rows(ib, account)
+        return {'ok': True, 'account': mode, 'before': len(before),
+                'cancelled': len(before) - len(after), 'remaining': after}
+    finally:
+        _close(ib, loop)
+
+
 def fetch(mode, cfg):
     if mode not in ('paper', 'live'):
         raise ValueError('Choose paper or live for the balance lookup.')

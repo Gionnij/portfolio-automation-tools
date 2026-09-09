@@ -26,6 +26,9 @@ Requires: ib_async for balances (rebalance.py also needs pandas).
 
 import json
 import hashlib
+import hmac
+import secrets
+import time
 import math
 import re
 from datetime import datetime, timezone
@@ -46,7 +49,101 @@ PY = sys.executable or "python3"
 # One folder serves BOTH accounts: every stateful file is namespaced, so the
 # paper account's memory can never be read or written by a live run.
 PORTS = {"paper": 4002, "live": 4001}
-CONFIRM = {"paper": "EXECUTE", "live": "EXECUTE LIVE"}
+CONFIRM = {"paper": "EXECUTE", "live": "EXECUTE LIVE"}   # kept for the CLI path
+
+# ---------------------------------------------------------------- PIN gate
+# Replaces the typed phrase in the dashboard. Only a PBKDF2 hash is stored,
+# never the digits, in a gitignored file. Fails CLOSED: with no PIN set the
+# dashboard cannot submit at all. Per-order ticks, the account check, the
+# funding check and the open-order block are all unchanged.
+PIN_MIN, PIN_MAX = 4, 12
+PIN_ROUNDS = 200_000
+PIN_TRIES = 5              # wrong attempts before a lockout
+PIN_LOCK = 300             # seconds
+_pin_state = {"fails": 0, "until": 0.0}
+
+
+def _pin_hash(pin, salt, rounds=PIN_ROUNDS):
+    return hashlib.pbkdf2_hmac("sha256", pin.encode(), bytes.fromhex(salt), rounds).hex()
+
+
+def pin_file():
+    return HERE / ".pin.json"
+
+
+def pin_read():
+    try:
+        return json.loads(pin_file().read_text())
+    except (OSError, ValueError):
+        return None
+
+
+def pin_store(pin):
+    if not (pin.isdigit() and PIN_MIN <= len(pin) <= PIN_MAX):
+        raise ValueError(f"the PIN must be {PIN_MIN}-{PIN_MAX} digits")
+    salt = secrets.token_hex(16)
+    f = pin_file()
+    f.write_text(json.dumps(
+        {"salt": salt, "rounds": PIN_ROUNDS, "hash": _pin_hash(pin, salt)}, indent=1))
+    try:
+        f.chmod(0o600)
+    except OSError:
+        pass
+
+
+def pin_check(pin):
+    """(ok, message). A localhost app still gets a lockout: a 4-digit PIN is
+    only 10,000 guesses, which is seconds of scripting without one."""
+    rec = pin_read()
+    if not rec:
+        return False, "no PIN is set - set one before sending orders"
+    now = time.time()
+    if now < _pin_state["until"]:
+        return False, f"too many wrong PINs - locked for {int(_pin_state['until'] - now)}s"
+    if pin and hmac.compare_digest(
+            _pin_hash(pin, rec["salt"], rec.get("rounds", PIN_ROUNDS)), rec["hash"]):
+        _pin_state.update(fails=0, until=0.0)
+        return True, ""
+    _pin_state["fails"] += 1
+    if _pin_state["fails"] >= PIN_TRIES:
+        _pin_state.update(fails=0, until=now + PIN_LOCK)
+        return False, f"too many wrong PINs - locked for {PIN_LOCK}s"
+    left = PIN_TRIES - _pin_state["fails"]
+    return False, f"wrong PIN - {left} attempt{'s' if left != 1 else ''} left before a lockout"
+
+
+def api_orders(p):
+    """List or cancel open broker orders. Cancelling only ever REMOVES orders."""
+    account = "live" if p.get("account") == "live" else "paper"
+    op = p.get("op")
+    try:
+        if op == "list":
+            return balances.list_orders(account)
+        if op == "cancel":
+            ok, why = pin_check((p.get("pin") or "").strip())
+            if not ok:
+                return {"ok": False, "log": why}
+            return balances.cancel_open_orders(account)
+    except (ValueError, OSError) as exc:
+        return {"ok": False, "log": str(exc)}
+    return {"ok": False, "log": "unknown order operation"}
+
+
+def api_pin(p):
+    op = p.get("op")
+    if op == "status":
+        return {"ok": True, "set": bool(pin_read()), "min": PIN_MIN, "max": PIN_MAX}
+    if op == "set":
+        if pin_read():                      # changing one needs the current PIN
+            ok, why = pin_check((p.get("current") or "").strip())
+            if not ok:
+                return {"ok": False, "log": why}
+        try:
+            pin_store((p.get("pin") or "").strip())
+        except ValueError as exc:
+            return {"ok": False, "log": str(exc)}
+        return {"ok": True, "set": True, "log": "PIN saved on this computer."}
+    return {"ok": False, "log": "unknown PIN operation"}
 
 
 def P(acct):
@@ -320,10 +417,9 @@ def api_review(p):
 def api_execute(p):
     account = "live" if p.get("account") == "live" else "paper"
     pp, port = P(account), PORTS[account]
-    phrase = (p.get("confirm") or "").strip()
-    if phrase != CONFIRM[account]:
-        return {"ok": False, "not_submitted": True, "log": f"confirmation phrase wrong - type "
-                                    f"exactly: {CONFIRM[account]}"}
+    ok, why = pin_check((p.get("confirm") or "").strip())
+    if not ok:
+        return {"ok": False, "not_submitted": True, "log": why}
     try:
         account, orders, chosen = reviewed_orders(p)
         funding, b = check_funding(account, chosen)
@@ -418,6 +514,10 @@ class Handler(BaseHTTPRequestHandler):
             body = (HERE / ("investing.html" if self.path == "/rebalance" else "workspace.html")).read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
+            # Without this the browser caches the page heuristically and keeps
+            # showing a stale UI after a git pull - a fresh backend behind an
+            # old front end. _json() already sets it for API replies.
+            self.send_header("Cache-Control", "no-store")
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
@@ -453,16 +553,18 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if self.path.startswith("/api/workspace/"):
                 self._json(workspace.api(self.path.rsplit("/", 1)[-1], payload))
-            elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo", "/api/balances", "/api/review"):
+            elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo", "/api/balances", "/api/review", "/api/orders"):
                 if not ACTION_LOCK.acquire(blocking=False):
                     self._json({"ok": False, "log": "Another investing action is running. Wait for it to finish."}, 409)
                     return
                 try:
                     action = {"/api/review": api_review, "/api/balances": api_balances, "/api/prepare": api_prepare, "/api/execute": api_execute,
-                              "/api/resync": api_resync, "/api/undo": api_undo}[self.path]
+                              "/api/resync": api_resync, "/api/undo": api_undo, "/api/orders": api_orders}[self.path]
                     self._json(action(payload))
                 finally:
                     ACTION_LOCK.release()
+            elif self.path == "/api/pin":
+                self._json(api_pin(payload))
             elif self.path == "/api/where":
                 self._json({"ok": True, "folder": HERE.name,
                             "path": str(HERE)})

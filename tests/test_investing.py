@@ -48,13 +48,15 @@ class InvestingTests(unittest.TestCase):
         self.broker = patch.object(app, 'api_balances', return_value={
             'ok': True, 'account': 'paper', 'cash': 10000, 'open_orders': 0,
             'nav': 10000, 'xeon': {'value': 1500, 'floor_pct': 3}, 'read_at': '2026-09-08T10:00:00Z'})
+        app._pin_state.update(fails=0, until=0.0)   # no lockout leaking between tests
+        app.pin_store('1234')                       # the submission gate is a PIN now
         self.broker.start()
 
     def tearDown(self):
         self.broker.stop();self.patch.stop();self.temp.cleanup()
 
     def approve(self, **extra):
-        return dict(account='paper',confirm='EXECUTE',plan_id=app.plan_id('paper'),selected=[1],**extra)
+        return dict(account='paper',confirm='1234',plan_id=app.plan_id('paper'),selected=[1],**extra)
 
     def test_cash_flow_counts_sales_and_purchases_without_claiming_account_cash(self):
         p=app.report_payload('paper',[])

@@ -45,3 +45,6 @@ state.backup.json
 
 # Lens research drafts and downloaded provider snapshots (private, local)
 .workspace/
+
+# local PIN (hash only, never the digits)
+.pin.json

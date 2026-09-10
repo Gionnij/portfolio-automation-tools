@@ -51,7 +51,7 @@ p{color:var(--muted)}
 .side-bottom{margin-top:auto;font-size:11px;color:var(--muted);padding:20px 9px 0}
 .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent-muted);margin-right:6px}
 .main{margin-left:226px;max-width:1530px;padding:26px 46px 45px}
-.topbar{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);gap:12px;margin-bottom:28px}
+.topbar{display:flex;justify-content:flex-end;align-items:center;font-size:11px;color:var(--muted);gap:12px;margin-bottom:28px}
 .top-actions{display:flex;gap:8px;align-items:center}
 .account-pill{display:flex;align-items:center;gap:8px;border-radius:30px;font-size:11px;padding:7px 12px;background:var(--accent-tint);border-color:var(--line)}
 .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:29px}
@@ -79,18 +79,31 @@ body.live{
 .step.current{color:var(--accent)}
 .step.current b{background:var(--accent);border-color:var(--accent);color:#fff}
 .step.done b{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-soft)}
-.plan-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;align-items:start}
+.plan-layout{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}.composer{display:grid;grid-template-columns:310px minmax(0,1fr);gap:0;align-items:stretch}.comp-col:first-child{border-right:1px solid var(--accent-border);padding-right:26px}.comp-col:last-child{padding-left:34px}.chartpanel{padding:4px 0 16px;position:relative}.chartpanel>#balance-refresh{position:absolute;top:-4px;right:0;z-index:1}.amount-row{display:flex;align-items:center;gap:14px;margin:18px 0 6px;padding-bottom:10px}.amount-row .money-input{flex:1 1 auto;min-width:0}.amount-row .primary{flex:0 0 auto;white-space:nowrap;padding:9px 18px;font-size:13px;align-self:flex-end;margin-bottom:4px}.chartpanel .snap-figs{display:flex;gap:28px;justify-content:flex-start;font-size:12px;margin-bottom:13px}.chartpanel .snap-figs b{font-weight:650;font-size:20px;margin-left:8px;letter-spacing:-.4px}.chartpanel .snap-bar{height:16px;border-radius:9px;min-width:0}.snap-plan{font-size:12px;margin:13px 0 0;color:var(--ink)}.snap-plan b{font-weight:650}.chartpanel #snapshot-date{margin-top:10px}#cash-label,#cash-value{display:none}.comp-col{min-width:0}#amount-warn{color:#9a492b;margin-top:9px}.snap-figs{display:flex;gap:18px;justify-content:flex-end;font-size:11px;margin-bottom:7px}.snap-figs b{font-weight:650;font-size:13px;margin-left:6px}.snap-key{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:6px}.snap-bar{display:flex;height:8px;border-radius:8px;overflow:hidden;background:#eef1e9;min-width:210px}.snap-seg{height:100%}@media(max-width:1000px){.composer{grid-template-columns:1fr;gap:24px}.comp-col:first-child{border-right:0;padding-right:0}.comp-col:last-child{padding-left:0}}
 .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
 .composer{padding:25px 24px}
 .composer p{margin-top:10px}
-.money-input{display:flex;align-items:center;border-bottom:1px solid var(--accent-border);margin:20px 0 8px;padding-bottom:10px;gap:9px}
-.money-input span{font:35px Georgia,serif;color:var(--accent-muted)}
-.money-input input{border:0;outline:none;background:none;width:100%;min-width:0;font:46px Georgia,serif;color:var(--ink);padding:0;appearance:textfield;-moz-appearance:textfield}
-.money-input:focus-within{border-bottom-color:var(--accent);box-shadow:0 2px var(--accent)}
+.money-input{display:flex;align-items:center;margin:0;padding:0;gap:9px}
+.money-input span{font-family:inherit;font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--accent-muted)}
+.money-input input{border:0;outline:none;background:none;width:100%;min-width:0;font-family:inherit;font-size:40px;font-weight:600;letter-spacing:-1.5px;color:var(--ink);padding:0;appearance:textfield;-moz-appearance:textfield}
+.shroom{position:fixed;z-index:9999;pointer-events:none;font-size:20px;line-height:1;will-change:transform,opacity;animation:shroomfly var(--sd,900ms) cubic-bezier(.15,.7,.4,1) forwards}
+@keyframes shroomfly{0%{transform:translate(-50%,-50%) scale(.3) rotate(0);opacity:0;filter:hue-rotate(0) saturate(1.6)}9%{opacity:1}70%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(var(--ds,1.15)) rotate(var(--dr,180deg));opacity:0;filter:hue-rotate(320deg) saturate(2.4)}}
+@media(prefers-reduced-motion:reduce){.shroom{display:none}}
+body.trip .main{animation:tripwarp var(--td,7600ms) ease-in-out forwards,tripbreathe var(--td,7600ms) ease-in-out forwards;transform-origin:50% 30%}
+body.trip .sidebar{animation:tripwarp var(--td,7600ms) ease-in-out forwards}
+@keyframes tripwarp{0%{filter:none}6%{filter:url(#trip-warp) hue-rotate(90deg) saturate(2.6) contrast(1.1)}20%{filter:url(#trip-warp) hue-rotate(230deg) saturate(4.2) contrast(1.24) blur(.9px)}36%{filter:url(#trip-warp) hue-rotate(400deg) saturate(5.4) contrast(1.34) blur(1.6px)}52%{filter:url(#trip-warp) hue-rotate(560deg) saturate(4.4) contrast(1.4) blur(1.1px)}68%{filter:url(#trip-warp) hue-rotate(720deg) saturate(5.6) contrast(1.3) blur(1.7px)}84%{filter:url(#trip-warp) hue-rotate(860deg) saturate(3.4) contrast(1.16) blur(.7px)}96%{filter:url(#trip-warp) hue-rotate(940deg) saturate(2) contrast(1.05)}100%{filter:none}}
+@keyframes tripbreathe{0%,100%{transform:none}14%{transform:scale(1.05) skewX(1.6deg) rotate(.5deg)}30%{transform:scale(.94) skewY(-1.9deg) rotate(-.8deg)}46%{transform:scale(1.08) skewX(-2.2deg) rotate(.9deg)}62%{transform:scale(.96) skewY(1.7deg) rotate(-.6deg)}80%{transform:scale(1.04) skewX(1.1deg) rotate(.35deg)}}
+#trip-veil{position:fixed;inset:-40%;z-index:9998;pointer-events:none;opacity:0;mix-blend-mode:color;filter:blur(26px);background:radial-gradient(34% 40% at 20% 26%,#ff2e88 0,#ff2e8800 68%),radial-gradient(38% 32% at 76% 20%,#ffd400 0,#ffd40000 70%),radial-gradient(42% 46% at 70% 72%,#00d0ff 0,#00d0ff00 70%),radial-gradient(36% 40% at 24% 78%,#2eff88 0,#2eff8800 70%),radial-gradient(30% 34% at 52% 48%,#8a2eff 0,#8a2eff00 72%),radial-gradient(28% 30% at 88% 56%,#ff6a00 0,#ff6a0000 72%);animation:tripveil var(--td,7600ms) ease-in-out forwards}
+@keyframes tripveil{0%{opacity:0;transform:scale(1) rotate(0) translate(0,0)}14%{opacity:.72}32%{transform:scale(1.35) rotate(70deg) translate(4%,-5%)}50%{opacity:.92;transform:scale(1.15) rotate(150deg) translate(-6%,4%)}70%{transform:scale(1.4) rotate(240deg) translate(5%,5%)}86%{opacity:.6}100%{opacity:0;transform:scale(1) rotate(330deg) translate(0,0)}}
+#trip-veil2{position:fixed;inset:-55%;z-index:9997;pointer-events:none;opacity:0;mix-blend-mode:hard-light;filter:blur(90px);background:radial-gradient(40% 44% at 30% 70%,#ff0066 0,#ff006600 66%),radial-gradient(44% 38% at 72% 34%,#00e5ff 0,#00e5ff00 68%),radial-gradient(36% 42% at 46% 18%,#ffe600 0,#ffe60000 68%),radial-gradient(38% 40% at 60% 86%,#8f00ff 0,#8f00ff00 68%);animation:tripveil2 var(--td,7600ms) ease-in-out forwards}
+@keyframes tripveil2{0%{opacity:0;transform:scale(1) rotate(0) translate(0,0)}18%{opacity:.34}40%{transform:scale(1.55) rotate(-110deg) translate(-7%,6%)}58%{opacity:.5;transform:scale(1.3) rotate(-180deg) translate(6%,-5%)}78%{opacity:.38;transform:scale(1.6) rotate(-280deg) translate(-4%,-6%)}100%{opacity:0;transform:scale(1) rotate(-360deg) translate(0,0)}}
+#trip-note{position:fixed;left:50%;top:22px;transform:translateX(-50%);z-index:9999;pointer-events:none;background:#283e30ee;color:#fff;border-radius:20px;padding:9px 18px;font-size:13px;font-weight:650;letter-spacing:.3px;box-shadow:0 8px 30px #0003;animation:tripnote var(--td,7600ms) ease-in-out forwards}
+@keyframes tripnote{0%{opacity:0;transform:translate(-50%,-14px)}10%{opacity:1;transform:translate(-50%,0)}80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-14px)}}
+@media(prefers-reduced-motion:reduce){body.trip .main,body.trip .sidebar,#trip-veil,#trip-veil2,#trip-note{animation:none;filter:none;transform:none}#trip-veil,#trip-veil2{display:none}}
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .wide{width:100%}
 .composer .primary{margin-top:20px}
-.options{font-size:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:23px}
+.options{font-size:12px;padding-top:4px;margin-top:20px}
 .options summary{color:var(--muted);cursor:pointer}
 .field{display:block;margin-top:16px;font-size:12px}
 .field input:not([type=checkbox]),.field select,.search{margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%;background:#fff;color:var(--ink)}
@@ -213,7 +226,7 @@ dialog::backdrop{background:var(--dialog-backdrop);backdrop-filter:blur(3px)}
 .modal-body>p{font-size:13px;line-height:1.7}
 .modal-actions{display:flex;gap:10px;margin-top:22px;justify-content:flex-end}
 .modal-body .attention{margin-top:18px}
-.account-option{padding:17px 18px;margin-top:14px;border:1px solid var(--line);border-radius:12px}
+.attention-tap{width:100%;text-align:left;border:0;cursor:pointer;font:inherit}.attention-tap:hover{filter:brightness(.98)}.select-all{margin-right:auto;font-size:12px;display:flex;align-items:center;gap:7px}.order-rows{margin:10px 0;display:grid;gap:4px}.order-row{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:12px;padding:6px 9px;border-radius:7px;background:var(--soft,#f2f5ee)}.order-status{font-size:11px;color:var(--muted)}.account-option{padding:17px 18px;margin-top:14px;border:1px solid var(--line);border-radius:12px}
 .account-option strong{font-size:13px}
 .account-option p{font-size:12px;margin:6px 0 13px}
 .review-total{font:30px Georgia,serif;margin:15px 0 4px}
@@ -228,11 +241,11 @@ dialog::backdrop{background:var(--dialog-backdrop);backdrop-filter:blur(3px)}
 .placeholder p{margin-top:10px;font-size:13px}
 
 @media(min-width:1500px){.main{padding-left:65px;padding-right:65px}
-.plan-layout{grid-template-columns:325px minmax(0,1fr)}
+.plan-layout{grid-template-columns:1fr}
 }
 
 @media(max-width:1190px){.main{padding:25px 28px 35px}
-.plan-layout{grid-template-columns:260px minmax(0,1fr);gap:18px}
+.plan-layout{grid-template-columns:1fr;gap:18px}
 .composer{padding:24px 20px}
 .snapshot{display:none}
 .balance-row{gap:15px;grid-template-columns:minmax(160px,1.2fr) minmax(100px,1fr) 60px 60px}
@@ -245,7 +258,7 @@ dialog::backdrop{background:var(--dialog-backdrop);backdrop-filter:blur(3px)}
 
 @media(max-width:980px){.sidebar{width:190px;padding:30px 16px}
 .main{margin-left:190px;padding:25px}
-.plan-layout{grid-template-columns:245px minmax(0,1fr)}
+.plan-layout{grid-template-columns:1fr}
 h1{font-size:38px}
 .check-layout{grid-template-columns:1fr}
 .market-card{order:-1}
@@ -269,7 +282,7 @@ h1{font-size:38px}
 .main{margin:0;padding:23px 26px}
 .topbar{margin-bottom:27px}
 .hero{margin-bottom:22px}
-.plan-layout{grid-template-columns:245px minmax(0,1fr)}
+.plan-layout{grid-template-columns:1fr}
 #toast{left:50%}
 .footer{font-size:9px}
 }
@@ -295,7 +308,7 @@ h1{font-size:37px;letter-spacing:-1.4px}
 .plan-layout{grid-template-columns:1fr;gap:17px}
 .composer{padding:24px}
 .money-input{margin-top:13px}
-.money-input input{font-size:43px}
+.money-input input{font-size:34px}
 .options{margin-top:18px}
 .under-composer{display:none}
 .preview-head{padding:22px 22px 17px}
@@ -335,7 +348,7 @@ h1{font-size:37px;letter-spacing:-1.4px}
 }
 
 
-.cash-context{margin:18px 0 14px;padding:14px;background:var(--accent-tint);border-radius:11px}
+.cash-context{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0}#balance-status{display:none}
 .cash-context .cash-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .cash-context .cash-label{font-size:10px;color:var(--muted)}
 .cash-context strong{display:block;font-size:20px;font-weight:550;letter-spacing:-.4px;margin-top:4px;font-variant-numeric:tabular-nums}
@@ -350,25 +363,26 @@ h1{font-size:37px;letter-spacing:-1.4px}
 .balance-explainer{font-size:10px;color:var(--muted);margin-top:8px}
 .balance-explainer summary{cursor:pointer}
 </style></head><body>
-<aside class="sidebar"><a class="brand" href="/" aria-label="Lens home"><span class="brandmark" aria-hidden="true"></span>lens<span style="color:var(--accent-muted);margin-left:-10px">.</span></a><div class="nav-label">YOUR WORKSPACE</div><nav class="nav" aria-label="Main navigation"><a href="/#portfolio"><span class="nav-icon" aria-hidden="true">◫</span>Your portfolio</a><a href="/#xray"><span class="nav-icon" aria-hidden="true">◎</span>Portfolio X-Ray</a><a href="/#sources"><span class="nav-icon" aria-hidden="true">▤</span>Data sources</a><a class="active" aria-current="page" href="/rebalance"><span class="nav-icon" aria-hidden="true">⇄</span>Monthly investing</a></nav><div class="side-bottom"><span class="dot"></span>You stay in control.<p style="margin-top:9px;font-size:11px">Every order starts with your approval.<br>One thoughtful month at a time.</p></div></aside>
+<aside class="sidebar"><a class="brand" href="/" aria-label="Lens home"><span class="brandmark" aria-hidden="true"></span>lens<span style="color:var(--accent-muted);margin-left:-10px">.</span></a><div class="nav-label">YOUR WORKSPACE</div><nav class="nav" aria-label="Main navigation"><a href="/#portfolio"><span class="nav-icon" aria-hidden="true">◫</span>Your portfolio</a><a href="/#xray"><span class="nav-icon" aria-hidden="true">◎</span>Portfolio X-Ray</a><a href="/#sources"><span class="nav-icon" aria-hidden="true">▤</span>Data sources</a><a class="active" aria-current="page" href="/rebalance"><span class="nav-icon" aria-hidden="true">⇄</span>Monthly investing</a></nav></aside>
 <main class="main">
-<div class="topbar"><span class="crumb">Your workspace <span style="margin:0 9px;color:var(--faint)">/</span> Monthly investing</span><div class="top-actions"><button class="account-pill" data-idle onclick="openAccount()"><span class="dot" aria-hidden="true"></span><span id="account-label">Paper account</span><span aria-hidden="true">⌄</span></button><button class="quiet small" data-idle onclick="openTools()" aria-label="Account tools">•••</button></div></div>
+<div class="topbar"><div class="top-actions"><button class="account-pill" data-idle onclick="openAccount()"><span class="dot" aria-hidden="true"></span><span id="account-label">Paper account</span><span aria-hidden="true">⌄</span></button><button class="quiet small" data-idle onclick="openTools()" aria-label="Account tools">•••</button></div></div>
 <div id="live-strip" class="live-strip" hidden><strong>Live account · real money.</strong> Approved orders will be sent to your live IBKR account.</div>
-<header class="hero"><div><div class="eyebrow">Small steps. A long-term view.</div><h1>Your next month, in focus.</h1><p>Turn your contribution into a plan you can understand.</p></div><div class="snapshot" id="snapshot" hidden><p class="note">Invested portfolio · excludes cash</p><strong id="snapshot-value"></strong><p class="note" id="snapshot-date"></p></div></header>
+
 <div class="tabs" role="tablist" aria-label="Monthly investing views"><button class="tab" role="tab" id="tab-plan" aria-controls="panel-plan" aria-selected="true" onclick="switchTab('plan')">This month’s plan</button><button class="tab" role="tab" id="tab-balance" aria-controls="panel-balance" aria-selected="false" tabindex="-1" onclick="switchTab('balance')">Portfolio balance</button><button class="tab" role="tab" id="tab-checks" aria-controls="panel-checks" aria-selected="false" tabindex="-1" onclick="switchTab('checks')">Checks & activity</button></div>
 <div id="error-banner" class="attention error" role="alert" hidden><span class="symbol" aria-hidden="true">!</span><div><strong id="error-title"></strong><p id="error-message"></p><button onclick="switchTab('checks');document.getElementById('technical').open=true">Show technical details</button></div></div>
 <section id="panel-plan" role="tabpanel" aria-labelledby="tab-plan">
 <div class="steps" aria-label="Your investing steps"><span class="step current" id="step-1"><b>1</b>Set an amount</span><span class="step" id="step-2"><b>2</b>Review the plan</span><span class="step" id="step-3"><b>3</b>Approve orders</span></div>
 <div id="plan-attention" hidden></div>
-<div class="plan-layout"><aside><form class="card composer" id="plan-form" onsubmit="event.preventDefault();prepare()"><div class="eyebrow">Your investment amount</div><h2>Choose an amount.</h2><div class="cash-context" id="cash-context" aria-live="polite"><div class="cash-top"><div><div class="cash-label" id="cash-label">Uninvested EUR cash</div><strong id="cash-value">—</strong></div><button type="button" id="balance-refresh" onclick="refreshBalances()" aria-label="Refresh cash and XEON balances" title="Refresh balances from IBKR">↻</button></div><p id="balance-status">Checking your Gateway balances…</p><p id="balance-message" class="balance-warning" hidden></p><details class="balance-explainer"><summary>What this balance includes</summary><p>EUR cash reported by IBKR, including leftovers and deposits already credited. It excludes XEON and other currencies. Pending trades and settlement can affect spendable cash; leave room for fees.</p></details></div><label class="money-input"><span aria-hidden="true">€</span><input id="contribute" aria-label="Monthly contribution in euros" type="number" min="0" step="0.01" value="600" required oninput="inputsChanged()"></label><p class="note">Total cash to invest this time, including any leftovers. Already-deposited money is included in the balance above.</p><details class="options"><summary>Plan options</summary><div class="xeon-context" id="xeon-context" aria-live="polite"><p>Checking your XEON balance…</p></div><label class="field">Use money parked in XEON (€)<input id="deploy" type="number" min="0" step="0.01" value="0" oninput="inputsChanged()"><small>Propose selling some of your cash fund to help pay for purchases. Your policy’s cash reserve still applies.</small></label><label class="field">Smallest purchase (€)<input id="minorder" type="number" min="0" step="0.01" placeholder="100" oninput="inputsChanged()"><small>Leave blank to use your saved rule. Whole shares and minimum position sizes still apply.</small></label><label class="checkline"><input id="fetch-prices" type="checkbox" checked onchange="inputsChanged()">Update prices before planning</label><p class="note">Free prices can be from the previous trading day. Estimates may differ from execution prices.</p></details><button type="submit" class="primary wide" id="preview-button" data-idle>Generate investment preview <span aria-hidden="true">→</span></button><p class="note" id="preview-hint" style="text-align:center;margin-top:11px">Creates a proposal. No orders are sent.</p><p class="input-error" id="input-error" hidden></p></form><div class="under-composer"><strong>Plan with confidence.</strong><br>This uses your saved investing policy. Changes to your research portfolio stay separate.</div></aside>
-<div class="card" id="preview-card" aria-live="polite"><div class="preview-head"><div><h2>Your money, with a plan.</h2><p>Preview the next step before you take it.</p></div></div><div class="busy-view"><span class="loader" aria-hidden="true"></span><p>Loading your last snapshot…</p></div></div></div></section>
+<div class="plan-layout"><aside><form class="card composer" id="plan-form" onsubmit="event.preventDefault();prepare()"><div class="comp-col"><div class="eyebrow">Your investment amount</div><div class="amount-row"><label class="money-input"><span aria-hidden="true">€</span><input id="contribute" aria-label="Monthly contribution in euros" type="number" min="0" step="0.01" value="600" required oninput="inputsChanged()"></label><button type="submit" class="primary" id="preview-button" data-idle>Generate</button></div><p class="note" id="amount-warn" hidden></p><details class="options"><summary>Plan options</summary><div class="xeon-context" id="xeon-context" aria-live="polite"><p>Checking your XEON balance…</p></div><label class="field">Use money parked in XEON (€)<input id="deploy" type="number" min="0" step="0.01" value="0" oninput="inputsChanged()"><small>Propose selling some of your cash fund to help pay for purchases. Your policy’s cash reserve still applies.</small></label><label class="field">Smallest purchase (€)<input id="minorder" type="number" min="0" step="0.01" placeholder="100" oninput="inputsChanged()"><small>Leave blank to use your saved rule. Whole shares and minimum position sizes still apply.</small></label><label class="checkline"><input id="fetch-prices" type="checkbox" checked onchange="inputsChanged()">Update prices before planning</label><p class="note">Free prices can be from the previous trading day. Estimates may differ from execution prices.</p></details><p class="note" id="preview-hint" style="text-align:center;margin-top:11px"></p><p class="input-error" id="input-error" hidden></p></div><div class="comp-col"><div class="chartpanel" id="snapshot" hidden><button type="button" id="balance-refresh" onclick="refreshBalances()" aria-label="Refresh cash and XEON balances" title="Refresh balances from IBKR">↻</button><div class="snap-figs"><span><i class="snap-key" style="background:#335c44"></i>Invested<b id="snap-invested">—</b></span><span><i class="snap-key" style="background:#b9c9b4"></i>Cash<b id="snap-cash">—</b></span></div><div class="snap-bar" id="snap-bar"></div><p class="snap-plan" id="snap-plan" hidden></p><p class="note" id="snapshot-date"></p></div><div class="cash-context" id="cash-context" aria-live="polite"><div class="cash-top"><div><div class="cash-label" id="cash-label"></div><strong id="cash-value"></strong></div></div><p id="balance-status">Checking your Gateway balances…</p><p id="balance-message" class="balance-warning" hidden></p></div></div></form></aside>
+<div class="card" id="preview-card" aria-live="polite"><div class="busy-view"><span class="loader" aria-hidden="true"></span><p>Loading your last snapshot…</p></div></div></div></section>
 <section id="panel-balance" role="tabpanel" aria-labelledby="tab-balance" hidden><div class="section-head"><div><h2>A clearer view of your balance.</h2><p>What you hold now, alongside the targets in your investing policy.</p></div><div class="balance-tools"><input class="search" id="balance-search" type="search" placeholder="Find an investment…" aria-label="Find an investment in portfolio balance" oninput="renderBalance()"><select id="balance-sort" aria-label="Sort portfolio balance" onchange="renderBalance()"><option value="held">Largest holdings</option><option value="gap">Largest differences</option><option value="target">Largest targets</option><option value="name">Ticker A–Z</option></select></div></div><div id="balance-content"></div></section>
 <section id="panel-checks" role="tabpanel" aria-labelledby="tab-checks" hidden><div class="section-head"><div><h2>A little context goes a long way.</h2><p>What needs your attention, how your rules work, and your recent snapshots.</p></div></div><div id="checks-content"></div><details class="technical" id="technical"><summary>Technical details & troubleshooting</summary><p>Broker messages can include routine market-data warnings. Order outcomes above are more useful than individual log lines.</p><pre id="run-log">No actions in this session yet.</pre></details></section>
 <footer class="footer"><span>Your approval comes first. Estimates exclude fees and can change.</span><span id="footer-status">Private workspace · stored on this computer</span></footer>
 </main>
 <dialog id="review-dialog" aria-labelledby="review-title"><div class="modal-head"><h2 id="review-title">One last look.</h2><button aria-label="Close order review" onclick="closeDialog('review-dialog')">×</button></div><div class="modal-body" id="review-body"></div></dialog>
 <dialog id="account-dialog" aria-labelledby="account-title"><div class="modal-head"><h2 id="account-title">Your investing account</h2><button aria-label="Close account selection" onclick="closeDialog('account-dialog')">×</button></div><div class="modal-body"><p>Paper mode is a practice account with virtual money. Lens always opens here.</p><div class="account-option"><strong>Paper account</strong><p>Try the full investing flow with your IBKR paper portfolio.</p><button data-idle onclick="setAccount('paper')">Use paper account</button></div><div class="account-option"><strong>Live account · real money</strong><p>Switch only when you intend to manage your real portfolio.</p><label class="field">Type LIVE to switch<input id="arm-live" autocomplete="off" spellcheck="false" oninput="document.getElementById('arm-button').disabled=BUSY||BALANCE_BUSY||this.value!=='LIVE'"></label><button id="arm-button" class="danger" style="margin-top:14px" disabled onclick="if(document.getElementById('arm-live').value==='LIVE')setAccount('live')">Switch to live account</button></div></div></dialog>
-<dialog id="tools-dialog" aria-labelledby="tools-title"><div class="modal-head"><h2 id="tools-title">Account tools</h2><button aria-label="Close account tools" onclick="closeDialog('tools-dialog')">×</button></div><div class="modal-body"><p>Occasional housekeeping for the selected account.</p><div class="account-option"><strong>Reload saved snapshot</strong><p>Reload the saved plan and checks, then refresh cash and holdings from Gateway.</p><button onclick="closeDialog('tools-dialog');loadSnapshot()">Reload snapshot</button></div><div class="account-option" id="discard-option" hidden><strong>Discard unsubmitted preview</strong><p>Restore tracking to before the preview. This cannot undo a trade.</p><button onclick="discardPreview()">Discard preview</button></div><div class="account-option"><strong>Update your tracking starting point</strong><p>If you traded outside Lens, use today’s holdings as the new reference. This resets drawdown and deployment tracking, including during a real market decline.</p><button onclick="closeDialog('tools-dialog');document.getElementById('reset-dialog').showModal()">Review tracking reset…</button></div></div></dialog>
+<dialog id="orders-dialog" aria-labelledby="orders-title"><div class="modal-head"><h2 id="orders-title">Pending orders at IBKR</h2><button aria-label="Close pending orders" onclick="closeDialog('orders-dialog')">&times;</button></div><div class="modal-body" id="orders-body"></div></dialog>
+<dialog id="tools-dialog" aria-labelledby="tools-title"><div class="modal-head"><h2 id="tools-title">Account tools</h2><button aria-label="Close account tools" onclick="closeDialog('tools-dialog')">×</button></div><div class="modal-body"><p>Occasional housekeeping for the selected account.</p><div class="account-option" id="pin-option"></div><div class="account-option" id="orders-option"></div><div class="account-option"><strong>Reload saved snapshot</strong><p>Reload the saved plan and checks, then refresh cash and holdings from Gateway.</p><button onclick="closeDialog('tools-dialog');loadSnapshot()">Reload snapshot</button></div><div class="account-option" id="discard-option" hidden><strong>Discard unsubmitted preview</strong><p>Restore tracking to before the preview. This cannot undo a trade.</p><button onclick="discardPreview()">Discard preview</button></div><div class="account-option"><strong>Update your tracking starting point</strong><p>If you traded outside Lens, use today’s holdings as the new reference. This resets drawdown and deployment tracking, including during a real market decline.</p><button onclick="closeDialog('tools-dialog');document.getElementById('reset-dialog').showModal()">Review tracking reset…</button></div></div></dialog>
 <dialog id="reset-dialog" aria-labelledby="reset-title"><div class="modal-head"><h2 id="reset-title">Reset portfolio tracking?</h2><button aria-label="Close tracking reset" onclick="closeDialog('reset-dialog')">×</button></div><div class="modal-body"><p>This reads the selected IBKR account and makes its current holdings your new starting point. It clears the previous market-peak reference and cash-deployment steps, even during a real market decline. Use it once your outside trades have settled. Avoid resetting during a real market decline: it erases the reference your rules depend on.</p><div class="modal-actions"><button onclick="closeDialog('reset-dialog')">Keep current tracking</button><button class="primary" onclick="resetTracking()">Reset tracking</button></div></div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
@@ -382,21 +396,120 @@ const dateLabel=s=>s?new Date(s.length===10?s+'T12:00:00':s).toLocaleDateString(
 let BALANCES=null,BALANCE_BUSY=false,BALANCE_ERROR='',balanceSequence=0;
 let REVIEW=null;
 let MODE='paper',DATA=null,BUSY=false,FRESH=false,INPUTS=null,OUTCOMES=null,LOG='',sequence=0,toastTimer;
-const phrase=()=>MODE==='live'?'EXECUTE LIVE':'EXECUTE';
+const phrase=()=>MODE==='live'?'EXECUTE LIVE':'EXECUTE';   /* CLI path only */
+let PIN_SET=null;
+const pinOK=v=>/^[0-9]{4,12}$/.test(v||'');
+async function pinStatus(){try{const d=await request('pin',{op:'status'});PIN_SET=!!d.set}catch(e){PIN_SET=null}}
+async function savePin(pre){pre=pre||'pin-';
+ const a=$(pre+'new'),b=$(pre+'again'),cur=$(pre+'current'),msg=$(pre+'msg');
+ if(!pinOK(a.value)){msg.textContent='Use 4 to 12 digits.';return}
+ if(a.value!==b.value){msg.textContent='The two entries do not match.';return}
+ msg.textContent='Saving\u2026';
+ try{const d=await request('pin',{op:'set',pin:a.value,current:cur?cur.value:''});
+  if(!d.ok){msg.textContent=d.log||'Could not save the PIN.';return}
+  PIN_SET=true;a.value=b.value='';if(cur)cur.value='';
+  const box=$('pin-setup');if(box)box.outerHTML=pinEntryHTML();
+  if(pre==='tools-pin-'){renderPinTool();$('tools-pin-msg').textContent='PIN saved.'}
+  if($('send-button'))checkConfirm();
+ }catch(e){msg.textContent=e.message}}
+function renderPinTool(){const el=$('pin-option');if(!el)return;
+ el.innerHTML='<strong>'+(PIN_SET?'Change your submission PIN':'Set your submission PIN')+'</strong>'
+  +'<p>'+(PIN_SET?'You need your current PIN to change it.'
+        :'Orders cannot be sent until a PIN exists. 4 to 12 digits, stored on this computer as a hash - never the digits themselves.')+'</p>'
+  +(PIN_SET?'<input id="tools-pin-current" type="password" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="Current PIN">':'')
+  +'<input id="tools-pin-new" type="password" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="New PIN"'+(PIN_SET?' style="margin-top:8px"':'')+'>'
+  +'<input id="tools-pin-again" type="password" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="Repeat new PIN" style="margin-top:8px">'
+  +'<button style="margin-top:10px" onclick="savePin(\'tools-pin-\')">'+(PIN_SET?'Change PIN':'Save PIN')+'</button>'
+  +'<p class="note" id="tools-pin-msg"></p>';}
+function pinEntryHTML(){return '<label class="field" id="pin-entry">Enter your PIN to confirm this '
+ +(MODE==='live'?'<strong>LIVE</strong>':'paper')+' submission'
+ +'<input id="confirm-phrase" type="password" inputmode="numeric" autocomplete="off" '
+ +'spellcheck="false" maxlength="12" placeholder="\u2022\u2022\u2022\u2022" oninput="checkConfirm()"></label>';}
+function pinSetupHTML(){return '<div class="field" id="pin-setup"><strong>Set a PIN before sending orders</strong>'
+ +'<p class="note">4 to 12 digits, stored on this computer as a hash - never the digits themselves.</p>'
+ +'<input id="pin-new" type="password" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="New PIN">'
+ +'<input id="pin-again" type="password" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="Repeat PIN" style="margin-top:8px">'
+ +'<button class="small" style="margin-top:10px" onclick="savePin()">Save PIN</button>'
+ +'<p class="note" id="pin-msg"></p></div>';}
 const accountName=()=>MODE==='live'?'live':'paper';
 const fund=t=>DATA?.funds?.[t]||{};
 function toast(t){$('toast').textContent=t;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').textContent='',5000)}
 function closeDialog(id){$(id).close()}
+async function openOrdersDialog(){if(BUSY)return;
+ $('orders-body').innerHTML='<p class="note">Reading from Gateway\u2026</p>';
+ $('orders-dialog').showModal();await pinStatus();renderOrdersDialog();}
+async function renderOrdersDialog(){const el=$('orders-body');
+ el.innerHTML='<p class="note">Reading from Gateway\u2026</p>';
+ let d;try{d=await request('orders',{op:'list'})}catch(e){d={ok:false,log:e.message}}
+ if(!d.ok){el.innerHTML='<p class="note">'+esc(d.log||'Could not read orders.')
+  +'</p><button style="margin-top:12px" onclick="renderOrdersDialog()">Try again</button>';return}
+ const rows=d.orders||[];
+ if(!rows.length){el.innerHTML='<p>Nothing is pending. A new plan can be submitted.</p>';  refreshBalances();return}
+ const why=rows.every(r=>r.status==='PreSubmitted')
+  ?'Every order is <b>PreSubmitted</b>: IBKR accepted it but has not passed it to the exchange. '
+   +'That usually means the venue is closed, or this account has no market data for it, so there is '
+   +'no quote to trade against. They will not fill in this state.'
+  :'<b>Submitted</b> orders are working at the venue and waiting on price. <b>PreSubmitted</b> ones '
+   +'are held by IBKR and are not working yet. <b>Inactive</b> ones are not working at all.';
+ el.innerHTML='<p>'+rows.length+' order(s) are open. While any are pending, Lens will not submit a new '
+  +'plan \u2014 the same buys would be sent twice.</p>'
+  +'<div class="order-rows">'+rows.map(r=>'<div class="order-row"><span><b>'+esc(r.symbol)+'</b> '
+   +esc(r.side)+' '+r.qty+(r.limit?' @ '+r.limit.toFixed(2):'')+'</span>'
+   +'<span class="order-status">'+esc(r.status)+'</span></div>').join('')+'</div>'
+  +'<p class="note">'+why+'</p>'
+  +(PIN_SET?'<label class="field" style="margin-top:14px">Enter your PIN to cancel all of them'
+    +'<input id="cancel-pin" type="password" inputmode="numeric" maxlength="12" autocomplete="off" '
+    +'placeholder="\u2022\u2022\u2022\u2022" oninput="checkCancelPin()"></label>'
+    +'<button id="cancel-orders-button" disabled style="margin-top:10px" onclick="cancelOrders()">'
+    +'Cancel all pending orders</button>'
+   :'<p class="note" style="margin-top:14px">Set a PIN in \u2022\u2022\u2022 Account tools to cancel '
+    +'orders from here.</p>')
+  +'<p class="note" id="cancel-msg"></p>';}
+function checkCancelPin(){const b=$('cancel-orders-button');if(b)b.disabled=!pinOK($('cancel-pin').value)}
+async function cancelOrders(){const msg=$('cancel-msg'),b=$('cancel-orders-button');
+ if(b)b.disabled=true;msg.textContent='Cancelling\u2026';
+ try{const d=await request('orders',{op:'cancel',pin:($('cancel-pin').value||'').trim()});
+  if(!d.ok){msg.textContent=d.log||'Could not cancel.';checkCancelPin();return}
+  toast(d.cancelled+' order(s) cancelled');await renderOrdersDialog();refreshBalances();
+ }catch(e){msg.textContent=e.message;checkCancelPin()}}
 function openAccount(){if(BUSY)return;$('arm-live').value='';$('arm-button').disabled=true;$('account-dialog').showModal()}
-function openTools(){if(BUSY)return;$('discard-option').hidden=!DATA?.pending;$('tools-dialog').showModal()}
+async function openTools(){if(BUSY)return;$('discard-option').hidden=!DATA?.pending;await pinStatus();renderPinTool();ordersIdle();$('tools-dialog').showModal();if(BALANCES&&BALANCES.open_orders>0)renderOrdersTool()}
+function ordersIdle(){const el=$('orders-option');if(!el)return;
+ const n=BALANCES&&BALANCES.open_orders;
+ el.innerHTML='<strong>Pending orders at IBKR</strong>'
+  +'<p>'+(n?n+' order(s) were pending at the last balance check. Open orders block a new '
+        +'submission, so the same buys are never sent twice.'
+        :'Check what is currently open at the broker. IB Gateway has no order window of its own.')+'</p>'
+  +'<button onclick="renderOrdersTool()">Check pending orders</button>';}
+async function renderOrdersTool(){const el=$('orders-option');if(!el)return;
+ el.innerHTML='<strong>Pending orders at IBKR</strong><p class="note">Reading from Gateway\u2026</p>';
+ let d;try{d=await request('orders',{op:'list'})}catch(e){d={ok:false,log:e.message}}
+ if(!d.ok){el.innerHTML='<strong>Pending orders at IBKR</strong><p class="note">'+esc(d.log||'Could not read orders.')
+   +'</p><button style="margin-top:10px" onclick="renderOrdersTool()">Try again</button>';return}
+ const rows=d.orders||[];
+ if(!rows.length){el.innerHTML='<strong>Pending orders at IBKR</strong>'
+   +'<p>None. Nothing is blocking a new plan.</p>'
+   +'<button style="margin-top:10px" onclick="renderOrdersTool()">Check again</button>';return}
+ el.innerHTML='<strong>Pending orders at IBKR ('+rows.length+')</strong>'
+  +'<p>These block a new submission so the same buys are not sent twice.</p>'
+  +'<div class="order-rows">'+rows.map(r=>'<div class="order-row"><span><b>'+esc(r.symbol)+'</b> '
+    +esc(r.side)+' '+r.qty+(r.limit?' @ '+r.limit.toFixed(2):'')+'</span>'
+    +'<span class="order-status">'+esc(r.status)+'</span></div>').join('')+'</div>'
+  +'<p class="note">Submitted = working at the venue, waiting on price. PreSubmitted = accepted by '
+  +'IBKR but not working at the venue, often because this account has no market data for that '
+  +'exchange. Inactive = not working.</p>'
+  +'<button style="margin-top:10px" onclick="closeDialog(\'tools-dialog\');openOrdersDialog()">Open pending orders</button>';}
+
 function switchTab(v){for(const k of ['plan','balance','checks']){$('panel-'+k).hidden=k!==v;$('tab-'+k).setAttribute('aria-selected',String(k===v));$('tab-'+k).tabIndex=k===v?0:-1}if(v==='balance'&&(!BALANCES||BALANCE_ERROR||Date.now()-Date.parse(BALANCES.read_at)>30000))refreshBalances()}
 $('tab-plan').parentElement.addEventListener('keydown',e=>{const keys=['plan','balance','checks'];const i=keys.indexOf(e.target.id.replace('tab-',''));if(i<0||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?2:(i+(e.key==='ArrowRight'?1:2))%3;switchTab(keys[next]);$('tab-'+keys[next]).focus()});
 function step(n){for(let i=1;i<=3;i++){$('step-'+i).classList.toggle('current',i===n);$('step-'+i).classList.toggle('done',i<n)}}
 function setBusy(value){BUSY=value;document.querySelectorAll('[data-idle],#plan-form input,.order-select').forEach(el=>el.disabled=value);$('preview-card').setAttribute('aria-busy',String(value));renderBalances()}
 function currentInputs(){return {contribute:Number($('contribute').value),deploy:Number($('deploy').value),min_order:$('minorder').value===''?null:Number($('minorder').value),fetch:$('fetch-prices').checked}}
-function inputsChanged(){REVIEW=null;renderBalances();if(FRESH&&INPUTS!==JSON.stringify(currentInputs())){FRESH=false;OUTCOMES=null;closeDialog('review-dialog');renderPlan();step(1);$('preview-hint').textContent='Amount changed. Preview again to update your plan.'}}
+function inputsChanged(){renderAmountBar();REVIEW=null;renderBalances();if(FRESH&&INPUTS!==JSON.stringify(currentInputs())){FRESH=false;OUTCOMES=null;closeDialog('review-dialog');renderPlan();step(1);$('preview-hint').textContent='Amount changed. Preview again to update your plan.'}}
 function clearBalances(){REVIEW=null;balanceSequence++;BALANCES=null;BALANCE_ERROR='';BALANCE_BUSY=false;renderBalances()}
 function renderBalances(){
+ if($('plan-attention'))renderBanners();
+ if($('amount-bar'))renderAmountBar();
  const b=BALANCES,stale=Boolean(BALANCE_ERROR),known=b?.cash!=null;
  document.querySelectorAll('[data-idle]').forEach(el=>el.disabled=BUSY||BALANCE_BUSY);
  if($('send-button'))checkConfirm();
@@ -430,25 +543,122 @@ function clearError(){$('error-banner').hidden=true;$('input-error').hidden=true
 async function setAccount(mode){if(BUSY||BALANCE_BUSY)return;closeDialog('account-dialog');MODE=mode;document.body.classList.toggle('live',mode==='live');$('live-strip').hidden=mode!=='live';$('account-label').textContent=mode==='live'?'Live account · real money':'Paper account';DATA=null;OUTCOMES=null;FRESH=false;INPUTS=null;LOG='';clearBalances();$('run-log').textContent='No actions in this session yet.';clearError();switchTab('plan');await loadSnapshot()}
 async function loadSnapshot(){if(BUSY||BALANCE_BUSY)return;const seq=++sequence,account=MODE;FRESH=false;OUTCOMES=null;setBusy(true);clearError();try{const d=await request('last',{},account);if(seq!==sequence||account!==MODE)return;if(!d.ok)throw Error(d.error||d.log);DATA=d;$('minorder').placeholder=String(d.min_order??100);renderAll();step(1);if(d.submission_uncertain)failure({log:'The previous submission was interrupted.'},'resume automatic planning')}catch(e){DATA=null;renderAll();failure({log:e.message},'load your saved snapshot')}finally{setBusy(false)}refreshBalances()}
 function renderAll(){renderPortfolioHeader();renderPlan();renderBalance();renderChecks()}
-function attentionHTML(){if(!DATA?.has_report)return '';if(DATA.policy_stale)return '<div class="attention"><div><strong>Your operating manual has been updated.</strong><p>This saved preview uses an earlier policy. Preview again to apply '+esc(DATA.manual_version)+'.</p></div></div>';const checks=(DATA.checklist||[]).filter(r=>['CHECK','FAIL'].includes(r[2]));if(DATA.drift)return '<div class="attention"><span class="symbol" aria-hidden="true">↻</span><div><strong>Your holdings changed outside Lens.</strong><p>Market tracking needs a new starting point. Automatic drawdown-based deployment is paused.</p><button onclick="openTools()">Review account tools →</button></div></div>';if(!checks.length)return '';const onlyBalance=checks.every(r=>r[1].startsWith('Band drift'));return `<div class="attention"><span class="symbol" aria-hidden="true">${onlyBalance?'◫':'!'}</span><div><strong>${onlyBalance?'A few holdings are away from their targets.':'A few things need a closer look.'}</strong><p>${onlyBalance?'Your policy flags these for review at its scheduled rebalancing window.':'Review the highlighted checks before approving any orders.'}</p><button onclick="switchTab('${onlyBalance?'balance':'checks'}')">${onlyBalance?'See your portfolio balance':'Review the checks'} →</button></div></div>`}
+function attentionHTML(){if(!DATA?.has_report)return '';if(DATA.policy_stale)return '<div class="attention"><div><strong>Your operating manual has been updated.</strong><p>This saved preview uses an earlier policy. Preview again to apply '+esc(DATA.manual_version)+'.</p></div></div>';let checks=(DATA.checklist||[]).filter(r=>['CHECK','FAIL'].includes(r[2]));if(DATA.drift)return '<div class="attention"><span class="symbol" aria-hidden="true">↻</span><div><strong>Your holdings changed outside Lens.</strong><p>Market tracking needs a new starting point. Automatic drawdown-based deployment is paused.</p><button onclick="openTools()">Review account tools →</button></div></div>';/* An empty portfolio reads 0% against every target, so the band-drift check flags all 17 sleeves at once. That is what accumulating looks like, not drift: raising it as a banner warns a new user about a portfolio they have not bought yet, and buries the banner's real purpose. The check still appears in Checks & activity - only the banner is suppressed. */if(!(DATA.nav>0))checks=checks.filter(r=>!r[1].startsWith('Band drift'));if(!checks.length)return '';const onlyBalance=checks.every(r=>r[1].startsWith('Band drift'));return `<div class="attention"><span class="symbol" aria-hidden="true">${onlyBalance?'◫':'!'}</span><div><strong>${onlyBalance?'A few holdings are away from their targets.':'A few things need a closer look.'}</strong><p>${onlyBalance?'Your policy flags these for review at its scheduled rebalancing window.':'Review the highlighted checks before approving any orders.'}</p><button onclick="switchTab('${onlyBalance?'balance':'checks'}')">${onlyBalance?'See your portfolio balance':'Review the checks'} →</button></div></div>`}
 function friendlyReason(o){if(o.review)return 'Optional sale · needs your judgment';if(o.side==='SELL')return o.ticker==='XEON'?'Release part of your cash fund to fund purchases':'Proposed sale under your investing rules';return 'Bring this investment closer to its target'}
-function renderPlan(){if(DATA?.policy_stale)FRESH=false;const banner=(FRESH||DATA?.policy_stale)?attentionHTML():'';$('plan-attention').innerHTML=banner;$('plan-attention').hidden=!banner;
+/* Trading window for the European venues these ETFs list on (Xetra /
+   Euronext, 09:00-17:30 CET/CEST, weekdays). Read off Amsterdam wall-clock
+   so it is right whatever the laptop's timezone. Public holidays are NOT
+   modelled: this is advisory and never blocks a submission. */
+const MKT_OPEN=540,MKT_CLOSE=1050;
+function marketNow(){const parts=Object.fromEntries(new Intl.DateTimeFormat('en-GB',
+  {timeZone:'Europe/Amsterdam',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false})
+  .formatToParts(new Date()).map(p=>[p.type,p.value]));
+ return {day:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].indexOf(parts.weekday),
+         mins:Number(parts.hour)*60+Number(parts.minute)};}
+function marketIsOpen(){const t=marketNow();return t.day>=0&&t.day<5&&t.mins>=MKT_OPEN&&t.mins<=MKT_CLOSE}
+function marketNextOpen(){const t=marketNow();
+ if(t.day>=0&&t.day<5&&t.mins<MKT_OPEN)return 'Opens today at 09:00.';
+ const names=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+ let n=(t.day+1)%7,hops=1;while(n>4){n=(n+1)%7;hops++}
+ return hops===1?'Opens tomorrow at 09:00.':'Opens '+names[n]+' at 09:00.';}
+function marketHTML(){if(marketIsOpen())return '';
+ const m={opens:'09:00',closes:'17:30',next:marketNextOpen(),
+          note:'Public holidays are not accounted for.'};
+ return '<div class="attention"><span class="symbol" aria-hidden="true">\u25F7</span><div>'
+  +'<strong>The market is closed right now.</strong><p>European ETF trading runs '
+  +esc(m.opens)+'\u2013'+esc(m.closes)+' on weekdays. '+esc(m.next||'')+' You can still prepare and '
+  +'send orders \u2014 they wait at IBKR and will not fill until trading resumes. '+esc(m.note||'')
+  +'</p></div></div>';}
+function pendingHTML(){const n=BALANCES&&BALANCES.open_orders;if(!n)return '';
+ return '<button type="button" class="attention attention-tap" onclick="openOrdersDialog()">'
+  +'<span class="symbol" aria-hidden="true">!</span><div><strong>'+n+' order'+(n===1?'':'s')
+  +' still pending at IBKR.</strong><p>These block a new submission so the same buys are never sent '
+  +'twice. Open to see why, and cancel them.</p></div></button>';}
+function renderBanners(){const banner=marketHTML()+pendingHTML()+((FRESH||DATA?.policy_stale)?attentionHTML():'');$('plan-attention').innerHTML=banner;$('plan-attention').hidden=!banner;}
+function renderPlan(){if(DATA?.policy_stale)FRESH=false;renderBanners();
  if(OUTCOMES){renderOutcomes();return}
- if(!FRESH){const stale=DATA?.has_report;const pending=DATA?.pending;$('preview-card').innerHTML=`<div class="preview-head"><div><h2>Your money, with a plan.</h2><p>${pending?'A saved preview is available. Update it before approval.':'Preview the next step before you take it.'}</p></div><span class="badge">${MODE==='paper'?'Practice mode':'Live account'}</span></div><div class="empty-plan"><div class="illustration" aria-hidden="true"><span></span><span></span><span></span></div><h3>A clear next step.</h3><p>Set your contribution and preview a plan. You’ll see each investment, its estimated cost, and what stays in cash.</p></div><div class="preview-foot"><span aria-hidden="true">↗</span><span>${stale?'Last plan snapshot: '+esc(dateLabel(DATA.snapshot_date))+'. <button class="quiet small" onclick="switchTab(\'balance\')">Explore your balance →</button>':'Your paper Gateway can provide your first portfolio snapshot.'}</span></div>`;return}
+ if(!FRESH){const stale=DATA?.has_report;const pending=DATA?.pending;$('preview-card').innerHTML=`<div class="preview-head"><div>${pending?'<p>A saved preview is available. Update it before approval.</p>':''}</div><span class="badge">${MODE==='paper'?'Practice mode':'Live account'}</span></div><div class="empty-plan"><div class="illustration" aria-hidden="true"><span></span><span></span><span></span></div><h3>A clear next step.</h3><p>Set your contribution and preview a plan. You’ll see each investment, its estimated cost, and what stays in cash.</p></div><div class="preview-foot"><span aria-hidden="true">↗</span><span>${stale?'Last plan snapshot: '+esc(dateLabel(DATA.snapshot_date))+'. <button class="quiet small" onclick="switchTab(\'balance\')">Explore your balance →</button>':'Your paper Gateway can provide your first portfolio snapshot.'}</span></div>`;return}
  const orders=DATA.orders||[],e=DATA.estimates||{},pool=(DATA.contribution||0)+(e.sells||0),share=pool>0?Math.max(0,Math.min(100,e.buys/pool*100)):0;
  const count=orders.filter(o=>o.side==='BUY').length;
- $('preview-card').innerHTML=`<div class="preview-head"><div><h2>${orders.length?'Here’s your next step.':'A pause is part of the plan.'}</h2><p>${orders.length?'Proposed purchases across '+count+' investment'+(count===1?'':'s')+'. Review each order below.':'No orders meet your investing rules in this preview.'}</p></div><span class="badge">Preview only</span></div><div class="money-flow"><div class="flow-top"><div><strong>${eur(e.buys)}</strong><span>Estimated purchases</span></div><div><strong>${eur(e.cash_left==null?null:Math.abs(e.cash_left))}</strong><span>${e.cash_left<0?'Extra cash needed, before fees':'Left in cash, before fees'}</span></div></div><div class="flow-bar" role="img" aria-label="${Math.round(share)} percent of planned funds allocated to purchases"><span style="width:${share}%"></span></div><div class="flow-description">${eur(DATA.contribution)} cash budget${e.sells?' + '+eur(e.sells)+' in proposed sales':''} · amounts are estimates</div>${!orders.length?'<p class="note" style="margin-top:18px">Whole shares, minimum purchase sizes, and target allocations can leave money uninvested. It stays available for a future plan.</p>':''}${e.cash_left>0||DATA.held_back?.length?'<details class="order-details" style="margin-top:14px"><summary>Why some money stays in cash</summary><p>Each budget recalculates how far your investments are from their targets. Orders are rounded down to whole shares and must meet minimum purchase rules. Rounding leftovers stay in cash; the planner does not redistribute them in a second pass. A smaller budget can therefore produce a different basket, even if the previous basket would still fit.</p>'+(DATA.held_back||[]).map(n=>'<p>'+esc(n)+'</p>').join('')+'</details>':''}</div><div class="order-list">${orders.map((o,i)=>`<div class="order"><input type="checkbox" class="order-select" value="${i}" aria-label="Approve ${esc(o.side.toLowerCase())} ${esc(o.qty)} shares of ${esc(o.ticker)}" onchange="updateSelection()"><div class="fundmark" aria-hidden="true">${esc(o.ticker.slice(0,2))}</div><div><div class="order-title">${esc(o.ticker)} <span class="trade-side ${o.side==='SELL'?'sell':''}">${esc(o.side==='SELL'?'Sell':'Buy')}</span></div><div class="fundname">${esc(fund(o.ticker).name||'Fund name unavailable')}</div><div class="reason">${esc(friendlyReason(o))}</div><details class="order-details"><summary>Fund & order details</summary><p>${esc(fund(o.ticker).isin||'ISIN unavailable')} · ${esc(fund(o.ticker).exchange||'Exchange unavailable')} · ${esc(fund(o.ticker).currency||'Currency unavailable')}<br>${esc(o.reason)}</p></details></div><div class="order-price">${eur(o.qty*o.est_price)}<small>${esc(o.qty)} shares × ${exactEur(o.est_price)}</small></div></div>`).join('')}</div>${orders.length?'<div class="review-bar"><span id="selected-summary">Select the orders you want to approve.</span><button class="primary" id="review-button" disabled onclick="openReview()">Review selected orders →</button></div>':'<div class="preview-foot">No orders have been sent. You can change your amount and preview again.</div>'}`;
+ $('preview-card').innerHTML=`<div class="preview-head"><div><h2>${orders.length?'Here’s your next step.':'A pause is part of the plan.'}</h2><p>${orders.length?'Proposed purchases across '+count+' investment'+(count===1?'':'s')+'. Review each order below.':'No orders meet your investing rules in this preview.'}</p></div><span class="badge">Preview only</span></div><div class="money-flow"><div class="flow-top"><div><strong>${eur(e.buys)}</strong><span>Estimated purchases</span></div><div><strong>${eur(e.cash_left==null?null:Math.abs(e.cash_left))}</strong><span>${e.cash_left<0?'Extra cash needed, before fees':'Left in cash, before fees'}</span></div></div><div class="flow-bar" role="img" aria-label="${Math.round(share)} percent of planned funds allocated to purchases"><span style="width:${share}%"></span></div><div class="flow-description">${eur(DATA.contribution)} cash budget${e.sells?' + '+eur(e.sells)+' in proposed sales':''} · amounts are estimates</div>${!orders.length?'<p class="note" style="margin-top:18px">Whole shares, minimum purchase sizes, and target allocations can leave money uninvested. It stays available for a future plan.</p>':''}${e.cash_left>0||DATA.held_back?.length?'<details class="order-details" style="margin-top:14px"><summary>Why some money stays in cash</summary><p>Each budget recalculates how far your investments are from their targets. Orders are rounded down to whole shares and must meet minimum purchase rules. Rounding leftovers stay in cash; the planner does not redistribute them in a second pass. A smaller budget can therefore produce a different basket, even if the previous basket would still fit.</p>'+(DATA.held_back||[]).map(n=>'<p>'+esc(n)+'</p>').join('')+'</details>':''}</div><div class="order-list">${orders.map((o,i)=>`<div class="order"><input type="checkbox" class="order-select" value="${i}" aria-label="Approve ${esc(o.side.toLowerCase())} ${esc(o.qty)} shares of ${esc(o.ticker)}" onchange="updateSelection()"><div class="fundmark" aria-hidden="true">${esc(o.ticker.slice(0,2))}</div><div><div class="order-title">${esc(o.ticker)} <span class="trade-side ${o.side==='SELL'?'sell':''}">${esc(o.side==='SELL'?'Sell':'Buy')}</span></div><div class="fundname">${esc(fund(o.ticker).name||'Fund name unavailable')}</div><div class="reason">${esc(friendlyReason(o))}</div><details class="order-details"><summary>Fund & order details</summary><p>${esc(fund(o.ticker).isin||'ISIN unavailable')} · ${esc(fund(o.ticker).exchange||'Exchange unavailable')} · ${esc(fund(o.ticker).currency||'Currency unavailable')}<br>${esc(o.reason)}</p></details></div><div class="order-price">${eur(o.qty*o.est_price)}<small>${esc(o.qty)} shares × ${exactEur(o.est_price)}</small></div></div>`).join('')}</div>${orders.length?'<div class="review-bar"><label class="checkline select-all"><input type="checkbox" id="select-all" onchange="toggleAll(this.checked)"> Select all</label><span id="selected-summary">Select the orders you want to approve.</span><button class="primary" id="review-button" disabled onclick="openReview()">Confirm orders →</button></div>':'<div class="preview-foot">No orders have been sent. You can change your amount and preview again.</div>'}`;
 }
 function selected(){return Array.from(document.querySelectorAll('.order-select:checked')).map(el=>Number(el.value))}
-function updateSelection(){REVIEW=null;const n=selected().length;$('selected-summary').textContent=n?n+' of '+DATA.orders.length+' orders selected':'Select the orders you want to approve.';$('review-button').disabled=!n||!FRESH||BUSY}
+function toggleAll(on){document.querySelectorAll('.order-select').forEach(el=>{if(!el.disabled)el.checked=on});updateSelection()}
+function updateSelection(){REVIEW=null;const n=selected().length;const all=$('select-all'),total=document.querySelectorAll('.order-select').length;if(all){all.checked=n>0&&n===total;all.indeterminate=n>0&&n<total}$('selected-summary').textContent=n?n+' of '+DATA.orders.length+' orders selected':'Select the orders you want to approve.';$('review-button').disabled=!n||!FRESH||BUSY}
 function selectedAmounts(indices){let buys=0,sells=0;for(const i of indices){const o=DATA.orders[i];if(o.side==='SELL')sells+=o.qty*o.est_price;else buys+=o.qty*o.est_price}return {buys,sells}}
-function renderFundedReview(){if(!FRESH||!DATA?.pending)return;const indices=selected();if(!indices.length)return;const amounts=selectedAmounts(indices);const conditional=indices.some(i=>DATA.orders[i].review);$('review-body').innerHTML=`<div class="eyebrow">${esc(accountName())} account · ${indices.length} selected order${indices.length===1?'':'s'}</div><p>You’re about to send these orders to your ${esc(accountName())} account${MODE==='paper'?' using virtual money':''}.</p><div class="review-total">${eur(amounts.buys)}</div><p class="note">Estimated purchases${amounts.sells?' · '+eur(amounts.sells)+' in sales':''}, excluding fees.</p><div style="margin-top:16px">${indices.map(i=>{const o=DATA.orders[i];return `<div class="review-line"><span>${o.side==='BUY'?'Buy':'Sell'} ${esc(o.qty)} ${esc(o.ticker)}</span><strong>${eur(o.qty*o.est_price)}</strong></div>`}).join('')}</div>${conditional?'<div class="attention"><div><strong>This includes an optional sale.</strong><p>Confirm that selling this holding fits the judgment required by your investing policy.</p></div></div>':''}${(DATA.checklist||[]).some(r=>['CHECK','FAIL'].includes(r[2]))?'<p class="note" style="margin-top:16px">Your policy has flagged checks for review. Use “Keep reviewing” to read them before sending.</p>':''}<p class="note" style="margin-top:18px">Only these selected orders will be sent. Sales run first; purchases depend on available cash. Actual prices and fees can differ.</p><label class="field">Type <strong>${phrase()}</strong> to confirm<input id="confirm-phrase" autocomplete="off" spellcheck="false" placeholder="${phrase()}" oninput="checkConfirm()"></label><div class="modal-actions"><button onclick="closeDialog('review-dialog')">Keep reviewing</button><button class="primary" id="send-button" disabled onclick="executeOrders()">${MODE==='paper'?'Send paper orders':'Send live orders'}</button></div>`;step(3);if(!$('review-dialog').open)$('review-dialog').showModal()}
+function renderFundedReview(){if(!FRESH||!DATA?.pending)return;const indices=selected();if(!indices.length)return;const amounts=selectedAmounts(indices);const conditional=indices.some(i=>DATA.orders[i].review);$('review-body').innerHTML=`<div class="eyebrow">${esc(accountName())} account · ${indices.length} selected order${indices.length===1?'':'s'}</div><p>You’re about to send these orders to your ${esc(accountName())} account${MODE==='paper'?' using virtual money':''}.</p><div class="review-total">${eur(amounts.buys)}</div><p class="note">Estimated purchases${amounts.sells?' · '+eur(amounts.sells)+' in sales':''}, excluding fees.</p><div style="margin-top:16px">${indices.map(i=>{const o=DATA.orders[i];return `<div class="review-line"><span>${o.side==='BUY'?'Buy':'Sell'} ${esc(o.qty)} ${esc(o.ticker)}</span><strong>${eur(o.qty*o.est_price)}</strong></div>`}).join('')}</div>${conditional?'<div class="attention"><div><strong>This includes an optional sale.</strong><p>Confirm that selling this holding fits the judgment required by your investing policy.</p></div></div>':''}${(DATA.checklist||[]).some(r=>['CHECK','FAIL'].includes(r[2]))?'<p class="note" style="margin-top:16px">Your policy has flagged checks for review. Use “Keep reviewing” to read them before sending.</p>':''}<p class="note" style="margin-top:18px">Only these selected orders will be sent. Sales run first; purchases depend on available cash. Actual prices and fees can differ.</p>${PIN_SET?pinEntryHTML():pinSetupHTML()}<div class="modal-actions"><button onclick="closeDialog('review-dialog')">Keep reviewing</button><button class="primary" id="send-button" disabled onclick="executeOrders()">${MODE==='paper'?'Send paper orders':'Send live orders'}</button></div>`;step(3);if(!$('review-dialog').open)$('review-dialog').showModal()}
 function reviewMatches(){return REVIEW?.allowed&&REVIEW.account===MODE&&REVIEW.plan_id===DATA?.plan_id&&REVIEW.selection===JSON.stringify(selected())}
-function checkConfirm(){if($('send-button'))$('send-button').disabled=BUSY||BALANCE_BUSY||!FRESH||!reviewMatches()||$('confirm-phrase').value!==phrase()||!selected().length}
+function checkConfirm(){const f=$('confirm-phrase');if($('send-button'))$('send-button').disabled=BUSY||BALANCE_BUSY||!FRESH||!reviewMatches()||!f||!pinOK(f.value)||!selected().length}
+const SHROOMS=['\u{1F344}'];
+const TRIP_OTHER=['\u{1F300}','\u{1F300}','\u{1F331}','\u{1F33F}','\u{1F343}','\u{1F340}','\u{1F333}','\u{1F332}','\u{1F334}','\u{1F335}','\u{1F338}','\u{1F308}','✨'];
+function tripGlyph(){return Math.random()<0.62?'\u{1F344}':TRIP_OTHER[(Math.random()*TRIP_OTHER.length)|0]}
+function shroomBurst(el){
+ try{
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const b=(el||document.getElementById('review-button')||document.body).getBoundingClientRect();
+  const cx=b.left+b.width/2,cy=b.top+b.height/2,n=24;
+  for(let i=0;i<n;i++){
+   const a=(-Math.PI/2)+(Math.random()-0.5)*Math.PI*1.8,d=95+Math.random()*185;
+   const s=document.createElement('span');
+   s.className='shroom';s.setAttribute('aria-hidden','true');
+   s.textContent=SHROOMS[i%SHROOMS.length];
+   s.style.left=cx+'px';s.style.top=cy+'px';
+   s.style.setProperty('--dx',Math.cos(a)*d+'px');
+   s.style.setProperty('--dy',(Math.sin(a)*d+Math.random()*46)+'px');
+   s.style.setProperty('--dr',(Math.random()*720-360)+'deg');
+   s.style.setProperty('--ds',(1.0+Math.random()*1.3).toFixed(2));
+   s.style.setProperty('--sd',(2100+Math.random()*1300)+'ms');
+   s.style.fontSize=(24+Math.random()*26).toFixed(0)+'px';
+   s.style.animationDelay=(Math.random()*260)+'ms';
+   document.body.appendChild(s);
+   s.addEventListener('animationend',()=>s.remove());
+   setTimeout(()=>s.remove(),4200);
+  }
+ }catch(e){}
+}
+let TRIPPING=false;
+function maybeTrip(){
+ try{
+  if(TRIPPING)return;
+  if(!/420/.test(String($('contribute')?.value||'')))return;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  TRIPPING=true;
+  const D=7600,vw=innerWidth,vh=innerHeight;
+  document.body.classList.add('trip');
+  ['trip-freq','trip-scale'].forEach(id=>{const a=document.getElementById(id);if(a&&a.beginElement)try{a.beginElement()}catch(e){}});
+  const veil=document.createElement('div');veil.id='trip-veil';veil.setAttribute('aria-hidden','true');document.body.appendChild(veil);
+  const veil2=document.createElement('div');veil2.id='trip-veil2';veil2.setAttribute('aria-hidden','true');document.body.appendChild(veil2);
+  const note=document.createElement('div');note.id='trip-note';note.setAttribute('aria-hidden','true');note.textContent='\u{1F344} 4:20 · planning at a higher level';document.body.appendChild(note);
+  const live=[],M=110;
+  for(let i=0;i<44;i++){
+   const s=document.createElement('span');
+   s.className='shroom';s.setAttribute('aria-hidden','true');
+   s.textContent=tripGlyph();
+   const edge=i%4;let x,y,dx,dy;
+   if(edge===0){x=Math.random()*vw;y=-M;dx=(Math.random()-0.5)*vw*0.8;dy=vh+2*M}
+   else if(edge===1){x=vw+M;y=Math.random()*vh;dx=-(vw+2*M);dy=(Math.random()-0.5)*vh*0.8}
+   else if(edge===2){x=Math.random()*vw;y=vh+M;dx=(Math.random()-0.5)*vw*0.8;dy=-(vh+2*M)}
+   else{x=-M;y=Math.random()*vh;dx=vw+2*M;dy=(Math.random()-0.5)*vh*0.8}
+   s.style.left=x+'px';s.style.top=y+'px';
+   s.style.setProperty('--dx',Math.round(dx)+'px');
+   s.style.setProperty('--dy',Math.round(dy)+'px');
+   s.style.setProperty('--dr',(Math.random()*1000-500)+'deg');
+   const t=Math.random(),px=t<0.10?(115+Math.random()*145):t<0.32?(50+Math.random()*58):(14+Math.random()*30);
+   s.style.setProperty('--ds',(px>110?0.85+Math.random()*0.45:1.2+Math.random()*1.5).toFixed(2));
+   s.style.setProperty('--sd',(4400+Math.random()*3200)+'ms');
+   s.style.fontSize=px.toFixed(0)+'px';
+   s.style.animationDelay=(Math.random()*2600)+'ms';
+   document.body.appendChild(s);live.push(s);
+   s.addEventListener('animationend',()=>s.remove());
+  }
+  setTimeout(()=>{document.body.classList.remove('trip');veil.remove();veil2.remove();note.remove();TRIPPING=false},D+150);
+  setTimeout(()=>live.forEach(s=>s.remove()),D+2600);
+ }catch(e){TRIPPING=false}
+}
 async function openReview(){
  if(BUSY||BALANCE_BUSY||!FRESH||!DATA?.pending)return;
  const indices=selected();if(!indices.length)return;const account=MODE,token=DATA.plan_id;
- REVIEW=null;setBusy(true);$('review-body').innerHTML='<div class="busy-view"><span class="loader" aria-hidden="true"></span><h3>Checking your funding.</h3><p>Reading current cash from Gateway. No orders are sent.</p></div>';
+ REVIEW=null;setBusy(true);await pinStatus();$('review-body').innerHTML='<div class="busy-view"><span class="loader" aria-hidden="true"></span><h3>Checking your funding.</h3><p>Reading current cash from Gateway. No orders are sent.</p></div>';
  if(!$('review-dialog').open)$('review-dialog').showModal();
  try{
   const d=await request('review',{selected:indices,plan_id:token},account);
@@ -470,8 +680,8 @@ function useXeonForShortfall(){
  if(BUSY||!REVIEW?.xeon_can_replace||REVIEW.account!==MODE||REVIEW.plan_id!==DATA?.plan_id)return;
  const f=REVIEW;closeDialog('review-dialog');$('contribute').value=f.cash;$('deploy').value=f.replacement_deploy;document.querySelector('.options').open=true;inputsChanged();$('deploy').focus();toast('Cash budget adjusted. Generate a new preview to review XEON sales.');
 }
-async function prepare(){if(BUSY||BALANCE_BUSY||!$('plan-form').reportValidity())return;const inputs=currentInputs();if(Object.values(inputs).some(v=>typeof v==='number'&&(!Number.isFinite(v)||v<0))){$('input-error').textContent='Enter a valid amount of zero or more.';$('input-error').hidden=false;return}clearError();REVIEW=null;FRESH=false;OUTCOMES=null;setBusy(true);BALANCE_ERROR='Refreshing after the new preview.';renderBalances();step(2);switchTab('plan');$('plan-attention').hidden=true;$('preview-button').textContent='Building your plan…';$('preview-card').innerHTML='<div class="busy-view"><span class="loader" aria-hidden="true"></span><h3>Finding your next step.</h3><p>Reading your holdings and checking your investing rules. Updating prices can take a few minutes.</p></div>';const account=MODE;try{const d=await request('prepare',inputs,account);rememberLog(d);if(!d.ok){failure(d);renderPlan();step(1);return}DATA=d;FRESH=true;INPUTS=JSON.stringify(inputs);renderAll();$('preview-hint').textContent='Preview ready. Review before sending any orders.'}catch(e){failure({log:e.message});renderPlan();step(1)}finally{setBusy(false);$('preview-button').innerHTML='Generate investment preview <span aria-hidden="true">↻</span>';refreshBalances()}}
-async function executeOrders(){if(BUSY||BALANCE_BUSY||!FRESH||!reviewMatches()||$('confirm-phrase').value!==phrase())return;const indices=selected(),token=DATA.plan_id,confirmation=$('confirm-phrase').value;if(!indices.length)return;closeDialog('review-dialog');clearError();FRESH=false;DATA.pending=false;BALANCE_ERROR='These balances are from before this submission.';setBusy(true);$('preview-card').innerHTML='<div class="busy-view"><span class="loader" aria-hidden="true"></span><h3>Sending your approved orders.</h3><p>Waiting for IBKR’s response. Do not send the same orders again while this is running.</p></div>';try{const d=await request('execute',{selected:indices,confirm:confirmation,plan_id:token});rememberLog(d);if(d.funding_blocked){FRESH=true;DATA.pending=true;OUTCOMES=null;renderPlan();document.querySelectorAll('.order-select').forEach(el=>el.checked=indices.includes(Number(el.value)));updateSelection();REVIEW={...d.funding,account:MODE,plan_id:token,selection:JSON.stringify(indices)};if(d.balances?.account===MODE){BALANCES=d.balances;BALANCE_ERROR=''}renderFundingBlock();$('review-dialog').showModal();return}OUTCOMES={results:d.results||[],ok:d.ok,notSubmitted:d.not_submitted,at:new Date().toISOString()};DATA.results=OUTCOMES.results;DATA.results_at=OUTCOMES.at;renderBalance();renderChecks();if(!d.ok)failure(d,'complete the order submission');renderOutcomes();step(3)}catch(e){OUTCOMES={results:[],ok:false,uncertain:true};failure({log:e.message},'confirm the order outcome');renderOutcomes()}finally{setBusy(false);if(!FRESH)refreshBalances()}}
+async function prepare(){if(BUSY||BALANCE_BUSY||!$('plan-form').reportValidity())return;const inputs=currentInputs();if(Object.values(inputs).some(v=>typeof v==='number'&&(!Number.isFinite(v)||v<0))){$('input-error').textContent='Enter a valid amount of zero or more.';$('input-error').hidden=false;return}clearError();maybeTrip();REVIEW=null;FRESH=false;OUTCOMES=null;setBusy(true);BALANCE_ERROR='Refreshing after the new preview.';renderBalances();step(2);switchTab('plan');$('plan-attention').hidden=true;$('preview-button').textContent='Working…';$('preview-card').innerHTML='<div class="busy-view"><span class="loader" aria-hidden="true"></span><h3>Finding your next step.</h3><p>Reading your holdings and checking your investing rules. Updating prices can take a few minutes.</p></div>';const account=MODE;try{const d=await request('prepare',inputs,account);rememberLog(d);if(!d.ok){failure(d);renderPlan();step(1);return}DATA=d;FRESH=true;INPUTS=JSON.stringify(inputs);renderAll();$('preview-hint').textContent='Preview ready. Review before sending any orders.'}catch(e){failure({log:e.message});renderPlan();step(1)}finally{setBusy(false);$('preview-button').textContent='Generate';refreshBalances()}}
+async function executeOrders(){if(BUSY||BALANCE_BUSY||!FRESH||!reviewMatches()||!pinOK($('confirm-phrase')?.value))return;const indices=selected(),token=DATA.plan_id,confirmation=$('confirm-phrase').value;if(!indices.length)return;shroomBurst($('send-button'));closeDialog('review-dialog');clearError();FRESH=false;DATA.pending=false;BALANCE_ERROR='These balances are from before this submission.';setBusy(true);$('preview-card').innerHTML='<div class="busy-view"><span class="loader" aria-hidden="true"></span><h3>Sending your approved orders.</h3><p>Waiting for IBKR’s response. Do not send the same orders again while this is running.</p></div>';try{const d=await request('execute',{selected:indices,confirm:confirmation,plan_id:token});rememberLog(d);if(d.funding_blocked){FRESH=true;DATA.pending=true;OUTCOMES=null;renderPlan();document.querySelectorAll('.order-select').forEach(el=>el.checked=indices.includes(Number(el.value)));updateSelection();REVIEW={...d.funding,account:MODE,plan_id:token,selection:JSON.stringify(indices)};if(d.balances?.account===MODE){BALANCES=d.balances;BALANCE_ERROR=''}renderFundingBlock();$('review-dialog').showModal();return}OUTCOMES={results:d.results||[],ok:d.ok,notSubmitted:d.not_submitted,at:new Date().toISOString()};DATA.results=OUTCOMES.results;DATA.results_at=OUTCOMES.at;renderBalance();renderChecks();if(!d.ok)failure(d,'complete the order submission');renderOutcomes();step(3)}catch(e){OUTCOMES={results:[],ok:false,uncertain:true};failure({log:e.message},'confirm the order outcome');renderOutcomes()}finally{setBusy(false);if(!FRESH)refreshBalances()}}
 function outcomeText(r){return {filled:'Filled',partial:'Partly filled',working:'Waiting at IBKR',skipped:'Not sent',failed:'Not completed'}[r.status]||'Check at IBKR'}
 function renderOutcomes(){$('preview-hint').textContent='Check the results before starting another preview.';const results=OUTCOMES.results||[],waiting=results.some(r=>['working','partial'].includes(r.status)),problems=results.some(r=>['failed','skipped'].includes(r.status)),allFilled=results.length&&results.every(r=>r.status==='filled');$('plan-attention').hidden=true;$('preview-card').innerHTML=`<div class="preview-head"><div><h2>${OUTCOMES.notSubmitted?'No orders were sent.':allFilled?'Your next step is taken.':waiting?'Some orders are still in progress.':'Let’s check the outcome.'}</h2><p>${OUTCOMES.notSubmitted?'The request stopped before any orders were placed.':allFilled?'IBKR reports that every selected order filled.':'Review the results from IBKR before preparing another plan.'}</p></div></div><div class="outcome"><strong>${OUTCOMES.notSubmitted?'Submission stopped':allFilled?results.length+' order'+(results.length===1?'':'s')+' filled':waiting?'Waiting for remaining fills':problems?'Some orders need attention':'Submission outcome needs checking'}</strong><p>${OUTCOMES.notSubmitted?'Resolve the issue shown above, then create a fresh preview.':allFilled?'Cash and portfolio holdings refresh automatically after this submission.':waiting?'These statuses were recorded at submission time. Check IBKR for updates; do not submit these orders again.':'Check your IBKR orders and positions before trying again. An interrupted request may still have reached the broker.'}</p></div><div class="order-list">${results.map(r=>`<div class="order" style="grid-template-columns:38px minmax(0,1fr) auto"><div class="fundmark" aria-hidden="true">${esc(r.ticker.slice(0,2))}</div><div><div class="order-title">${esc(r.ticker)} <span class="trade-side">${esc(r.side)}</span></div><div class="fundname">${esc(fund(r.ticker).name||'')}</div><details class="order-details"><summary>Broker details</summary><p>${esc(r.note||'No additional details supplied.')}</p></details></div><div class="order-price"><span class="result-status ${['partial','working'].includes(r.status)?'warning':['skipped','failed'].includes(r.status)?'failed':''}">${esc(outcomeText(r))}</span><small>${esc(r.filled)} of ${esc(r.qty)} shares filled</small></div></div>`).join('')}</div><div class="preview-foot">Portfolio balance reads your holdings from Gateway. Use Refresh holdings there to check later fills. Policy checks remain from the preview you approved.</div>`}
 function portfolioView(){
@@ -482,10 +692,48 @@ function portfolioView(){
 }
 function checkedTime(at){return at?new Date(at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'Time unavailable'}
 function renderPortfolioHeader(){
- const view=portfolioView();$('snapshot').hidden=!view;
+ const view=portfolioView();
+ const cash=(BALANCES&&typeof BALANCES.cash==='number')?BALANCES.cash:null;
+ const invested=(view&&typeof view.nav==='number')?view.nav:null;
+ $('snapshot').hidden=!(view||cash!=null);
  const stamp=view?(view.broker?(BALANCE_ERROR?'Last known · ':'Gateway · ')+checkedTime(view.at):'Saved preview · '+dateLabel(view.at)):'Private workspace · stored on this computer';
- if(view){$('snapshot-value').textContent=eur(view.nav);$('snapshot-date').textContent=stamp}
+ $('snap-invested').textContent=invested==null?'—':eur(invested);
+ $('snap-cash').textContent=cash==null?'—':eur(cash);
+ /* One bar, three parts: what you already hold, what this plan would spend,
+    and the cash left after it. Drawing the amount INSIDE this bar is why there
+    is no second chart - the question "how much of my cash is this?" is answered
+    by the width of the middle segment. Only drawn when both figures are known;
+    a half-known split would misstate every proportion. */
+ const bar=$('snap-bar'),planLine=$('snap-plan');
+ const amount=Number($('contribute').value);
+ if(invested!=null&&cash!=null&&(invested+cash)>0){
+   const total=invested+cash;
+   const plan=(Number.isFinite(amount)&&amount>0)?Math.min(amount,cash):0;
+   const pi=invested/total*100, pp=plan/total*100, pc=Math.max(0,100-pi-pp);
+   bar.innerHTML='<div class="snap-seg" style="width:'+pi.toFixed(2)+'%;background:#335c44" title="Invested"></div>'
+     +(pp>0?'<div class="snap-seg" style="width:'+pp.toFixed(2)+'%;background:'+(amount>cash?'#9a492b':'#7fa663')+'" title="This plan"></div>':'')
+     +'<div class="snap-seg" style="width:'+pc.toFixed(2)+'%;background:#b9c9b4" title="Cash"></div>';
+   bar.hidden=false;
+   if(Number.isFinite(amount)&&amount>0){
+     planLine.innerHTML=amount>cash
+       ? '<b>'+eur(amount)+'</b> is more than your uninvested cash ('+eur(cash)+').'
+       : '<b>'+eur(amount)+'</b> this plan · '+pct(amount/cash*100)+' of your cash, leaving '+eur(cash-amount)+'.';
+     planLine.hidden=false;
+   } else planLine.hidden=true;
+ }else{bar.innerHTML='';bar.hidden=true;planLine.hidden=true}
+ $('snapshot-date').textContent=stamp;
  $('footer-status').textContent=stamp;
+}
+/* Only the over-cash warning sits beside the input now; the proportion is drawn
+   in the bar. Advisory - the real funding check still runs at approval. */
+function renderAmountBar(){
+ const warn=$('amount-warn');if(!warn)return;
+ const amount=Number($('contribute').value);
+ const cash=(BALANCES&&typeof BALANCES.cash==='number')?BALANCES.cash:null;
+ const over=cash!=null&&Number.isFinite(amount)&&amount>cash;
+ warn.textContent=over?'More than your uninvested EUR cash. You can still preview it, but submission will be blocked until the cash is there.':'';
+ warn.hidden=!over;
+ if($('snap-bar'))renderPortfolioHeader();
 }
 function compareHoldings(a,b,sort='held'){
  const alpha=()=>a.ticker.localeCompare(b.ticker),target=()=>(b.target??-1)-(a.target??-1);
@@ -529,4 +777,5 @@ async function resetTracking(){if(BUSY||BALANCE_BUSY)return;closeDialog('reset-d
 $('review-dialog').addEventListener('close',()=>{if(FRESH)step(2)});
 window.addEventListener('beforeunload',e=>{if(BUSY){e.preventDefault();e.returnValue=''}});
 loadSnapshot();
-</script></body></html>
+</script><svg id="trip-svg" aria-hidden="true" width="0" height="0" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none"><filter id="trip-warp" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.006" numOctaves="3" seed="7" result="trip-noise"><animate id="trip-freq" attributeName="baseFrequency" dur="7.6s" begin="indefinite" fill="freeze" values="0.004 0.006;0.013 0.021;0.024 0.032;0.011 0.017;0.004 0.006"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="trip-noise" xChannelSelector="R" yChannelSelector="G" scale="0"><animate id="trip-scale" attributeName="scale" dur="7.6s" begin="indefinite" fill="freeze" values="0;38;76;50;96;44;0" keyTimes="0;0.12;0.3;0.48;0.66;0.86;1" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1"/></feDisplacementMap></filter></svg>
+</body></html>

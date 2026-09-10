@@ -541,6 +541,53 @@ def analyze_rows(rows, auto_fetch=False):
                  'holdings_coverage':known,'classified':classified,'unknown':max(0,100-known-classified),'exposure_total':total}}
 
 
+def broker_holdings():
+    """Current positions by ISIN, read-only, for the current-vs-target column.
+
+    Uses the same paper-only guarded connection as instrument lookup. It reads
+    portfolio positions and nothing else: it never places, cancels or modifies
+    an order, and never touches the saved draft or the investing policy."""
+    def lookup(ib):
+        from ib_async import Contract
+        account = (ib.managedAccounts() or [''])[0]
+        out, unpriced = {}, []
+        for item in ib.portfolio(account):
+            if not item.position:
+                continue
+            isin = None
+            try:
+                details = ib.reqContractDetails(Contract(conId=item.contract.conId))
+                ids = {sid.value for d in details
+                       if d.contract.conId == item.contract.conId
+                       for sid in (d.secIdList or []) if sid.tag == 'ISIN'}
+                if len(ids) == 1:
+                    isin = ids.pop()
+            except (TimeoutError, ConnectionError):
+                pass
+            if not isin:
+                continue
+            price = item.marketPrice if item.marketPrice and item.marketPrice > 0 else None
+            eur = (price * item.position) if (price and item.contract.currency == 'EUR') else None
+            if eur is None:
+                unpriced.append(isin)
+            out[isin] = {'shares': float(item.position), 'value_eur': eur,
+                         'currency': item.contract.currency}
+        return {'ok': True, 'holdings': out, 'unpriced': unpriced, 'read_at': now()}
+    try:
+        fresh = with_broker(lookup)
+    except Exception as exc:                      # noqa: BLE001 - any broker failure
+        # Gateway down, wrong account, timeout: fall back to the last good read
+        # rather than showing nothing. Never silently: the caller gets stale=True
+        # plus the timestamp it was actually read, and the UI must label it.
+        cached = read_json(DATA / 'holdings.json', None)
+        if not cached:
+            raise
+        return {**cached, 'ok': True, 'stale': True,
+                'reason': str(exc) or 'Gateway could not be reached.'}
+    atomic_json(DATA / 'holdings.json', fresh)
+    return {**fresh, 'stale': False}
+
+
 def api(action, p):
     if action=='bootstrap': return bootstrap()
     if action=='search': return search(p.get('query',''),p.get('online',False))
@@ -557,5 +604,6 @@ def api(action, p):
             j=JOBS.get(p.get('job'))
             if j is None: raise ValueError('Refresh session expired. Start a new refresh.')
             return {'ok':True,**j}
+    if action=='holdings': return broker_holdings()
     if action=='analyze': return analyze_rows(p.get('rows'), auto_fetch=True)
     raise ValueError('Unknown workspace action.')

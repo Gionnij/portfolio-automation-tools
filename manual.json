@@ -198,6 +198,7 @@
     ],
     "rebuild_stabilizer_share": 0.5,
     "min_order_eur": 100.0,
+    "second_pass_max_target_multiple": 1.5,
     "avg_ter_flag": 0.3,
     "semi_cluster_cap_pct": 16.0,
     "tsmc_in_mtpi_cap_pct": 22.0,

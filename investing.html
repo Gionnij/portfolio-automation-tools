@@ -732,7 +732,7 @@ function renderAmountBar(){
  const cash=(BALANCES&&typeof BALANCES.cash==='number')?BALANCES.cash:null;
  const over=cash!=null&&Number.isFinite(amount)&&amount>cash;
  warn.textContent=over?'More than your uninvested EUR cash. You can still preview it, but submission will be blocked until the cash is there.':'';
- warn.hidden=!over; warn.style.color='#9a492b';
+ warn.hidden=!over;
  if($('snap-bar'))renderPortfolioHeader();
 }
 function compareHoldings(a,b,sort='held'){

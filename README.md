@@ -98,7 +98,7 @@ The AI advisor questionnaire remains deferred.
 
 ## Monthly investing
 
-Open [Monthly investing](http://127.0.0.1:8642/rebalance). It starts in paper mode.
+Open [Monthly investing](http://127.0.0.1:8642/rebalance). Lens detects your connected Gateway before loading any account data. Port 4001 opens live; port 4002 opens paper.
 
 1. Choose a cash budget and press **Generate investment preview**. Optional cash-fund
    deployment, minimum purchases and price updates are under **Plan options**.
@@ -108,7 +108,7 @@ Open [Monthly investing](http://127.0.0.1:8642/rebalance). It starts in paper mo
 3. Tick the individual orders you approve, open **Review selected orders**, and
    type `EXECUTE` for paper or `EXECUTE LIVE` for live before sending.
 
-The account menu requires typing `LIVE` to switch to real money. The `•••`
+To switch between live and paper, switch accounts in IB Gateway. Lens follows automatically. The `•••`
 **Account tools** menu contains saved-snapshot reload, discard of an unsubmitted
 preview, and a deliberate tracking reset. A tracking reset clears the market
 peak and deployment steps, so it should not be used to hide a market decline.
@@ -120,3 +120,38 @@ entered budget plus proposed sales minus proposed purchases; prices and fees
 can change. Hypothetical budgets remain previewable, but review and submission
 check available funds. After submission, order outcomes remain visible while
 holdings refresh; there is no automatic new preview.
+
+## Gateway connection in Lens
+
+The entire interface follows one connected IB Gateway: **live on port 4001**,
+**paper on port 4002**. The broker-reported account must agree with its port. Account IDs may have alphanumeric suffixes; paper DU/DF IDs are not restricted to digits.
+The same compact status indicator appears at the top right on every view.
+Click it for connection details, refresh and Gateway login/trading instructions.
+All views use the shared `shell.css` layout and `shell.js` status menu, based on
+Monthly investing’s white sidebar, logo and spacing. There are no app account
+selectors and no paper default. If both Gateways are connected, Lens asks you
+to keep only the desired Gateway connected instead of guessing.
+
+Lens checks every 30 seconds while visible, on window focus and on Refresh.
+Status uses the API handshake and does not wait for positions or prices.
+Account changes and disconnections clear the old view, including any in-page
+approval. Monthly investing waits for detection before loading the matching
+snapshot. Orders still require individual selection and PIN approval.
+
+Holdings reads use a 20-second connection timeout, matching the investing
+engine. A holdings-data failure is reported separately from a disconnected
+Gateway. Unscoped `holdings.json` cache files are not used. Research allocation
+edits remain intact when the connection refreshes.
+
+Login, authentication and the Read-Only API checkbox remain in IBKR's window.
+To enable investments, open **Configure → Settings → API → Settings**, untick
+**Read-Only API**, apply, then refresh Lens. Confirmed read-only rejections block
+review/submission; successful reads do not prove that trading is enabled.
+Detection never submits test orders or changes broker settings.
+
+After updating Python code, restart the Lens server as well as refreshing the
+browser. An old server can serve new HTML without having its new API endpoints.
+If connection status is unavailable, the interface asks you to restart Lens.
+
+Offline regressions: `python -m unittest discover -s tests` and
+`node --test tests/test_investing_ui.cjs tests/test_gateway_ui.cjs tests/test_shell_ui.cjs`.

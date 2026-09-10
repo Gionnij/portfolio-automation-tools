@@ -5,6 +5,7 @@ IBKR supports both CashBalance and $LEDGER-CashBalance (Gateway setting).
 https://www.interactivebrokers.com/docs/tws-api/doc/tws-settings/per-currency-account-value-prefix
 """
 import asyncio
+import gateway
 import math
 from datetime import datetime, timezone
 
@@ -117,7 +118,9 @@ def read_broker(ib, cfg, mode):
     try:
         trades = ib.reqAllOpenOrders()  # read-only; never binds, cancels or places orders
         open_orders = sum(1 for t in trades if not t.order.account or t.order.account == account)
-    except (TimeoutError, ConnectionError):
+    except Exception as exc:
+        if not isinstance(exc, (TimeoutError, ConnectionError)) and not gateway.is_read_only(exc):
+            raise
         open_orders = None
         warnings.append('Pending orders could not be checked. They may affect spendable cash.')
     return dict(result, ok=True, account=mode, read_at=datetime.now(timezone.utc).isoformat(),
@@ -218,15 +221,26 @@ def fetch(mode, cfg):
     asyncio.set_event_loop(loop)
     from ib_async import IB, StartupFetch
     ib = IB()
+    read_only = None
+    def on_error(req_id, code, message, *args):
+        nonlocal read_only
+        if gateway.is_read_only(message):
+            read_only = True
+    ib.errorEvent += on_error
     try:
         ib.RequestTimeout = 6
         ib.connect('127.0.0.1', 4002 if mode == 'paper' else 4001,
                    clientId=83, readonly=True, timeout=6, raiseSyncErrors=True,
                    fetchFields=StartupFetch.ACCOUNT_UPDATES)
-        return read_broker(ib, cfg, mode)
+        result = read_broker(ib, cfg, mode)
+        result['read_only'] = read_only
+        if read_only:
+            result.setdefault('warnings', []).append(gateway.READ_ONLY_HELP)
+        return result
     except (TimeoutError, ConnectionError, OSError) as exc:
-        raise ValueError(f'Open IB Gateway connected to your {mode} account, then refresh balances.') from exc
+        raise ValueError(gateway.READ_ONLY_HELP if read_only or gateway.is_read_only(exc) else f'Open IB Gateway connected to your {mode} account, then refresh balances.') from exc
     finally:
+        ib.errorEvent -= on_error
         ib.disconnect()
         loop.close()
         asyncio.set_event_loop(None)

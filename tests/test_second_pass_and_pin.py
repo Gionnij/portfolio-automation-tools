@@ -309,8 +309,7 @@ class OpenOrderTests(unittest.TestCase):
 
 
 class HoldingsCacheTests(unittest.TestCase):
-    """The research page falls back to the last reading when Gateway is down,
-    but must never present it as live."""
+    """Research holdings cannot reuse an unscoped cache across accounts."""
 
     def setUp(self):
         import workspace
@@ -334,28 +333,25 @@ class HoldingsCacheTests(unittest.TestCase):
         ib.reqContractDetails.return_value = [det]
         return ib
 
-    def test_a_good_read_is_cached_and_marked_live(self):
-        with patch.object(self.ws, "with_broker", lambda fn: fn(self._ib())):
+    def test_a_good_read_is_labeled_with_verified_account_and_not_cached(self):
+        connection = {'mode': 'paper', 'state': 'connected'}
+        with patch.object(self.ws.gateway, "with_connection", lambda fn, mode: fn(self._ib(), connection)):
             out = self.ws.broker_holdings()
-        self.assertFalse(out["stale"])
+        self.assertEqual(out["account"], 'paper')
         self.assertEqual(out["holdings"]["IE0000000001"]["value_eur"], 200.0)
-        self.assertTrue((self.data / "holdings.json").exists())
+        self.assertFalse((self.data / "holdings.json").exists())
 
-    def test_a_failed_read_returns_the_cache_marked_stale(self):
-        with patch.object(self.ws, "with_broker", lambda fn: fn(self._ib())):
-            first = self.ws.broker_holdings()
-        def boom(fn):
-            raise ValueError("Gateway is not running")
-        with patch.object(self.ws, "with_broker", boom):
+    def test_a_failed_read_does_not_reuse_an_unscoped_cache(self):
+        (self.data / "holdings.json").write_text('{"holdings":{"OLD":{}}}')
+        with patch.object(self.ws.gateway, "with_connection", side_effect=ValueError("raw socket error")):
             out = self.ws.broker_holdings()
-        self.assertTrue(out["stale"])
-        self.assertEqual(out["holdings"], first["holdings"])
-        self.assertEqual(out["read_at"], first["read_at"])   # the ORIGINAL time, not now
-        self.assertIn("Gateway is not running", out["reason"])
+        self.assertIsNone(out['holdings'])
+        self.assertEqual(out['connection']['state'], 'unavailable')
+        self.assertNotIn('raw socket', str(out))
 
-    def test_a_failure_with_no_cache_still_raises(self):
-        def boom(fn):
-            raise ValueError("Gateway is not running")
-        with patch.object(self.ws, "with_broker", boom):
-            with self.assertRaises(ValueError):
-                self.ws.broker_holdings()
+    def test_a_failure_with_no_cache_returns_friendly_status(self):
+        with patch.object(self.ws.gateway, "with_connection", side_effect=ValueError("Gateway is not running")):
+            out = self.ws.broker_holdings()
+        self.assertTrue(out['ok'])
+        self.assertIsNone(out['holdings'])
+        self.assertIn('Check IB Gateway', out['connection']['message'])

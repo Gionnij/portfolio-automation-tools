@@ -5,15 +5,16 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const vm=require('node:vm');
-const script=fs.readFileSync(path.join(__dirname,'../investing.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1].replace(/loadSnapshot\(\);\s*$/,'');
+const script=fs.readFileSync(path.join(__dirname,'../investing.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1].replace(/refreshGateway\(\);\s*$/,'');
 function page(){
   const nodes=new Map();
-  const node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',innerHTML:'',disabled:false,hidden:false,checked:false,setAttribute(){},addEventListener(){},close(){this.open=false},showModal(){this.open=true},focus(){},classList:{toggle(){}},parentElement:{addEventListener(){}}});return nodes.get(id)};
+  const node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',dataset:{},innerHTML:'',disabled:false,hidden:false,checked:false,setAttribute(){},addEventListener(){},close(){this.open=false},showModal(){this.open=true},focus(){},classList:{toggle(){}},parentElement:{addEventListener(){}}});return nodes.get(id)};
   node('contribute').value='177.58';node('balance-sort').value='held';
-  const context=vm.createContext({Intl,Date,Number,JSON,Math,Boolean,String,Array,Object,Error,Promise,setTimeout,clearTimeout,window:{addEventListener(){}},document:{getElementById:node,querySelectorAll:()=>[],querySelector:()=>node('options')}});
+  const context=vm.createContext({Intl,Date,Number,JSON,Math,Boolean,String,Array,Object,Error,Promise,setTimeout,clearTimeout,window:{addEventListener(){}},document:{addEventListener(){},body:{classList:{toggle(){}}},getElementById:node,querySelectorAll:()=>[],querySelector:()=>node('options')}});
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'../shell.js'),'utf8'),context);
   vm.runInContext(script,context);
   const run=s=>vm.runInContext(s,context);
-  run(`DATA={has_report:true,account:'paper',nav:10000,snapshot_date:'2026-09-08',weights:[['4COP','0','1.5']],funds:{'4COP':{name:'Copper fund'}},pending:true,plan_id:'keep-this-approval',orders:[{ticker:'4COP',side:'BUY',qty:2,est_price:62}],results:[]};FRESH=true;INPUTS='unchanged';`);
+  run(`MODE='paper';SESSION_KEY='paper';GATEWAY={state:'connected',mode:'paper',sessions:[{mode:'paper'}]};DATA={has_report:true,account:'paper',nav:10000,snapshot_date:'2026-09-08',weights:[['4COP','0','1.5']],funds:{'4COP':{name:'Copper fund'}},pending:true,plan_id:'keep-this-approval',orders:[{ticker:'4COP',side:'BUY',qty:2,est_price:62}],results:[]};FRESH=true;INPUTS='unchanged';`);
   return {node,run};
 }
 const response=(shares=2,account='paper')=>({ok:true,account,read_at:'2026-09-08T10:00:00Z',nav:10124,cash:50.46,warnings:[],open_orders:0,holdings:[{ticker:'4COP',name:'Copper fund',shares,value:shares*62,current_pct:shares*62/10124*100,target_pct:1.5}]});
@@ -188,4 +189,46 @@ test('the right PIN submits and records the fills',async()=>{
   assert.equal(run('sent.confirm'),'2468');
   assert.equal(run('OUTCOMES.ok'),true);
   assert.equal(run('OUTCOMES.results[0].filled'),2);
+});
+
+test('read-only restriction explains the checkbox and blocks approval',async()=>{
+ const {node,run}=page();
+ run(`selected=()=>[0];request=async()=>({ok:true,account:'paper',plan_id:DATA.plan_id,funding:{allowed:false,reason:'read_only',message:'In IB Gateway, untick Read-Only API, apply, then refresh.'}});`);
+ await run('openReview()');
+ assert.match(node('review-body').innerHTML,/read-only mode/);
+ assert.match(node('review-body').innerHTML,/untick Read-Only API/);
+ assert.doesNotMatch(node('review-body').innerHTML,/Send paper orders|confirm-phrase/);
+});
+test('read-only errors take priority over a timeout in noisy broker logs',()=>{
+ const {node,run}=page();run(`failure({log:'Read-Only mode. open orders request timed out'})`);
+ assert.match(node('error-message').textContent,/untick Read-Only API/);
+});
+test('opening with a live Gateway loads only live data and clears paper approval',async()=>{
+ const {node,run}=page();
+ run(`request=async(action,p,account)=>action==='gateway'?{ok:true,connection:{state:'connected',mode:'live',port:4001,session_key:'live-1',message:'Switch in IB Gateway.'}}:action==='last'?{ok:true,account,has_report:false}:({ok:false,error:'No balance fixture'});`);
+ await run('refreshGateway()');await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(run('MODE'),'live');assert.equal(run('DATA.account'),'live');
+ assert.equal(run('REVIEW'),null);assert.equal(run('FRESH'),false);
+ assert.match(node('account-label').textContent,/Live account/);
+ assert.equal(node('account-content').hidden,false);
+});
+test('initial mode is unknown and no snapshot is loaded until Gateway detection',()=>{
+ assert.match(script,/let MODE=null/);assert.doesNotMatch(script,/arm-live|setAccount|openAccount/);
+ const {node,run}=page();run('MODE=null;GATEWAY=null;renderGatewayStatus()');
+ assert.equal(run('gatewayBlocksPlan()'),true);assert.equal(node('account-content').hidden,true);
+});
+test('Gateway disconnection clears holdings, review and visible investing content',async()=>{
+ const {node,run}=page();run(`BALANCES=${JSON.stringify(response())};REVIEW={allowed:true};request=async()=>({ok:true,connection:{state:'disconnected',message:'Log in to IB Gateway.'}})`);
+ await run('refreshGateway()');
+ assert.equal(run('MODE'),null);assert.equal(run('BALANCES'),null);assert.equal(run('DATA'),null);assert.equal(run('REVIEW'),null);
+ assert.equal(node('account-content').hidden,true);
+});
+test('a changed Gateway result cannot switch accounts during submission',async()=>{
+ const {run}=page();run(`request=async()=>{BUSY=true;return {ok:true,connection:{state:'connected',mode:'live'}}}`);
+ await run('refreshGateway()');assert.equal(run('MODE'),'paper');assert.equal(run('DATA.plan_id'),'keep-this-approval');
+});
+test('same live account refresh preserves reviewed plan; different session invalidates it',async()=>{
+ const {run}=page();run(`MODE='live';SESSION_KEY='a';GATEWAY={state:'connected',mode:'live',session_key:'a'};REVIEW={allowed:true};loadSnapshot=async()=>{};`);
+ await run('followGateway(GATEWAY)');assert.equal(run('REVIEW.allowed'),true);
+ await run("followGateway({...GATEWAY,session_key:'b'})");assert.equal(run('REVIEW'),null);assert.equal(run('DATA'),null);
 });

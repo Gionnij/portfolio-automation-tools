@@ -182,7 +182,7 @@ class BalanceTests(unittest.TestCase):
     def test_fetch_selects_account_port_and_readonly_connection(self):
         for mode, port in [('paper', 4002), ('live', 4001)]:
             with self.subTest(mode=mode), patch('ib_async.IB') as IB, patch.object(balances, 'read_broker', return_value={'ok': True}) as read:
-                self.assertEqual(balances.fetch(mode, CONFIG), {'ok': True})
+                self.assertEqual(balances.fetch(mode, CONFIG), {'ok': True, 'read_only': None})
                 args = IB.return_value.connect.call_args
                 self.assertEqual(args.args, ('127.0.0.1', port))
                 self.assertIs(args.kwargs['readonly'], True)

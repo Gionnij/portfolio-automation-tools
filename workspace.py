@@ -1,9 +1,9 @@
 """Portfolio research workspace. No order-placement code; all drafts are local.
 
 Provider adapters produce validated, ISIN-keyed snapshots without overwriting
-legacy holdings. Broker lookups only use the verified paper Gateway.
+legacy holdings. Broker lookups follow the verified connected Gateway.
 """
-import asyncio
+import gateway
 import csv
 import html
 import io
@@ -25,7 +25,6 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 DATA = HERE / '.workspace'
 LOCK = threading.RLock()
-BROKER_LOCK = threading.Lock()
 JOBS = {}
 # Official product identifiers, verified against the issuer's ISIN field.
 ISHARES = {
@@ -137,23 +136,8 @@ def validate_rows(rows, require_total=False):
     return clean
 
 
-def with_broker(fn):
-    with BROKER_LOCK:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        from ib_async import IB
-        ib = IB()
-        try:
-            ib.connect('127.0.0.1', 4002, clientId=72, timeout=5, readonly=True)
-            accounts = ib.managedAccounts()
-            if not accounts or not all(a.startswith('DU') for a in accounts):
-                raise ValueError('Instrument lookup requires the paper Gateway on port 4002.')
-            ib.RequestTimeout = 9
-            return fn(ib)
-        finally:
-            ib.disconnect()
-            loop.close()
-            asyncio.set_event_loop(None)
+def with_broker(fn, mode='auto'):
+    return gateway.with_connection(lambda ib, connection: fn(ib), mode)
 
 
 def detail_record(d):
@@ -168,7 +152,7 @@ def detail_record(d):
         'source_url': '', 'override': base.get('override','')}
 
 
-def search(query, online=False):
+def search(query, online=False, mode='auto'):
     query = str(query).strip()[:80]
     if len(query) < 2:
         return {'ok':True, 'candidates':[], 'note':'Enter at least two characters.'}
@@ -190,11 +174,11 @@ def search(query, online=False):
                          instrument_type=c.contract.secType)
                     for c in ib.reqMatchingSymbols(query) if c.contract.secType == 'STK']
         try:
-            found = with_broker(lookup)
+            found = with_broker(lookup, mode)
             matches += [r for r in found if r.get('conid') not in {x.get('conid') for x in matches if x.get('conid')}]
             note = 'Choose the exact fund and listing. Different exchanges and currencies can share a ticker.'
         except Exception as e:
-            note = f'Broker search unavailable ({type(e).__name__}). Check paper Gateway port 4002. Saved funds remain available.'
+            note = 'Broker search unavailable. Connect one paper or live Gateway. Saved funds remain available.'
     return {'ok':True, 'candidates':matches[:30], 'note':note}
 
 
@@ -209,7 +193,7 @@ def resolve(p):
         c = Contract(conId=conid, exchange='SMART') if conid else Contract(
             secType='STK', secIdType='ISIN', secId=isin, exchange='SMART', currency=currency)
         return [detail_record(d) for d in ib.reqContractDetails(c)]
-    records = with_broker(lookup)
+    records = with_broker(lookup, 'auto')
     return {'ok':True, 'candidates':records,
             'note':'Identity verified with IBKR. Choose the listing you intend to use.'}
 
@@ -422,7 +406,7 @@ def start_refresh(rows):
     return {'ok':True,'job':jid}
 
 
-def start_verify(rows):
+def start_verify(rows, mode='auto'):
     rows = validate_rows(rows)
     jid = uuid.uuid4().hex
     with LOCK:
@@ -455,14 +439,14 @@ def start_verify(rows):
                 except Exception as e:
                     record({'isin':row['isin'],'ticker':row['ticker'],'ok':False,'message':str(e)})
         try:
-            with_broker(lookup)
+            with_broker(lookup, mode)
         except Exception as e:
             with LOCK:
                 done = {r['isin'] for r in JOBS[jid]['results']}
             for r in rows:
                 if r['isin'] not in done:
                     record({'isin':r['isin'],'ticker':r['ticker'],'ok':False,
-                            'message':'Paper Gateway lookup unavailable: '+type(e).__name__})
+                            'message':'Gateway lookup unavailable. Check the connection and selected account, then try again.'})
         finally:
             with LOCK: JOBS[jid]['done'] = True
     threading.Thread(target=run,daemon=True).start()
@@ -541,17 +525,15 @@ def analyze_rows(rows, auto_fetch=False):
                  'holdings_coverage':known,'classified':classified,'unknown':max(0,100-known-classified),'exposure_total':total}}
 
 
-def broker_holdings():
-    """Current positions by ISIN, read-only, for the current-vs-target column.
-
-    Uses the same paper-only guarded connection as instrument lookup. It reads
-    portfolio positions and nothing else: it never places, cancels or modifies
-    an order, and never touches the saved draft or the investing policy."""
-    def lookup(ib):
+def broker_holdings(mode='auto'):
+    """Current positions from the verified account; no cross-account cache."""
+    def lookup(ib, connection):
         from ib_async import Contract
         account = (ib.managedAccounts() or [''])[0]
         out, unpriced = {}, []
-        for item in ib.portfolio(account):
+        items = ib.portfolio(account)
+        complete = {p.contract.conId: p.position for p in ib.positions(account) if p.position} == {p.contract.conId: p.position for p in items if p.position}
+        for item in items:
             if not item.position:
                 continue
             isin = None
@@ -565,32 +547,38 @@ def broker_holdings():
             except (TimeoutError, ConnectionError):
                 pass
             if not isin:
+                complete = False
                 continue
-            price = item.marketPrice if item.marketPrice and item.marketPrice > 0 else None
+            price = item.marketPrice if item.marketPrice and math.isfinite(item.marketPrice) and 0 < item.marketPrice < 1e100 else None
             eur = (price * item.position) if (price and item.contract.currency == 'EUR') else None
             if eur is None:
                 unpriced.append(isin)
-            out[isin] = {'shares': float(item.position), 'value_eur': eur,
+            previous = out.get(isin, {'shares': 0, 'value_eur': 0})
+            out[isin] = {'shares': previous['shares'] + float(item.position),
+                         'value_eur': previous['value_eur'] + eur if previous['value_eur'] is not None and eur is not None else None,
                          'currency': item.contract.currency}
-        return {'ok': True, 'holdings': out, 'unpriced': unpriced, 'read_at': now()}
+        return {'ok': True, 'holdings': out, 'unpriced': unpriced, 'complete': complete,
+                'read_at': now(), 'account': connection['mode'], 'connection': connection}
+    def read_holdings(ib, connection):
+        try:
+            return lookup(ib, connection)
+        except Exception:
+            # A positions/valuation failure must not masquerade as a logout.
+            return {'ok': True, 'holdings': None, 'account': connection['mode'],
+                    'connection': connection, 'holdings_message':
+                    'Gateway is connected, but holdings could not be refreshed. Try Refresh again.'}
     try:
-        fresh = with_broker(lookup)
-    except Exception as exc:                      # noqa: BLE001 - any broker failure
-        # Gateway down, wrong account, timeout: fall back to the last good read
-        # rather than showing nothing. Never silently: the caller gets stale=True
-        # plus the timestamp it was actually read, and the UI must label it.
-        cached = read_json(DATA / 'holdings.json', None)
-        if not cached:
-            raise
-        return {**cached, 'ok': True, 'stale': True,
-                'reason': str(exc) or 'Gateway could not be reached.'}
-    atomic_json(DATA / 'holdings.json', fresh)
-    return {**fresh, 'stale': False}
+        return gateway.with_connection(read_holdings, mode)
+    except gateway.Unavailable as exc:
+        return {'ok': True, 'holdings': None, 'connection': exc.connection}
+    except Exception:
+        return {'ok': True, 'holdings': None, 'connection': gateway.disconnected(
+            'Your holdings could not be refreshed. Check IB Gateway and try again.', 'unavailable')}
 
 
 def api(action, p):
     if action=='bootstrap': return bootstrap()
-    if action=='search': return search(p.get('query',''),p.get('online',False))
+    if action=='search': return search(p.get('query',''),p.get('online',False),'auto')
     if action=='resolve': return resolve(p)
     if action=='save':
         rows=validate_rows(p.get('rows'))
@@ -598,12 +586,12 @@ def api(action, p):
         with LOCK: atomic_json(DATA/'portfolio.json',{'rows':rows,'saved_at':saved})
         return {'ok':True,'saved_at':saved}
     if action=='refresh': return start_refresh(p.get('rows'))
-    if action=='verify': return start_verify(p.get('rows'))
+    if action=='verify': return start_verify(p.get('rows'),'auto')
     if action=='job':
         with LOCK:
             j=JOBS.get(p.get('job'))
             if j is None: raise ValueError('Refresh session expired. Start a new refresh.')
             return {'ok':True,**j}
-    if action=='holdings': return broker_holdings()
+    if action=='holdings': return broker_holdings('auto')
     if action=='analyze': return analyze_rows(p.get('rows'), auto_fetch=True)
     raise ValueError('Unknown workspace action.')

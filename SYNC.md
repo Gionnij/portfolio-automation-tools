@@ -1,16 +1,16 @@
-# Sharing Lens with Giulio
+# Downloading and updating Lens
 
 The private repository is **Gionnij/portfolio-automation-tools**.
-The current UI test build is on **`codex/lens-testing`**. Pulling `main`
-alone will not get the Lens changes. Accept the repository collaborator
-invitation and authenticate Git with your own GitHub account first.
+The current agreed version is on **`main`**. Accept the repository collaborator
+invitation and authenticate Git with your own GitHub account first. Contributors
+should also read [COLLABORATION.md](COLLABORATION.md).
 
 ## First download
 
 Use a new folder so an older installation can stay intact:
 
 ```bash
-git clone --branch codex/lens-testing https://github.com/Gionnij/portfolio-automation-tools.git ~/lens-testing
+git clone https://github.com/Gionnij/portfolio-automation-tools.git ~/lens-testing
 cd ~/lens-testing
 python3 -m venv .venv
 source .venv/bin/activate
@@ -36,8 +36,8 @@ or commit any local edits before switching branches; do not discard them.
 ```bash
 git status
 git fetch origin
-git switch codex/lens-testing
-git pull --ff-only origin codex/lens-testing
+git switch main
+git pull --ff-only origin main
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 python webdash.py
@@ -60,15 +60,11 @@ download caches are ignored by Git. Use your own Gateway and account data;
 there is no need to copy Giovanni's local state. Research drafts can be
 shared deliberately using the UI's JSON export/import.
 
-## Publication note for maintainers
+## Working on the code
 
-The first `codex/lens-testing` build is a snapshot published through the
-authenticated GitHub connector because local SSH authentication was unavailable.
-Its file tree is verified against the local development commit. Giovanni's
-development history remains on `codex/lens-portfolio-workspace`; `main` is
-unchanged. The snapshot and development branch have different commit histories.
-Do not force-push one over the other; publish subsequent testing updates on
-top of the existing testing branch, or merge their histories deliberately.
+Do not develop directly on `main`. Update `main`, create a feature branch, and
+send changes through a reviewed pull request. The complete daily routine and
+conflict guidance are in [COLLABORATION.md](COLLABORATION.md).
 
 ## Useful feedback
 

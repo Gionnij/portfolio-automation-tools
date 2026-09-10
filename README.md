@@ -1,8 +1,9 @@
 # Portfolio toolkit
 
-For the current Lens UI test build, use branch **`codex/lens-testing`**.
-Start with [SYNC.md](SYNC.md) to download it and [SETUP.md](SETUP.md) to run it
-against your own paper account. `main` still contains the earlier interface.
+The current shared version of Lens is on **`main`**. Start with
+[SYNC.md](SYNC.md) to download or update it and [SETUP.md](SETUP.md) to run it
+against your own paper account. Contributors should follow
+[COLLABORATION.md](COLLABORATION.md).
 
 Two tools: **X-Ray** (look-through analysis) and **Rebalancer** (monthly prep per the Operating Manual).
 
@@ -106,7 +107,7 @@ Open [Monthly investing](http://127.0.0.1:8642/rebalance). It starts in paper mo
    order. **Portfolio balance** compares current holdings with policy targets;
    **Checks & activity** explains flagged checks, market context and snapshots.
 3. Tick the individual orders you approve, open **Review selected orders**, and
-   type `EXECUTE` for paper or `EXECUTE LIVE` for live before sending.
+   enter your local approval PIN before sending.
 
 The account menu requires typing `LIVE` to switch to real money. The `•••`
 **Account tools** menu contains saved-snapshot reload, discard of an unsubmitted

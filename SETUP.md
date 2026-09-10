@@ -1,7 +1,7 @@
 # Run and test Lens
 
-Start with [SYNC.md](SYNC.md) to download **`codex/lens-testing`** from the
-private repository. The tested environment is **Python 3.12**, with package
+Start with [SYNC.md](SYNC.md) to download **`main`** from the private repository.
+The tested environment is **Python 3.12**, with package
 versions recorded in `requirements.txt`. No Node.js or frontend build is
 needed to run the app.
 
@@ -59,8 +59,9 @@ and some funds still require a manual file or download link.
    usable, but submission should be blocked with the exact funding gap and
    the available funding options.
 5. **Paper orders:** generate a funded preview, select the orders you want,
-   choose **Review selected orders**, type `EXECUTE`, then **Send paper orders**.
-   Inspect broker results and refresh **Portfolio balance** to check holdings.
+   choose **Review selected orders**, set or enter your local approval PIN, then
+   **Send paper orders**. Inspect broker results and refresh **Portfolio
+   balance** to check holdings.
 
 The portfolio table defaults to held value descending, then target descending,
 then ticker alphabetically. Unheld positions appear at the bottom. Gateway
@@ -74,9 +75,9 @@ values are unavailable.
 - The entered cash budget may include money already deposited. Do not add
   the displayed cash balance a second time. XEON deployment is separate and
   proposes selling some of that holding.
-- Whole shares, minimum purchases and allocation rules leave cash uninvested.
-  Changing the budget recalculates each fund's allocation before rounding;
-  leftover cash is not automatically redistributed in a second pass.
+- Whole shares, minimum purchases and allocation rules can leave cash
+  uninvested. A capped second pass revisits eligible allocation gaps, but it
+  does not override portfolio limits or force uneconomic purchases.
 - Portfolio percentages cover policy holdings and exclude uninvested cash.
   Prices, execution amounts and fees can differ from preview estimates.
 - Orders already open at IBKR block another submission. Check broker status
@@ -98,5 +99,5 @@ node --test tests/test_investing_ui.cjs
 ```
 
 Node.js is needed only for the second test command. The current app changes
-passed 65 Python tests and 11 JavaScript tests on Giovanni's machine.
+passed 97 Python tests and 15 JavaScript tests on Giovanni's machine.
 See [UI-NOTES.md](UI-NOTES.md) for implementation details and limitations.

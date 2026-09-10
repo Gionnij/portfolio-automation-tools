@@ -4,7 +4,7 @@
     python webdash.py          # opens http://127.0.0.1:8642 in your browser
 
 From the page you can:
-  * pick Paper (port 4002) or LIVE (port 4001)  - host fixed to 127.0.0.1
+  * follow the connected Gateway: Paper (4002) or LIVE (4001), on 127.0.0.1
   * set contribution / deploy / min-order
   * read EUR cash and XEON holdings from Gateway without preparing a plan
   * "Preview my plan" -> runs fetch_prices.py + rebalance.py DRY RUN, shows the
@@ -44,6 +44,7 @@ from urllib.parse import urlsplit
 
 import workspace
 import balances
+import gateway
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
@@ -409,6 +410,8 @@ def check_funding(account, chosen):
         b = api_balances({'account': account})
     except (ValueError, OSError, ConnectionError) as exc:
         return {'allowed': False, 'reason': 'unavailable', 'message': str(exc)}, None
+    if b.get('read_only') is True:
+        return {'allowed': False, 'reason': 'read_only', 'message': gateway.READ_ONLY_HELP}, b
     cash = b.get('cash')
     if b.get('account') != account or cash is None or not math.isfinite(cash):
         return {'allowed': False, 'reason': 'unavailable', 'message': 'EUR cash could not be verified for this account.'}, b
@@ -533,6 +536,17 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript'}
+        if self.path in assets:
+            body = (HERE / self.path[1:]).read_bytes()
+            self.send_response(200)
+            self.send_header('Content-Type', assets[self.path] + '; charset=utf-8')
+            self.send_header('Cache-Control', 'no-store')
+            self.send_header('X-Content-Type-Options', 'nosniff')
+            self.send_header('Content-Length', str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
         if self.path == '/manual':
             source = (HERE / 'portfolio_operating_manual.md').read_text()
             body = ('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
@@ -599,6 +613,8 @@ class Handler(BaseHTTPRequestHandler):
                     self._json(action(payload))
                 finally:
                     ACTION_LOCK.release()
+            elif self.path == "/api/gateway":
+                self._json({'ok': True, 'connection': gateway.status()})
             elif self.path == "/api/pin":
                 self._json(api_pin(payload))
             elif self.path == "/api/where":

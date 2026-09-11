@@ -45,6 +45,7 @@ from urllib.parse import urlsplit
 import workspace
 import balances
 import gateway
+import data_export
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
@@ -536,7 +537,8 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript'}
+        assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript',
+                  '/data-backup.js': 'text/javascript'}
         if self.path in assets:
             body = (HERE / self.path[1:]).read_bytes()
             self.send_response(200)
@@ -560,8 +562,9 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
             return
-        if self.path in ("/", "/index.html", "/rebalance"):
-            body = (HERE / ("investing.html" if self.path == "/rebalance" else "workspace.html")).read_bytes()
+        if self.path in ("/", "/index.html", "/rebalance", "/data-backup"):
+            page = {"/rebalance": "investing.html", "/data-backup": "data-backup.html"}.get(self.path, "workspace.html")
+            body = (HERE / page).read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             # Without this the browser caches the page heuristically and keeps
@@ -601,7 +604,28 @@ class Handler(BaseHTTPRequestHandler):
             self._json({"ok": False, "error": "Expected a JSON object."}, 400)
             return
         try:
-            if self.path.startswith("/api/workspace/"):
+            if self.path == "/api/data/export":
+                if not ACTION_LOCK.acquire(blocking=False):
+                    self._json({"ok": False, "error": "An investing action is running. Wait for it to finish, then download again."}, 409)
+                    return
+                try:
+                    with workspace.LOCK:
+                        archive, filename = data_export.build_export(HERE)
+                finally:
+                    ACTION_LOCK.release()
+                with archive:
+                    archive.seek(0, 2)
+                    size = archive.tell()
+                    archive.seek(0)
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/zip")
+                    self.send_header("Content-Disposition", f'attachment; filename="{filename}"')
+                    self.send_header("Cache-Control", "no-store")
+                    self.send_header("X-Content-Type-Options", "nosniff")
+                    self.send_header("Content-Length", str(size))
+                    self.end_headers()
+                    shutil.copyfileobj(archive, self.wfile)
+            elif self.path.startswith("/api/workspace/"):
                 self._json(workspace.api(self.path.rsplit("/", 1)[-1], payload))
             elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo", "/api/balances", "/api/review", "/api/orders"):
                 if not ACTION_LOCK.acquire(blocking=False):

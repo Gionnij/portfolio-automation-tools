@@ -48,3 +48,7 @@ state.backup.json
 
 # local PIN (hash only, never the digits)
 .pin.json
+
+# Encrypted backups and their separate recovery keys
+*.lensbackup
+lens-recovery-*.txt

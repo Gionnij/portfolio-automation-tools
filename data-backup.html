@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data &amp; backup · Lens</title>
+<link rel="stylesheet" href="/shell.css">
+<style>
+*{box-sizing:border-box}body{margin:0}h1{font:38px/1.2 Georgia,serif;letter-spacing:-1px;margin:0 0 14px}h2{font:24px/1.3 Georgia,serif;margin:0 0 12px}p{margin:0 0 16px;color:var(--muted);line-height:1.7}.intro{max-width:660px;margin-bottom:30px}.data-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px}.data-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px;min-width:0}.data-card ul{padding-left:20px;color:var(--muted);line-height:1.9;margin:18px 0 24px}button{font:inherit;cursor:pointer;padding:12px 18px;border:1px solid var(--line);border-radius:9px;min-height:44px}button:disabled{opacity:.6;cursor:wait}.small-note{font-size:12px;margin:14px 0 0}.location-row{padding:15px 0;border-bottom:1px solid var(--line)}.location-row:last-child{border:0;padding-bottom:0}.location-row strong{display:block;font-weight:600;margin-bottom:4px}.location-row span{color:var(--muted);font-size:13px}.backup-note{margin-top:24px;padding:22px 26px;border:1px solid var(--line);border-radius:12px}.backup-note p{margin:0}.backup-note strong{color:var(--ink)}#download-status{margin:16px 0 0;color:var(--accent)}#download-error{margin:16px 0 0;color:var(--red)}#download-status:empty,#download-error:empty{display:none}@media(max-width:1000px){.data-grid{grid-template-columns:1fr}}@media(max-width:620px){h1{font-size:32px}.data-card{padding:22px}.backup-note{padding:20px}}
+</style>
+<style>
+.backup-card{margin-bottom:24px}.backup-card p{max-width:680px}.backup-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}dialog{width:min(560px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding:28px;border:1px solid var(--line);border-radius:16px;background:var(--paper);color:var(--ink)}dialog::backdrop{background:#15241bb3}dialog h2{margin-top:0}.key-label{display:block;font-size:13px;font-weight:600;margin:18px 0 8px}#recovery-key{display:block;width:100%;resize:none;min-height:104px;padding:13px;border:1px solid var(--line);border-radius:9px;font:15px/1.6 ui-monospace,monospace;background:var(--surface-subtle);color:var(--ink);overflow-wrap:anywhere}.key-confirm{display:flex;align-items:flex-start;gap:10px;margin-top:22px;font-size:13px;line-height:1.6}.key-confirm input{flex-shrink:0;margin-top:4px;width:18px;height:18px}.backup-id{font-size:12px;overflow-wrap:anywhere}#backup-error{color:var(--red)}#backup-status,#key-status{color:var(--accent)}#backup-error:empty,#backup-status:empty,#key-status:empty{display:none}.backup-note{margin-bottom:0}@media(max-width:620px){dialog{padding:22px}.backup-actions button{flex:1 1 auto}}
+</style>
+</head>
+<body>
+<aside class="sidebar"><a class="brand" href="/" aria-label="Lens home"><span class="brandmark" aria-hidden="true"></span>lens<span class="brand-dot">.</span></a><div class="nav-label">YOUR WORKSPACE</div><nav class="nav" aria-label="Main navigation"><a id="nav-portfolio" href="/#portfolio"><span class="nav-icon" aria-hidden="true">◫</span>Your portfolio</a><a id="nav-xray" href="/#xray"><span class="nav-icon" aria-hidden="true">◎</span>Portfolio X-Ray</a><a id="nav-sources" href="/#sources"><span class="nav-icon" aria-hidden="true">▤</span>Data sources</a><a href="/rebalance"><span class="nav-icon" aria-hidden="true">⇄</span>Monthly investing</a><a href="/data-backup" class="active" aria-current="page"><span class="nav-icon" aria-hidden="true">↓</span>Data &amp; backup</a></nav></aside>
+<main class="main">
+<div class="topbar"><div class="top-actions"><details class="gateway-menu" id="gateway-menu" data-state="checking"><summary class="gateway-toggle" id="gateway-toggle" aria-label="IBKR connection details"><span class="gateway-dot" aria-hidden="true"></span><span id="account-label" aria-live="polite">Connecting…</span><span class="gateway-chevron" aria-hidden="true">⌄</span></summary><div class="gateway-panel"><p class="eyebrow">IBKR Gateway</p><strong id="gateway-title">Checking IB Gateway…</strong><p id="gateway-detail">Lens follows the account connected in IB Gateway.</p><p id="gateway-issue" hidden></p><button id="gateway-refresh" type="button" onclick="refreshDataGateway()">Refresh connection</button><details><summary>Connection & trading access</summary><p>Sign in to IB Gateway. Live uses port 4001; paper uses port 4002. Keep one Gateway connected. To switch accounts, log out and switch in Gateway; Lens follows automatically.</p><p>For trading, open Configure → Settings → API → Settings, untick Read-Only API and apply. You can still view holdings with it ticked.</p></details></div></details></div></div>
+<div class="intro"><h1>Data &amp; backup</h1><p>Your portfolio and investing plan are saved on this computer. Keep a copy you can take with you.</p></div>
+<section class="data-card backup-card" aria-labelledby="backup-title">
+<h2 id="backup-title">Keep a protected copy</h2>
+<p>Create an encrypted backup of the same saved data listed below. You’ll get a recovery key to keep separately. Anyone restoring this backup will need that key.</p>
+<button class="primary" id="create-backup" type="button">Create encrypted backup</button>
+<p class="small-note">Save your portfolio edits first. Backup import is not available yet.</p>
+<p id="backup-page-status" class="small-note" role="status" aria-live="polite"></p>
+</section>
+<div class="data-grid">
+<section class="data-card" aria-labelledby="download-title">
+<h2 id="download-title">Everything you’ve saved</h2>
+<p>Download your saved Lens data together in one ZIP file.</p>
+<ul><li>Portfolio drafts, operating manual and investing rules</li><li>Saved live and paper investment records and reports</li><li>Downloaded fund holdings and price data</li><li>An inventory of the files included</li></ul>
+<button class="primary" id="download-data" type="button">Download all data</button>
+<p class="small-note">Save any portfolio edits first. This includes data saved in this Lens installation, not unsaved edits or records held only by your broker.</p>
+<p class="small-note">The ZIP is not encrypted and may contain account details. Keep it somewhere private. PIN and credential files are excluded.</p>
+<p id="download-status" role="status" aria-live="polite"></p>
+<p id="download-error" role="alert"></p>
+</section>
+<section class="data-card" aria-labelledby="location-title">
+<h2 id="location-title">Where your data goes</h2>
+<div class="location-row"><strong>Portfolio, plan &amp; saved records</strong><span>Stored on this computer.</span></div>
+<div class="location-row"><strong>Orders you approve</strong><span>Sent to your connected broker.</span></div>
+<div class="location-row"><strong>Fund holdings &amp; price updates</strong><span>Retrieved online from data providers.</span></div>
+<div class="location-row"><strong>Maps &amp; visual resources</strong><span>Some research views load these online.</span></div>
+<div class="location-row"><strong>Your download</strong><span>Created on this computer and handed to your browser. It is not uploaded by Lens. Your chosen download folder may sync through another service.</span></div>
+</section>
+</div>
+<div class="backup-note"><p><strong>Backup import is not available yet.</strong> Keep your backup and its matching recovery key for future recovery. Lens cannot recover a lost key or verify where your browser saves downloads. Keep a backup copy beyond this computer, with the key stored separately.</p></div>
+</main>
+<dialog id="backup-dialog" aria-labelledby="recovery-title" aria-describedby="recovery-help">
+<h2 id="recovery-title">Save your recovery key</h2>
+<p id="recovery-help">This key unlocks this backup. Save it in your password manager or another safe place, separate from the backup. Lens does not keep a copy and cannot replace a lost key.</p>
+<p id="backup-id" class="backup-id"></p>
+<label for="recovery-key" class="key-label">Recovery key</label>
+<textarea id="recovery-key" readonly spellcheck="false" autocomplete="off" aria-label="Recovery key"></textarea>
+<div class="backup-actions"><button id="copy-recovery" type="button">Copy key</button><button id="download-recovery" type="button">Download key file</button></div>
+<p id="key-status" class="small-note" role="status" aria-live="polite"></p>
+<label class="key-confirm"><input id="recovery-confirmed" type="checkbox">I’ve saved this key somewhere safe, separate from the backup.</label>
+<div class="backup-actions"><button class="primary" id="download-backup" type="button" disabled>Download encrypted backup</button><button id="close-backup" type="button">Cancel</button></div>
+<p id="backup-status" class="small-note" role="status" aria-live="polite"></p>
+<p id="backup-error" class="small-note" role="alert"></p>
+</dialog>
+<script src="/shell.js"></script>
+<script src="/data-backup.js"></script>
+</body>
+</html>

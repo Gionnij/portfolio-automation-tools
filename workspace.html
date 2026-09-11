@@ -324,7 +324,7 @@ async function resetDraft(empty){
 }
 window.addEventListener('hashchange',()=>view(location.hash.slice(1)));
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
-(async()=>{try{const d=await api('bootstrap');rows=d.rows;manual=d.catalog;$('manual-version').textContent='Operating manual '+(d.manual_version||'');renderPortfolio();view(location.hash.slice(1)||'portfolio');$('draft-origin').textContent=d.origin==='manual'?'Starting from your operating manual · edit freely':'Your saved research portfolio';$('save-state').textContent=d.origin==='saved'?'Saved on this computer':'Research draft · separate from your trading policy';if(d.saved_at)$('saved-time').textContent='Saved '+dateLabel(d.saved_at)}catch(e){showError(e);$('draft-origin').textContent='Could not load your portfolio. Check the local server.'}})();
+(async()=>{try{const d=await api('bootstrap');rows=d.rows;manual=d.catalog;report=d.report||null;reportRevision=report&&!d.report_stale?revision:-1;if(report)renderReport();$('manual-version').textContent='Operating manual '+(d.manual_version||'');renderPortfolio();view(location.hash.slice(1)||'portfolio');$('draft-origin').textContent=d.origin==='manual'?'Starting from your operating manual · edit freely':'Your saved research portfolio';$('save-state').textContent=d.origin==='saved'?'Saved on this computer':'Research draft · separate from your trading policy';if(d.saved_at)$('saved-time').textContent='Saved '+dateLabel(d.saved_at)}catch(e){showError(e);$('draft-origin').textContent='Could not load your portfolio. Check the local server.'}})();
 
 /* ---- allocation ring: hover to identify a slice -------------------------
    The ring is a CSS conic-gradient on one element, so there are no slice
@@ -468,16 +468,16 @@ function openRingDialog(){
   $('ring-dialog').showModal();
   mEnsureXray();
 }
-/* The inner ring needs the X-Ray look-through, which lives in memory only and
-   is gone after a reload. Fetch it on demand rather than making the user know
-   to press Run X-Ray first. Same endpoint, same data - no orders, read only. */
+/* Reuse the restored X-Ray for the inner ring. On the first visit, generate
+   and save it on demand through the same research analysis endpoint. */
 function mEnsureXray(){
   if(report||mBusy)return;
   const total=rows.reduce((a,r)=>a+Number(r.weight||0),0);
   if(!rows.length||rows.some(r=>!(r.weight>0))||Math.abs(total-100)>.01){
     mErr='Set positive allocations totalling 100% to look inside your funds.';mPaint();return;}
   mBusy=true; mErr=''; mPaint();
-  api('analyze',{rows}).then(d=>{report=d;mBusy=false;
+  const rev=revision;
+  api('analyze',{rows}).then(d=>{report=d;reportRevision=rev;renderReport();mBusy=false;
       if($('ring-dialog').open){mPaint();}})
     .catch(e=>{mBusy=false;mErr='Could not read holdings: '+((e&&e.message)||e);
       if($('ring-dialog').open){mPaint();}});

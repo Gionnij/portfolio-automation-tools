@@ -85,6 +85,12 @@ choose the right listing, and enter percentages totaling 100%. Run X-Ray to
 see combined holdings and overlap. **Data sources** lets you verify all fund
 identities with the paper Gateway and refresh supported provider downloads.
 
+The last completed X-Ray is saved automatically on this computer and restored
+when you return, reload the page or restart Lens. Changes to the saved portfolio,
+holdings data or operating manual mark it as an earlier snapshot; choose
+**Update X-Ray** to replace it. Running an X-Ray does not save portfolio edits:
+use **Save portfolio** to keep those too. The saved X-Ray is included in backups.
+
 Automatic sources currently cover the original iShares, Global X and SPDR
 funds (10 equity ETFs). Other funds retain their existing files or accept a
 provider download link. Missing data is explicitly counted as unknown.

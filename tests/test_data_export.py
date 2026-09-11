@@ -31,7 +31,7 @@ class ExportTests(unittest.TestCase):
                     'state.live.json', 'state.paper.pending', 'state.undo.json',
                     'orders.live.json', 'orders_approved.paper.json', 'orders_result.json',
                     'prep_report.live.md', 'prices.csv', 'positions-demo.csv',
-                    '.workspace/portfolio.json', '.workspace/identities.json',
+                    '.workspace/portfolio.json', '.workspace/identities.json', '.workspace/xray.json',
                     '.workspace/IE00B4K48X80.csv', '.workspace/IE00B4K48X80.json',
                     '.workspace/manual-v1-backup/manual.json', 'holdings/ETF.xlsx']
         excluded = ['.pin.json', '.env', '.git/config', 'webdash.py',

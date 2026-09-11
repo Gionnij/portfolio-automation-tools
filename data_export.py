@@ -19,7 +19,7 @@ RECORD = re.compile(
     r'orders(?:_approved|_result)?(?:\.[\w-]+)*\.json|'
     r'prep_report(?:\.[\w-]+)*\.md|(?:positions|pos)[\w.-]*\.csv)\Z')
 WORKSPACE_FILE = re.compile(
-    r'(?:portfolio|identities|manual|holdings(?:\.(?:live|paper))?)\.json\Z|'
+    r'(?:portfolio|xray|identities|manual|holdings(?:\.(?:live|paper))?)\.json\Z|'
     r'[A-Z]{2}[A-Z0-9]{9}[0-9]\.(?:csv|json)\Z')
 
 

@@ -132,9 +132,20 @@ their original layout inside `data/`; `README.txt` explains scope and limitation
 Save research edits before navigating away. Unsaved edits, PIN/credential files,
 code, files outside this installation, and records held only by IBKR are excluded.
 The ZIP is **not encrypted** and may contain account details. Lens creates it
-locally; the browser chooses where to save it. No automatic restore or encrypted
-backup is implemented yet. Do not copy pending approvals or orders into a running
-installation. Export never prepares, submits or cancels investments.
+locally; the browser chooses where to save it.
+
+Choose **Create encrypted backup** for a protected `.lensbackup` file instead.
+Save the generated recovery key separately (for example in a password manager),
+confirm you have saved it, then download the backup. Each backup has its own key.
+Lens does not store or receive that key and cannot replace it if lost. The key
+text file is unencrypted; do not keep it together with your encrypted backup.
+Encryption happens in the browser using Web Crypto, with a 256 MiB export limit.
+No extra packages are required. [BACKUP-FORMAT.md](BACKUP-FORMAT.md) documents the
+versioned format so future recovery can decrypt these files.
+
+Backup import is not implemented yet. Do not copy pending approvals or orders
+into a running installation. Export/backup never prepares, submits or cancels
+investments. Protection applies to the downloaded backup, not the original files.
 
 Restart Lens after installing this update. Export waits for workspace writes and
 refuses while an investing action is running. Avoid command-line tools that write

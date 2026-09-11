@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lens · Monthly investing</title>
+<html lang="en"><head><script src="/theme.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lens · Monthly investing</title>
 <style>
 /* All account-colored UI uses these tokens. The live palette overrides the
    complete set, so components, hover/focus states and legends stay in sync. */
@@ -19,7 +19,7 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 button,input,select{font:inherit}
 button,a,input,select,summary{-webkit-tap-highlight-color:transparent}
-button{cursor:pointer;background:white;border:1px solid var(--line);border-radius:10px;padding:10px 15px;color:var(--ink);font-weight:550}
+button{cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 15px;color:var(--ink);font-weight:550}
 button:hover{background:var(--surface-hover)}
 button:disabled{opacity:.45;cursor:not-allowed}
 button.primary{background:var(--accent);color:white;border-color:var(--accent)}
@@ -38,7 +38,7 @@ h3{font-size:14px}
 p{color:var(--muted)}
 .note{font-size:12px;line-height:1.6}
 .eyebrow{font-size:10px;font-weight:650;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:11px}
-.sidebar{position:fixed;inset:0 auto 0 0;width:226px;padding:36px 23px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:5}
+.sidebar{position:fixed;inset:0 auto 0 0;width:226px;padding:36px 23px;background:var(--paper);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:5}
 .brand{font:43px/1 Georgia,serif;letter-spacing:-2px;display:flex;align-items:center;gap:12px;color:var(--ink)}
 .brandmark{width:31px;height:31px;border:1.5px solid var(--accent);border-radius:50%;position:relative;display:inline-block}
 .brandmark:after{content:'';position:absolute;inset:5px -5px 5px 11px;border:1.5px solid var(--accent);border-radius:50%;background:#fff9}
@@ -80,7 +80,7 @@ body.live{
 .step.current b{background:var(--accent);border-color:var(--accent);color:#fff}
 .step.done b{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-soft)}
 .plan-layout{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}.composer{display:grid;grid-template-columns:310px minmax(0,1fr);gap:0;align-items:stretch}.comp-col:first-child{border-right:1px solid var(--accent-border);padding-right:26px}.comp-col:last-child{padding-left:34px}.chartpanel{padding:4px 0 16px;position:relative}.chartpanel>#balance-refresh{position:absolute;top:-4px;right:0;z-index:1}.amount-row{display:flex;align-items:center;gap:14px;margin:18px 0 6px;padding-bottom:10px}.amount-row .money-input{flex:1 1 auto;min-width:0}.amount-row .primary{flex:0 0 auto;white-space:nowrap;padding:9px 18px;font-size:13px;align-self:flex-end;margin-bottom:4px}.chartpanel .snap-figs{display:flex;gap:28px;justify-content:flex-start;font-size:12px;margin-bottom:13px}.chartpanel .snap-figs b{font-weight:650;font-size:20px;margin-left:8px;letter-spacing:-.4px}.chartpanel .snap-bar{height:16px;border-radius:9px;min-width:0}.snap-plan{font-size:12px;margin:13px 0 0;color:var(--ink)}.snap-plan b{font-weight:650}.chartpanel #snapshot-date{margin-top:10px}#cash-label,#cash-value{display:none}.comp-col{min-width:0}#amount-warn{color:#9a492b;margin-top:9px}.snap-figs{display:flex;gap:18px;justify-content:flex-end;font-size:11px;margin-bottom:7px}.snap-figs b{font-weight:650;font-size:13px;margin-left:6px}.snap-key{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:6px}.snap-bar{display:flex;height:8px;border-radius:8px;overflow:hidden;background:#eef1e9;min-width:210px}.snap-seg{height:100%}@media(max-width:1000px){.composer{grid-template-columns:1fr;gap:24px}.comp-col:first-child{border-right:0;padding-right:0}.comp-col:last-child{padding-left:0}}
-.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
 .composer{padding:25px 24px}
 .composer p{margin-top:10px}
 .money-input{display:flex;align-items:center;margin:0;padding:0;gap:9px}
@@ -106,7 +106,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .options{font-size:12px;padding-top:4px;margin-top:20px}
 .options summary{color:var(--muted);cursor:pointer}
 .field{display:block;margin-top:16px;font-size:12px}
-.field input:not([type=checkbox]),.field select,.search{margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%;background:#fff;color:var(--ink)}
+.field input:not([type=checkbox]),.field select,.search{margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%;background:var(--paper);color:var(--ink)}
 .field small{display:block;color:var(--muted);font-size:11px;margin-top:5px;line-height:1.5}
 .checkline{display:flex;gap:9px;align-items:center;margin-top:17px;font-size:12px}
 .checkline input,input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px;flex-shrink:0}
@@ -167,7 +167,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .section-head p{font-size:12px;margin-top:8px}
 .balance-tools{display:flex;gap:9px;max-width:460px}
 .balance-tools .search{width:205px;margin:0;font-size:12px}
-.balance-tools select{border:1px solid var(--line);border-radius:8px;padding:9px;background:#fff;font-size:12px;color:var(--ink);min-width:0}
+.balance-tools select{border:1px solid var(--line);border-radius:8px;padding:9px;background:var(--paper);font-size:12px;color:var(--ink);min-width:0}
 .holdings-status{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:17px;flex-wrap:wrap}
 .holdings-status .snapshot-banner{margin:0;flex:1;min-width:190px}
 .holdings-status button{flex-shrink:0}
@@ -365,7 +365,7 @@ h1{font-size:37px;letter-spacing:-1.4px}
 </style><link rel="stylesheet" href="/shell.css"></head><body>
 <aside class="sidebar"><a class="brand" href="/" aria-label="Lens home"><span class="brandmark" aria-hidden="true"></span>lens<span class="brand-dot">.</span></a><div class="nav-label">YOUR WORKSPACE</div><nav class="nav" aria-label="Main navigation"><a href="/#portfolio"><span class="nav-icon" aria-hidden="true">◫</span>Your portfolio</a><a href="/#xray"><span class="nav-icon" aria-hidden="true">◎</span>Portfolio X-Ray</a><a href="/#sources"><span class="nav-icon" aria-hidden="true">▤</span>Data sources</a><a class="active" aria-current="page" href="/rebalance"><span class="nav-icon" aria-hidden="true">⇄</span>Monthly investing</a><a href="/data-backup"><span class="nav-icon" aria-hidden="true">↓</span>Data &amp; backup</a></nav></aside>
 <main class="main">
-<div class="topbar"><div class="top-actions"><details class="gateway-menu" id="gateway-menu" data-state="checking"><summary class="gateway-toggle" id="gateway-toggle" aria-label="IBKR connection details"><span class="gateway-dot" aria-hidden="true"></span><span id="account-label" aria-live="polite">Connecting…</span><span class="gateway-chevron" aria-hidden="true">⌄</span></summary><div class="gateway-panel"><p class="eyebrow">IBKR Gateway</p><strong id="gateway-title">Checking IB Gateway…</strong><p id="gateway-detail">Lens follows the account connected in IB Gateway.</p><p id="gateway-issue" hidden></p><p id="live-strip" class="gateway-live-note" hidden>Live account · real money. Approved orders go to your live IBKR account.</p><button id="gateway-refresh" type="button" onclick="refreshGateway()">Refresh connection</button><details><summary>Connection & trading access</summary><p>Sign in to IB Gateway. Live uses port 4001; paper uses port 4002. Keep one Gateway connected. To switch accounts, log out and switch in Gateway; Lens follows automatically.</p><p>For trading, open Configure → Settings → API → Settings, untick Read-Only API and apply. You can still view holdings with it ticked.</p></details></div></details><button class="quiet small" data-idle onclick="openTools()" aria-label="Account tools">•••</button></div></div>
+<div class="topbar"><div class="top-actions"><select id="theme-select" class="theme-select" aria-label="Color theme" title="Color theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select><details class="gateway-menu" id="gateway-menu" data-state="checking"><summary class="gateway-toggle" id="gateway-toggle" aria-label="IBKR connection details"><span class="gateway-dot" aria-hidden="true"></span><span id="account-label" aria-live="polite">Connecting…</span><span class="gateway-chevron" aria-hidden="true">⌄</span></summary><div class="gateway-panel"><p class="eyebrow">IBKR Gateway</p><strong id="gateway-title">Checking IB Gateway…</strong><p id="gateway-detail">Lens follows the account connected in IB Gateway.</p><p id="gateway-issue" hidden></p><p id="live-strip" class="gateway-live-note" hidden>Live account · real money. Approved orders go to your live IBKR account.</p><button id="gateway-refresh" type="button" onclick="refreshGateway()">Refresh connection</button><details><summary>Connection & trading access</summary><p>Sign in to IB Gateway. Live uses port 4001; paper uses port 4002. Keep one Gateway connected. To switch accounts, log out and switch in Gateway; Lens follows automatically.</p><p>For trading, open Configure → Settings → API → Settings, untick Read-Only API and apply. You can still view holdings with it ticked.</p></details></div></details><button class="quiet small" data-idle onclick="openTools()" aria-label="Account tools">•••</button></div></div>
 <section id="connection-empty" class="connection-empty" hidden><h2>Your account, when you’re ready.</h2><p>Connect IB Gateway to view your balance and plan your next investment.</p><button onclick="openGatewayMenu()">Connection details</button></section>
 <div id="account-content" hidden>
 <div class="tabs" role="tablist" aria-label="Monthly investing views"><button class="tab" role="tab" id="tab-plan" aria-controls="panel-plan" aria-selected="true" onclick="switchTab('plan')">This month’s plan</button><button class="tab" role="tab" id="tab-balance" aria-controls="panel-balance" aria-selected="false" tabindex="-1" onclick="switchTab('balance')">Portfolio balance</button><button class="tab" role="tab" id="tab-checks" aria-controls="panel-checks" aria-selected="false" tabindex="-1" onclick="switchTab('checks')">Checks & activity</button></div>

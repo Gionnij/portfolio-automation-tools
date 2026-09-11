@@ -537,7 +537,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript',
+        assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript', '/theme.js': 'text/javascript',
                   '/data-backup.js': 'text/javascript'}
         if self.path in assets:
             body = (HERE / self.path[1:]).read_bytes()

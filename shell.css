@@ -67,3 +67,4 @@ body{--green:var(--accent);--soft:var(--accent-soft)}
 button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 button.primary:hover{background:var(--accent-hover)}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+@media(max-width:620px){.nav{grid-template-columns:repeat(auto-fit,minmax(95px,1fr))}}

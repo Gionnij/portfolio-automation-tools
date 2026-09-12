@@ -80,7 +80,19 @@ python -m pip install -r requirements.txt
 python webdash.py
 ```
 
-Open [Lens locally](http://127.0.0.1:8642). Add tickers or search by ISIN,
+Open [Lens locally](http://127.0.0.1:8642) to create your personal space with an
+optional first name. Return visits open your home directly, with links to your
+saved research portfolio, X-Ray, operating manual and monthly investing. You can
+change or remove the first name under **Personal details**.
+
+One profile is saved per Lens installation in the private, Git-ignored
+`.workspace/profile.json`; it is shared across browsers using that installation
+and included in data exports and encrypted backups. Creating a space keeps all
+existing portfolio and policy files intact and contacts no broker or provider.
+It adds no login, app lock, file encryption or trading approval. The color theme
+continues to be a per-browser preference. Backup import remains deferred.
+
+Open **Your portfolio** (at `/workspace#portfolio`) to add tickers or search by ISIN,
 choose the right listing, and enter percentages totaling 100%. Run X-Ray to
 see combined holdings and overlap. **Data sources** lets you verify all fund
 identities with the paper Gateway and refresh supported provider downloads.

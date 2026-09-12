@@ -35,7 +35,7 @@ test('other tabs synchronize changes and clearing storage restores system mode',
   p.windowEvents.storage({key:null,newValue:null});assert.equal(p.select.value,'system');
 });
 test('every app page initializes theme in its head and exposes the same control',()=>{
-  for(const file of ['workspace.html','investing.html','data-backup.html']){
+  for(const file of ['workspace.html','investing.html','data-backup.html','personal-space.html']){
     const html=fs.readFileSync(path.join(__dirname,'..',file),'utf8');
     assert.match(html,/<head>[\s\S]*?<script src="\/theme.js"><\/script>[\s\S]*?<\/head>/);
     assert.match(html,/<select id="theme-select"[^>]+aria-label="Color theme"/);

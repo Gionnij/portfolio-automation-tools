@@ -46,6 +46,7 @@ import workspace
 import balances
 import gateway
 import data_export
+import personal_space
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
@@ -538,7 +539,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript', '/theme.js': 'text/javascript',
-                  '/data-backup.js': 'text/javascript'}
+                  '/data-backup.js': 'text/javascript', '/personal-space.js': 'text/javascript'}
         if self.path in assets:
             body = (HERE / self.path[1:]).read_bytes()
             self.send_response(200)
@@ -554,7 +555,7 @@ class Handler(BaseHTTPRequestHandler):
             body = ('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
                     '<title>Portfolio operating manual</title><style>body{max-width:1000px;margin:40px auto;padding:20px;'
                     'font:16px/1.6 system-ui;background:#f7f8f2;color:#24382b}pre{white-space:pre-wrap;overflow-wrap:anywhere;'
-                    'font:14px/1.7 ui-monospace,monospace}a{color:#426348}</style><a href="/">← Portfolio</a><pre>'
+                    'font:14px/1.7 ui-monospace,monospace}a{color:#426348}</style><a href="/">← Your space</a><pre>'
                     + html.escape(source) + '</pre>').encode()
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')
@@ -562,8 +563,9 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
             return
-        if self.path in ("/", "/index.html", "/rebalance", "/data-backup"):
-            page = {"/rebalance": "investing.html", "/data-backup": "data-backup.html"}.get(self.path, "workspace.html")
+        if self.path in ("/", "/index.html", "/workspace", "/rebalance", "/data-backup"):
+            page = {"/rebalance": "investing.html", "/data-backup": "data-backup.html",
+                    "/workspace": "workspace.html"}.get(self.path, "personal-space.html")
             body = (HERE / page).read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -625,6 +627,8 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_header("Content-Length", str(size))
                     self.end_headers()
                     shutil.copyfileobj(archive, self.wfile)
+            elif self.path.startswith("/api/space/"):
+                self._json(personal_space.api(self.path.rsplit("/", 1)[-1], payload))
             elif self.path.startswith("/api/workspace/"):
                 self._json(workspace.api(self.path.rsplit("/", 1)[-1], payload))
             elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo", "/api/balances", "/api/review", "/api/orders"):

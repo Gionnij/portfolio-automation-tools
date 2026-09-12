@@ -19,7 +19,7 @@ RECORD = re.compile(
     r'orders(?:_approved|_result)?(?:\.[\w-]+)*\.json|'
     r'prep_report(?:\.[\w-]+)*\.md|(?:positions|pos)[\w.-]*\.csv)\Z')
 WORKSPACE_FILE = re.compile(
-    r'(?:portfolio|xray|identities|manual|holdings(?:\.(?:live|paper))?)\.json\Z|'
+    r'(?:profile|portfolio|xray|identities|manual|holdings(?:\.(?:live|paper))?)\.json\Z|'
     r'[A-Z]{2}[A-Z0-9]{9}[0-9]\.(?:csv|json)\Z')
 
 
@@ -95,7 +95,7 @@ def build_export(root):
                 'LENS DATA EXPORT\n\n'
                 'Your saved data is in data/, preserving its original folder structure.\n'
                 'manifest.json lists every included file, its size and SHA-256 checksum.\n'
-                'Includes saved portfolio drafts, operating manual and policy, investment\n'
+                'Includes your local profile, portfolio drafts, operating manual, investment\n'
                 'records for live and paper accounts, reports and downloaded fund data.\n'
                 'Only records still saved by Lens are available; this is not a complete\n'
                 'broker statement or a history of every past trade.\n\n'

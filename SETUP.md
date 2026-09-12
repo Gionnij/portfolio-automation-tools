@@ -19,7 +19,8 @@ python webdash.py
 On later runs, activate the environment and run `python webdash.py` again.
 Leave the terminal open. Ctrl+C stops the app.
 
-Open **http://127.0.0.1:8642** for research and X-Ray, or
+Open **http://127.0.0.1:8642** for your personal space, then choose Your portfolio
+for research and X-Ray, or open
 **http://127.0.0.1:8642/rebalance** for monthly investing. These addresses
 refer to your own laptop. Nothing connects to Giovanni's running app.
 

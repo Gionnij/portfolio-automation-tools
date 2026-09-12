@@ -34,7 +34,7 @@ class ExportTests(unittest.TestCase):
                     '.workspace/profile.json', '.workspace/portfolio.json', '.workspace/identities.json', '.workspace/xray.json',
                     '.workspace/IE00B4K48X80.csv', '.workspace/IE00B4K48X80.json',
                     '.workspace/manual-v1-backup/manual.json', 'holdings/ETF.xlsx']
-        excluded = ['.pin.json', '.env', '.git/config', 'webdash.py',
+        excluded = ['.device-auth.json', '.workspace/device-auth.json', '.workspace/challenges.json', '.pin.json', '.env', '.git/config', 'webdash.py',
                     '.workspace/credentials.json', '.workspace/.secret/portfolio.json',
                     'holdings/passwords.csv', 'unrelated.json']
         for name in included + excluded:

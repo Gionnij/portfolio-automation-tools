@@ -225,7 +225,9 @@ class PinGateTests(unittest.TestCase):
 
     def test_execute_refuses_a_wrong_pin_before_doing_anything(self):
         app.pin_store("4821")
-        out = app.api_execute({"account": "paper", "confirm": "0000",
+        import approval
+        review=approval.create("paper","DU123",[],"x","x",{},"pin")
+        out = app.api_execute({"review_id":review["review_id"], "account": "paper", "confirm": "0000",
                                "selected": [0], "plan_id": "x"})
         self.assertTrue(out["not_submitted"]); self.assertIn("wrong PIN", out["log"])
 

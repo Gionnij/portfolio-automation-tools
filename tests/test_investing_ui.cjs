@@ -10,11 +10,12 @@ function page(){
   const nodes=new Map();
   const node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',dataset:{},innerHTML:'',disabled:false,hidden:false,checked:false,setAttribute(){},addEventListener(){},close(){this.open=false},showModal(){this.open=true},focus(){},classList:{toggle(){}},parentElement:{addEventListener(){}}});return nodes.get(id)};
   node('contribute').value='177.58';node('balance-sort').value='held';
-  const context=vm.createContext({Intl,Date,Number,JSON,Math,Boolean,String,Array,Object,Error,Promise,setTimeout,clearTimeout,window:{addEventListener(){}},document:{addEventListener(){},body:{classList:{toggle(){}}},getElementById:node,querySelectorAll:()=>[],querySelector:()=>node('options')}});
+  const context=vm.createContext({LensDevice:{init:async()=>{},abort(){},headers:()=>({})},Intl,Date,Number,JSON,Math,Boolean,String,Array,Object,Error,Promise,setTimeout,clearTimeout,window:{addEventListener(){}},document:{addEventListener(){},body:{classList:{toggle(){}}},getElementById:node,querySelectorAll:()=>[],querySelector:()=>node('options')}});
   vm.runInContext(fs.readFileSync(path.join(__dirname,'../shell.js'),'utf8'),context);
   vm.runInContext(script,context);
   const run=s=>vm.runInContext(s,context);
   run(`MODE='paper';SESSION_KEY='paper';GATEWAY={state:'connected',mode:'paper',sessions:[{mode:'paper'}]};DATA={has_report:true,account:'paper',nav:10000,snapshot_date:'2026-09-08',weights:[['4COP','0','1.5']],funds:{'4COP':{name:'Copper fund'}},pending:true,plan_id:'keep-this-approval',orders:[{ticker:'4COP',side:'BUY',qty:2,est_price:62}],results:[]};FRESH=true;INPUTS='unchanged';`);
+  run(`FIXED={review_id:'review-1',expires_at:Date.now()/1000+120,auth_method:'pin',manifest:{broker_account:'DU123',orders:[{ticker:'4COP',isin:'IE00B4K48X80',side:'BUY',qty:'2',limit_price:'62.13',currency:'EUR',exchange:'SMART'}]}};`);
   return {node,run};
 }
 const response=(shares=2,account='paper')=>({ok:true,account,read_at:'2026-09-08T10:00:00Z',nav:10124,cash:50.46,warnings:[],open_orders:0,holdings:[{ticker:'4COP',name:'Copper fund',shares,value:shares*62,current_pct:shares*62/10124*100,target_pct:1.5}]});
@@ -39,7 +40,7 @@ test('read-only refresh replaces an old zero-weight chart without changing appro
 test('completed submission refreshes chart automatically and keeps the fill receipt',async()=>{
   const {node,run}=page();
   node('confirm-phrase').value='2468';
-  run(`selected=()=>[0];REVIEW={allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};request=async action=>action==='execute'?{ok:true,results:[{ticker:'4COP',side:'BUY',qty:2,filled:2,status:'filled'}]}:(${JSON.stringify(response())});`);
+  run(`selected=()=>[0];REVIEW={...FIXED,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};request=async action=>action==='execute'?{ok:true,results:[{ticker:'4COP',side:'BUY',qty:2,filled:2,status:'filled'}]}:(${JSON.stringify(response())});`);
   await run('executeOrders()');
   await new Promise(resolve=>setImmediate(resolve));
   assert.match(node('balance-content').innerHTML,/2 shares/);
@@ -115,7 +116,7 @@ test('XEON replacement preserves total planned funding and requires a new previe
 
 test('funded review exposes confirmation only after successful funding check',async()=>{
   const {node,run}=page();
-  run(`selected=()=>[0];request=async()=>({ok:true,account:'paper',plan_id:DATA.plan_id,funding:{allowed:true,reason:'funded'}});`);
+  run(`selected=()=>[0];request=async()=>({ok:true,account:'paper',plan_id:DATA.plan_id,...FIXED,funding:{allowed:true,reason:'funded'}});`);
   await run('openReview()');
   assert.match(node('review-body').innerHTML,/Send paper orders/);
   assert.equal(run('reviewMatches()'),true);
@@ -127,7 +128,7 @@ test('funded review exposes confirmation only after successful funding check',as
 
 test('a funding change at submission returns to a blocked review without losing the preview',async()=>{
   const {node,run}=page();node('confirm-phrase').value='2468';
-  run(`selected=()=>[0];REVIEW={allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};request=async()=>({ok:false,not_submitted:true,funding_blocked:true,funding:{allowed:false,reason:'budget',cash:20,cash_budget:600,shortfall:580}});`);
+  run(`selected=()=>[0];REVIEW={...FIXED,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};request=async()=>({ok:false,not_submitted:true,funding_blocked:true,funding:{allowed:false,reason:'budget',cash:20,cash_budget:600,shortfall:580}});`);
   await run('executeOrders()');
   assert.equal(run('FRESH'),true);
   assert.equal(run('DATA.pending'),true);
@@ -144,7 +145,7 @@ test('a funding change at submission returns to a blocked review without losing 
 
 test('a PIN can be set from the review dialog and unlocks the send button',async()=>{
   const {node,run}=page();
-  run(`selected=()=>[0];REVIEW={allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};`);
+  run(`selected=()=>[0];REVIEW={...FIXED,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};`);
   run(`PIN_SET=false;request=async(action,p)=>action==='pin'&&p.op==='set'?{ok:true,set:true}:{ok:true};`);
   node('pin-new').value='2468';node('pin-again').value='2468';
   await run('savePin()');
@@ -156,7 +157,7 @@ test('a PIN can be set from the review dialog and unlocks the send button',async
 
 test('an entry that is not a PIN never enables the send button',()=>{
   const {node,run}=page();
-  run(`selected=()=>[0];REVIEW={allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};`);
+  run(`selected=()=>[0];REVIEW={...FIXED,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};`);
   for(const bad of ['','EXECUTE','12','abcd','12a4','1234567890123']){
     node('confirm-phrase').value=bad;run('checkConfirm()');
     assert.equal(node('send-button').disabled,true,`"${bad}" must not unlock the button`);
@@ -168,7 +169,7 @@ test('an entry that is not a PIN never enables the send button',()=>{
 test('a wrong PIN is refused by the local app and places no orders',async()=>{
   const {node,run}=page();
   node('confirm-phrase').value='9999';
-  run(`selected=()=>[0];REVIEW={allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};`);
+  run(`selected=()=>[0];REVIEW={...FIXED,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};`);
   run(`sent=null;request=async(action,p)=>{if(action!=='execute')return {ok:true};sent=p;`
      +`return {ok:false,not_submitted:true,log:'the PIN is not correct'}};`);
   await run('executeOrders()');
@@ -182,7 +183,7 @@ test('a wrong PIN is refused by the local app and places no orders',async()=>{
 test('the right PIN submits and records the fills',async()=>{
   const {node,run}=page();
   node('confirm-phrase').value='2468';
-  run(`selected=()=>[0];REVIEW={allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};`);
+  run(`selected=()=>[0];REVIEW={...FIXED,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};`);
   run(`sent=null;request=async(action,p)=>{if(action!=='execute')return {ok:true};sent=p;`
      +`return {ok:true,results:[{ticker:'4COP',side:'BUY',qty:2,filled:2,status:'filled'}]}};`);
   await run('executeOrders()');
@@ -231,4 +232,29 @@ test('same live account refresh preserves reviewed plan; different session inval
  const {run}=page();run(`MODE='live';SESSION_KEY='a';GATEWAY={state:'connected',mode:'live',session_key:'a'};REVIEW={allowed:true};loadSnapshot=async()=>{};`);
  await run('followGateway(GATEWAY)');assert.equal(run('REVIEW.allowed'),true);
  await run("followGateway({...GATEWAY,session_key:'b'})");assert.equal(run('REVIEW'),null);assert.equal(run('DATA'),null);
+});
+
+test('exact review shows broker identity and fixed per-share limits',()=>{
+ const {node,run}=page();run(`selected=()=>[0];REVIEW={...FIXED,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};renderFundedReview()`);
+ assert.match(node('review-body').innerHTML,/DU123/);assert.match(node('review-body').innerHTML,/Maximum €62\.13/);
+ assert.match(node('review-body').innerHTML,/IE00B4K48X80/);assert.match(node('review-body').innerHTML,/SMART · DAY/);
+});
+test('device approval sends the signed review without a PIN or replacement selection',async()=>{
+ const {node,run}=page();node('review-dialog').open=true;
+ run(`selected=()=>[0];REVIEW={...FIXED,auth_method:'device',allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};LensDevice.approve=async id=>({challenge_id:'one-shot',credential:{id:'test'}});sent=null;request=async(action,p)=>{if(action==='execute'){sent=p;return {ok:true,results:[]}}return {ok:true}}`);
+ await run('executeOrders()');assert.equal(run('sent.review_id'),'review-1');assert.equal(run('sent.confirm'),undefined);
+ assert.equal(run('sent.selected'),undefined);assert.equal(run('sent.challenge_id'),'one-shot');
+});
+test('cancelled verification and changes during the prompt never submit',async()=>{
+ for(const change of ['throw Error("Cancelled")',"MODE='live';return {}","REVIEW=null;return {}"]){
+  const {node,run}=page();node('review-dialog').open=true;
+  run(`selected=()=>[0];REVIEW={...FIXED,auth_method:'device',allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};LensDevice.approve=async()=>{${change}};request=async()=>{throw Error('MUST NOT REQUEST')}`);
+  await run('executeOrders()');assert.equal(run('FRESH'),true);assert.equal(run('BUSY'),false);
+  assert.ok(node('device-order-error').textContent);
+ }
+});
+test('expired reviews disable both PIN and device submission',async()=>{
+ const {node,run}=page();node('confirm-phrase').value='2468';
+ run(`selected=()=>[0];REVIEW={...FIXED,expires_at:0,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};request=async()=>{throw Error('MUST NOT REQUEST')};checkConfirm()`);
+ assert.equal(node('send-button').disabled,true);await run('executeOrders()');assert.equal(run('FRESH'),true);
 });

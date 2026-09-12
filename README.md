@@ -80,7 +80,7 @@ python -m pip install -r requirements.txt
 python webdash.py
 ```
 
-Open [Lens locally](http://127.0.0.1:8642) to create your personal space with an
+Open [Lens locally](http://localhost:8642) to create your personal space with an
 optional first name. Return visits open your home directly, with links to your
 saved research portfolio, X-Ray, operating manual and monthly investing. You can
 change or remove the first name under **Personal details**.
@@ -92,10 +92,34 @@ existing portfolio and policy files intact and contacts no broker or provider.
 It adds no login, app lock, file encryption or trading approval. The color theme
 continues to be a per-browser preference. Backup import remains deferred.
 
-The next phase is documented in [Device approval plan](DEVICE-APPROVAL-PLAN.md):
-bind review to final orders and the exact broker account, then prototype browser
-Touch ID / Windows Hello approval. Device approval is not implemented; the PIN
-remains required.
+Open [Device approval](http://localhost:8642/device-approval) to register a passkey
+using your current Lens PIN. Complete the **no-trade test**, then activate paper
+and live order approval separately. Your browser may offer Touch ID, Windows
+Hello or a device passcode; passkeys may sync through your credential provider.
+Lens does not receive biometric data or the private key. Physical device and
+browser compatibility must be checked on your own machine.
+
+For an activated mode, sending orders requires a fresh device assertion; a PIN
+cannot bypass it. The PIN still protects cancellation and PIN management.
+Changing approval mode requires both the PIN and registered device. To replace
+a passkey, return both modes to PIN first, then use **Use a different passkey**.
+An inactive enrollment can be cleared with the current PIN. If you lose access
+to an active credential, submission stays blocked; no automatic recovery or
+backup restore re-enables it. App locking and working-file encryption are separate.
+
+The final review identifies the exact brokerage account, contracts, quantities,
+EUR limit prices and DAY order terms. It expires after two minutes. The executor
+sends the frozen values, checks the account again, and never reuses an approval.
+Edits, account/policy changes, restart or an expired browser session require a new
+review. Browser sessions last 30 minutes; reload Lens when prompted. The first
+version requires EUR listings with an ISIN and available broker price increments.
+Cash checks include a €5 allowance per buy, not a guarantee of actual fees.
+
+The canonical browser address is now `http://localhost:8642`; old IP links move
+there automatically while carrying over the selected theme. Update requirements
+before restarting. The private `.device-auth.json` registry is excluded from Git
+and all data exports; order manifests remain historical records in exports.
+See [Device approval design and implementation status](DEVICE-APPROVAL-PLAN.md).
 
 Open **Your portfolio** (at `/workspace#portfolio`) to add tickers or search by ISIN,
 choose the right listing, and enter percentages totaling 100%. Run X-Ray to
@@ -121,7 +145,7 @@ The AI advisor questionnaire remains deferred.
 
 ## Monthly investing
 
-Open [Monthly investing](http://127.0.0.1:8642/rebalance). Lens detects your connected Gateway before loading any account data. Port 4001 opens live; port 4002 opens paper.
+Open [Monthly investing](http://localhost:8642/rebalance). Lens detects your connected Gateway before loading any account data. Port 4001 opens live; port 4002 opens paper.
 
 1. Choose a cash budget and press **Generate investment preview**. Optional cash-fund
    deployment, minimum purchases and price updates are under **Plan options**.
@@ -189,7 +213,7 @@ Lens checks every 30 seconds while visible, on window focus and on Refresh.
 Status uses the API handshake and does not wait for positions or prices.
 Account changes and disconnections clear the old view, including any in-page
 approval. Monthly investing waits for detection before loading the matching
-snapshot. Orders still require individual selection and PIN approval.
+snapshot. Orders still require individual selection and the configured PIN or device approval.
 
 Holdings reads use a 20-second connection timeout, matching the investing
 engine. A holdings-data failure is reported separately from a disconnected

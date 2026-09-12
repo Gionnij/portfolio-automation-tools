@@ -1,7 +1,31 @@
 # Device approval for Lens
 
-Status: integration plan, 12 September 2026. Reviewed against local commit
-`2998996`. Device approval is not implemented. The current PIN remains required.
+Status: implemented for opt-in testing, 12 September 2026. The original design
+below was based on `2998996`; the table records findings before implementation.
+
+The implementation now freezes review/account/limits, verifies WebAuthn assertions,
+and supports separate opt-in paper/live activation after a no-trade test. Default
+order approval remains PIN until explicitly activated. PIN retirement, device
+approval for cancellation, app locking and file encryption are still deferred.
+The PIN remains required for cancellation and approval-setting changes. This is
+an explicit transition design, not a claim that all original milestones shipped.
+
+Tests use real cryptographic verification with synthetic authenticators and mocked
+brokers. They do not prove physical Touch ID / Windows Hello compatibility or
+successful real broker execution. The user performs hardware verification and any
+actual paper/live submission. No test orders have been placed by the coding agent.
+
+Implementation differences: challenges and reviews are bound to an expiring
+browser token; device authority has its own local user handle. There is no durable
+broker-login generation because Gateway exposes no login nonce here. Actual
+account identity is rechecked at review, submission and before each placement.
+Observed disconnects clear browser review; an unobserved disconnect/reconnect to
+the same account is not claimed to be detectable. Executable manifests and the
+pending marker are written durably before the subprocess starts. Recovery after
+a possibly partial submission continues to require broker reconciliation.
+
+The remaining text is the original design roadmap; use the README for current
+setup instructions and supported behavior.
 
 ## Decision
 

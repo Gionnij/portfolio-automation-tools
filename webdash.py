@@ -1,27 +1,13 @@
 #!/usr/bin/env python3
-"""webdash.py - interactive local dashboard for the whole monthly ritual.
+"""Local Lens dashboard, served at http://localhost:8642.
 
-    python webdash.py          # opens http://127.0.0.1:8642 in your browser
+Broker access remains loopback-only. Reviews freeze the exact brokerage account,
+contracts, quantities and limit prices. Submission requires the configured PIN
+or a one-time verified WebAuthn assertion. Account identity, policy, funding and
+pending state are checked again before executing the frozen manifest.
 
-From the page you can:
-  * follow the connected Gateway: Paper (4002) or LIVE (4001), on 127.0.0.1
-  * set contribution / deploy / min-order
-  * read EUR cash and XEON holdings from Gateway without preparing a plan
-  * "Preview my plan" -> runs fetch_prices.py + rebalance.py DRY RUN, shows the
-    staged orders, weights vs target, regime and compliance checklist
-  * tick/untick individual orders, type the confirmation phrase, "Execute"
-    -> places ONLY the ticked orders (rebalance.py --execute --yes)
-  * Account tools -> discard an unsubmitted preview or review a tracking reset
-
-Safety model (same human gate as the terminal, different skin):
-  * server binds to 127.0.0.1 only - nothing is reachable from outside
-  * nothing is ever sent to IBKR without you typing the confirmation phrase:
-       paper account:  EXECUTE
-       live  account:  EXECUTE LIVE     (page turns red in live mode)
-  * per-order approval = the checkboxes; unticked orders are never sent
-  * Gateway's own Read-Only API toggle stays your hardware-level safety
-
-Requires: ib_async for balances (rebalance.py also needs pandas).
+Device enrollment and no-trade tests never contact a broker. Cancellation retains
+its separate PIN gate. Legacy interactive CLI execution remains available.
 """
 
 import json
@@ -46,6 +32,12 @@ import workspace
 import balances
 import gateway
 import data_export
+import personal_space
+import approval
+import device_auth
+import activity
+import navigation
+import home
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
@@ -416,8 +408,8 @@ def check_funding(account, chosen):
     cash = b.get('cash')
     if b.get('account') != account or cash is None or not math.isfinite(cash):
         return {'allowed': False, 'reason': 'unavailable', 'message': 'EUR cash could not be verified for this account.'}, b
-    buys = round(sum(o['qty'] * o['est_price'] for o in chosen if o['side'] == 'BUY'), 2)
-    sells = round(sum(o['qty'] * o['est_price'] for o in chosen if o['side'] == 'SELL'), 2)
+    buys = round(sum(float(o['qty']) * float(o.get('limit_price', o['est_price'])) + (5 if 'limit_price' in o else 0) for o in chosen if o['side'] == 'BUY'), 2)
+    sells = round(sum(float(o['qty']) * float(o.get('limit_price', o['est_price'])) for o in chosen if o['side'] == 'SELL'), 2)
     budget_gap = max(0, round(budget - cash, 2))
     order_gap = max(0, round(buys - sells - cash, 2))
     x = b.get('xeon', {})
@@ -438,42 +430,84 @@ def check_funding(account, chosen):
 def api_review(p):
     account, _, chosen = reviewed_orders(p)
     funding, b = check_funding(account, chosen)
-    return {'ok': True, 'account': account, 'plan_id': p['plan_id'], 'funding': funding, 'balances': b}
+    result = {'ok': True, 'account': account, 'plan_id': p['plan_id'], 'funding': funding, 'balances': b}
+    if not funding['allowed']:
+        return result
+    if not b.get('broker_account'):
+        raise ValueError('The exact brokerage account could not be verified.')
+    cfg = json.loads((HERE/'manual.json').read_text())
+    frozen = approval.freeze_orders(cfg, account, chosen, b['broker_account'])
+    funding, fresh = check_funding(account, frozen)
+    result.update(funding=funding, balances=fresh)
+    if not funding['allowed']: return result
+    if fresh.get('broker_account') != b['broker_account'] or p['plan_id'] != plan_id(account):
+        raise ValueError('The account or preview changed. Review again.')
+    method = device_auth.method(HERE, account)
+    session = p.get('_session', '')
+    if method == 'device': device_auth.require_session(session)
+    result.update(approval.create(account, b['broker_account'], frozen, p['plan_id'],
+        approval.digest(cfg), workspace.read_json(P(account)['inputs'], {}), method, session, sorted(set(p['selected']))))
+    return result
 
 
 def api_execute(p):
-    account = "live" if p.get("account") == "live" else "paper"
-    pp, port = P(account), PORTS[account]
-    ok, why = pin_check((p.get("confirm") or "").strip())
-    if not ok:
-        return {"ok": False, "not_submitted": True, "log": why}
+    # HTTP handler holds ACTION_LOCK. Device assertions and reviews are consumed
+    # before any broker submission, including on failed preflight rechecks.
+    session = p.get('_session', '')
     try:
-        account, orders, chosen = reviewed_orders(p)
+        rec = approval.get(p.get('review_id'), session)
+        manifest = rec['manifest']
+        account = manifest['account']
+        if p.get('account') != account:
+            raise ValueError('The requested account differs from the reviewed account.')
+        if device_auth.method(HERE, account) != rec['method']:
+            raise ValueError('Approval settings changed. Review again.')
+        if rec['method'] == 'device':
+            device_auth.verify(HERE, p, session, 'orders:'+rec['digest'])
+        else:
+            ok, why = pin_check((p.get('confirm') or '').strip())
+            if not ok: raise ValueError(why)
+        approval.consume(p['review_id'], session)
+        if 'selected' in p and (not isinstance(p['selected'], list)
+            or any(type(i) is not int for i in p['selected']) or p['selected'] != manifest['selection']):
+            raise ValueError('The order selection changed. Review again.')
+        if (not _pending(account) or not preview_policy_current(account)
+            or manifest['plan_id'] != plan_id(account)):
+            raise ValueError('The preview or policy changed. Review again.')
+        cfg = json.loads((HERE/'manual.json').read_text())
+        chosen = approval.validate_manifest(manifest, rec['digest'], manifest['broker_account'])
+        if manifest['policy_hash'] != approval.digest(cfg):
+            raise ValueError('The operating manual changed. Generate a new preview.')
         funding, b = check_funding(account, chosen)
+        if not funding['allowed']:
+            return {'ok':False, 'not_submitted':True, 'funding_blocked':True,
+                    'funding':funding, 'balances':b, 'account':account, 'plan_id':manifest['plan_id']}
+        if b.get('broker_account') != manifest['broker_account']:
+            raise ValueError('The brokerage account changed. Review again.')
     except (ValueError, OSError) as exc:
-        return {'ok': False, 'not_submitted': True, 'log': str(exc)}
-    if not funding['allowed']:
-        return {'ok': False, 'not_submitted': True, 'funding_blocked': True,
-                'funding': funding, 'balances': b, 'account': account, 'plan_id': p['plan_id']}
-    pp["approved"].write_text(json.dumps(chosen, indent=1))
-    pp["result"].write_text("[]")            # clear stale results
-    # Mark submission in progress durably. If it aborts, optimistic preview
-    # units cannot be trusted: require a deliberate tracking reconciliation.
-    # Normal filled/partial/working/failed order results exit successfully and
-    # are reconciled by the existing engine; this guard is for process failure.
-    pp["pending"].write_text("2")
-    ok, out = run_step(["rebalance.py", "--execute", str(pp["approved"]),
-                        "--ib", f"127.0.0.1:{port}", "--yes",
-                        "--expect-account", account,
-                        "--state", str(pp["state"]),
-                        "--result-out", str(pp["result"])])
+        return {'ok':False, 'not_submitted':True, 'log':str(exc)}
+    pp, port = P(account), PORTS[account]
+    orders = json.loads(pp['orders'].read_text())
+    try:
+        activity_record = activity.begin(HERE, manifest, rec['method'])
+    except (OSError, ValueError):
+        return {'ok': False, 'not_submitted': True, 'log': 'The activity record could not be saved. No orders were sent. Check storage and review again.'}
+    device_auth.atomic_json(pp['approved'], manifest)
+    device_auth.atomic_json(pp['result'], [])
+    # JSON number 2 has the same representation as the existing pending marker.
+    device_auth.atomic_json(pp['pending'], 2)
+    ok, out = run_step(['rebalance.py', '--execute', str(pp['approved']),
+        '--ib', f'127.0.0.1:{port}', '--yes', '--expect-account', account,
+        '--expect-account-id', manifest['broker_account'], '--approval-digest', rec['digest'],
+        '--state', str(pp['state']), '--result-out', str(pp['result'])])
     # These exact engine messages occur before any order placement. Restore
     # the preview backup so ordinary preflight refusals preserve the market
     # reference and remain retryable, without requiring a baseline reset.
     preflight_prefixes = ("CANNOT REACH IB GATEWAY on ",
                           "ACCOUNT MISMATCH - nothing was done.",
                           "!! REFUSING to execute - orders are still open at the broker:",
-                          "ib_async is not installed - ")
+                          "ib_async is not installed - ",
+                          "!! REFUSING to execute - open orders could not be verified.")
     not_submitted = not ok and any(line.startswith(preflight_prefixes)
                                    for line in out.splitlines())
     if not_submitted and pp["undo"].exists():
@@ -485,6 +519,11 @@ def api_execute(p):
         results = json.loads(pp["result"].read_text())
     except Exception:
         results = []
+    try:
+        activity.finish(HERE, activity_record, ok, not_submitted, results)
+    except (OSError, ValueError):
+        # Execution already happened. Keep its result intact and never suggest retrying.
+        out += '\nThe activity outcome could not be saved. Keep this receipt and check IBKR before any further submission.'
     return {"ok": ok, "not_submitted": not_submitted, "log": out, "results": results, "account": account,
             "sent": len(chosen), "total": len(orders)}
 
@@ -537,8 +576,10 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript',
-                  '/data-backup.js': 'text/javascript'}
+        self.path = urlsplit(self.path).path
+        assets = {'/navigation.css': 'text/css', '/navigation.js': 'text/javascript', '/profile.js': 'text/javascript', '/home.js': 'text/javascript', '/shell.css': 'text/css', '/shell.js': 'text/javascript', '/theme.js': 'text/javascript',
+                  '/data-backup.js': 'text/javascript', '/personal-space.js': 'text/javascript', '/device-api.js': 'text/javascript',
+                  '/activity.js': 'text/javascript', '/device-settings.js': 'text/javascript', '/local-origin.js': 'text/javascript'}
         if self.path in assets:
             body = (HERE / self.path[1:]).read_bytes()
             self.send_response(200)
@@ -549,22 +590,20 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
             return
-        if self.path == '/manual':
-            source = (HERE / 'portfolio_operating_manual.md').read_text()
-            body = ('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
-                    '<title>Portfolio operating manual</title><style>body{max-width:1000px;margin:40px auto;padding:20px;'
-                    'font:16px/1.6 system-ui;background:#f7f8f2;color:#24382b}pre{white-space:pre-wrap;overflow-wrap:anywhere;'
-                    'font:14px/1.7 ui-monospace,monospace}a{color:#426348}</style><a href="/">← Portfolio</a><pre>'
-                    + html.escape(source) + '</pre>').encode()
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html; charset=utf-8')
-            self.send_header('Content-Length', str(len(body)))
+        if self.path in navigation.ALIASES:
+            self.send_response(302)
+            self.send_header('Location', navigation.ALIASES[self.path])
+            self.send_header('Cache-Control', 'no-store')
             self.end_headers()
-            self.wfile.write(body)
             return
-        if self.path in ("/", "/index.html", "/rebalance", "/data-backup"):
-            page = {"/rebalance": "investing.html", "/data-backup": "data-backup.html"}.get(self.path, "workspace.html")
-            body = (HERE / page).read_bytes()
+        if self.path in navigation.PAGES:
+            page = navigation.PAGES[self.path]
+            source = (HERE / page).read_text()
+            if self.path == '/invest/rules':
+                try: manual = (HERE / 'portfolio_operating_manual.md').read_text()
+                except OSError: manual = 'No investing manual is saved in this installation.'
+                source = source.replace('<!-- INVESTING_RULES -->', '<pre class="lens-manual">'+html.escape(manual)+'</pre>')
+            body = navigation.render(source, self.path).encode()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             # Without this the browser caches the page heuristically and keeps
@@ -603,6 +642,17 @@ class Handler(BaseHTTPRequestHandler):
         except Exception:
             self._json({"ok": False, "error": "Expected a JSON object."}, 400)
             return
+        payload.pop('_session', None)
+        session = self.headers.get('X-Lens-Session', '')
+        if session:
+            if origin != device_auth.ORIGIN or host != f'localhost:{SERVER_PORT}':
+                self._json({'ok':False, 'error':'Device session origin mismatch.'}, 403)
+                return
+            try: device_auth.require_session(session)
+            except ValueError as exc:
+                self._json({'ok':False, 'error':str(exc)}, 403)
+                return
+            payload['_session'] = session
         try:
             if self.path == "/api/data/export":
                 if not ACTION_LOCK.acquire(blocking=False):
@@ -625,6 +675,35 @@ class Handler(BaseHTTPRequestHandler):
                     self.send_header("Content-Length", str(size))
                     self.end_headers()
                     shutil.copyfileobj(archive, self.wfile)
+            elif self.path.startswith('/api/device/'):
+                if origin != device_auth.ORIGIN or host != f'localhost:{SERVER_PORT}':
+                    self._json({'ok':False, 'error':'Open Lens at http://localhost:8642 for device approval.'}, 403)
+                    return
+                action = self.path.rsplit('/',1)[-1]
+                with ACTION_LOCK:
+                    if action == 'session':
+                        self._json(device_auth.session())
+                    else:
+                        session = self.headers.get('X-Lens-Session', '')
+                        device_auth.require_session(session)
+                        if action == 'orders-options':
+                            rec = approval.get(payload.get('review_id'), session)
+                            m = rec['manifest']
+                            if rec['method'] != 'device' or device_auth.method(HERE,m['account']) != 'device':
+                                raise ValueError('Device approval is not active for this review.')
+                            if not _pending(m['account']) or m['plan_id'] != plan_id(m['account']):
+                                raise ValueError('The preview changed. Review again.')
+                            self._json(device_auth.options(HERE,session,'orders:'+rec['digest']))
+                        else:
+                            self._json(device_auth.api(HERE,action,payload,session,pin_check))
+            elif self.path == "/api/home":
+                self._json(home.summary(HERE))
+            elif self.path == "/api/activity":
+                self._json(activity.listing(HERE, payload.get("account", "all"), payload.get("limit", 100), payload.get("offset", 0)))
+            elif self.path.startswith("/api/space/"):
+                if self.path == "/api/space/complete-setup" and not pin_read():
+                    raise ValueError("Create your Lens PIN before finishing setup.")
+                self._json(personal_space.api(self.path.rsplit("/", 1)[-1], payload))
             elif self.path.startswith("/api/workspace/"):
                 self._json(workspace.api(self.path.rsplit("/", 1)[-1], payload))
             elif self.path in ("/api/prepare", "/api/execute", "/api/resync", "/api/undo", "/api/balances", "/api/review", "/api/orders"):
@@ -658,7 +737,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     srv = ThreadingHTTPServer(("127.0.0.1", SERVER_PORT), Handler)
-    url = f"http://127.0.0.1:{SERVER_PORT}"
+    url = f"http://localhost:{SERVER_PORT}"
     print(f"dashboard running at {url}   (Ctrl-C to stop)")
     threading.Timer(0.6, lambda: webbrowser.open(url)).start()
     try:

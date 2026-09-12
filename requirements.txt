@@ -2,3 +2,6 @@
 ib_async==2.1.0
 pandas==2.2.3
 openpyxl==3.1.5
+
+# Server-side WebAuthn verification for device order approval.
+webauthn==3.0.0

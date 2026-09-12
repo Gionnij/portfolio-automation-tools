@@ -2,7 +2,17 @@
 
 Creation is available under Data & backup. Import is intentionally not implemented.
 An encrypted backup contains the same ZIP produced by `/api/data/export`, including
-the manifest and all its exclusions. No saved file is changed by backup creation.
+the manifest and all its exclusions. The optional local profile is included as
+`data/.workspace/profile.json` (version 1: `first_name`, `created_at`, optional `setup_complete`). It contains
+no credentials or trading approvals. The `.device-auth.json` authority registry,
+browser sessions and WebAuthn challenges are excluded. `orders_approved.*.json`
+may contain an exact account/order manifest; it is a historical record, never a
+restorable approval. No saved file is changed by backup creation.
+
+Activity files at `data/.workspace/activity/<32-hex-id>.json` are version 1 historical
+records of submission requests and saved outcomes, plus retained earlier receipts.
+They contain no reusable approval. Restore must never execute these records, and
+`requested` or `uncertain` outcomes must never be treated as broker confirmations.
 
 ## Encryption and recovery
 

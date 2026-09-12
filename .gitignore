@@ -52,3 +52,6 @@ state.backup.json
 # Encrypted backups and their separate recovery keys
 *.lensbackup
 lens-recovery-*.txt
+
+# Local device authority; never shared or restored from data backups.
+.device-auth.json

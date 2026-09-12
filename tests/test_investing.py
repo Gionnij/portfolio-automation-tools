@@ -7,6 +7,7 @@ from unittest.mock import patch
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import webdash as app
+import approval
 
 REPORT = '''# Portfolio prep report - 2026-09-07
 Manual test | NAV EUR 10,000 | contribution EUR 600
@@ -33,6 +34,11 @@ Reason: whole shares and minimum purchase size.
 ORDERS = [dict(ticker='XEON',side='SELL',qty=1,est_price=140),
           dict(ticker='AAA',side='BUY',qty=3,est_price=130)]
 
+def frozen(orders):
+    return [dict(o, qty=str(o['qty']), est_price=str(o['est_price']), limit_price=str(o['est_price']),
+        con_id=123+i, isin='IE00B4K48X80', currency='EUR', exchange='SMART',
+        order_type='LMT', tif='DAY', outside_rth=False) for i,o in enumerate(orders)]
+
 class InvestingTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory()
@@ -46,17 +52,23 @@ class InvestingTests(unittest.TestCase):
         self.paths['pending'].write_text('1')
         self.paths['inputs'].write_text(json.dumps({'contribute': 600, 'deploy': 0}))
         self.broker = patch.object(app, 'api_balances', return_value={
-            'ok': True, 'account': 'paper', 'cash': 10000, 'open_orders': 0,
+            'ok': True, 'account': 'paper', 'broker_account':'DU123', 'cash': 10000, 'open_orders': 0,
             'nav': 10000, 'xeon': {'value': 1500, 'floor_pct': 3}, 'read_at': '2026-09-08T10:00:00Z'})
         app._pin_state.update(fails=0, until=0.0)   # no lockout leaking between tests
         app.pin_store('1234')                       # the submission gate is a PIN now
         self.broker.start()
+        approval.REVIEWS.clear()
+        self.freeze = patch.object(approval, 'freeze_orders', side_effect=lambda cfg,mode,chosen,acct: frozen(chosen))
+        self.freeze.start()
 
     def tearDown(self):
-        self.broker.stop();self.patch.stop();self.temp.cleanup()
+        self.freeze.stop();self.broker.stop();self.patch.stop();self.temp.cleanup()
 
     def approve(self, **extra):
-        return dict(account='paper',confirm='1234',plan_id=app.plan_id('paper'),selected=[1],**extra)
+        pid=app.plan_id('paper')
+        cfg=json.loads((self.root/'manual.json').read_text())
+        review=approval.create('paper','DU123',frozen([ORDERS[1]]),pid,approval.digest(cfg),{},'pin',selection=[1])
+        return dict(account='paper',confirm='1234',review_id=review['review_id'],plan_id=pid,selected=[1],**extra)
 
     def test_cash_flow_counts_sales_and_purchases_without_claiming_account_cash(self):
         p=app.report_payload('paper',[])
@@ -110,6 +122,7 @@ class InvestingTests(unittest.TestCase):
         app.api_balances.return_value['cash'] = 250
         self.assertEqual(app.api_review(self.approve())['funding']['order_shortfall'], 140)
         p = self.approve();p['selected'] = [0, 1]
+        app.api_balances.return_value['cash'] = 255
         self.assertTrue(app.api_review(p)['funding']['allowed'])
 
     def test_cash_change_after_review_is_rechecked_before_submission(self):
@@ -168,7 +181,11 @@ class InvestingTests(unittest.TestCase):
     def test_exact_selection_and_account_gate_remain_in_subprocess(self):
         with patch.object(app,'run_step',return_value=(True,'done')) as run:
             self.assertTrue(app.api_execute(self.approve())['ok'])
-            self.assertEqual(json.loads(self.paths['approved'].read_text()),[ORDERS[1]])
+            manifest=json.loads(self.paths['approved'].read_text())
+            self.assertEqual(manifest['broker_account'],'DU123')
+            self.assertEqual(manifest['orders'][0]['ticker'],'AAA')
+            self.assertEqual(manifest['orders'][0]['limit_price'],'130')
+            self.assertEqual(len(manifest['orders']),1)
             args=run.call_args.args[0]
             self.assertIn('--expect-account',args)
             self.assertEqual(args[args.index('--expect-account')+1],'paper')

@@ -49,7 +49,7 @@ class StalePolicyPreview(unittest.TestCase):
             outcome = webdash.api_execute(self.approve())
             self.assertFalse(outcome['ok'])
             self.assertTrue(outcome['not_submitted'])
-            self.assertIn('manual has changed', outcome['log'])
+            self.assertIn('policy changed', outcome['log'])
             run.assert_not_called()
 
     def test_matching_policy_version_remains_usable(self):

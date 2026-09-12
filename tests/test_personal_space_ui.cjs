@@ -31,9 +31,7 @@ test('return visits open home directly and names render as text',async()=>{
   const p=await page([reply({...profile,first_name:'<img src=x onerror=alert(1)>'}),reply({...profile,first_name:''})]);
   assert.equal(p.node('welcome').hidden,true);
   assert.equal(p.node('home-title').textContent,'Welcome back, <img src=x onerror=alert(1)>.');
-  p.node('edit-name').value='';await p.submit('edit-profile');
-  assert.equal(p.node('home-title').textContent,'Welcome back.');
-  assert.match(p.node('profile-status').textContent,/Name saved/);
+  assert.equal(p.node('edit-profile').events.submit,undefined);
 });
 test('failed reads offer recovery without inviting profile overwrite',async()=>{
   const p=await page([Error('Profile unavailable'),reply(profile)]);
@@ -50,6 +48,13 @@ test('failed saves retain input and allow retry; double submits are ignored',asy
 });
 test('legacy research bookmarks go to workspace without a profile API call',async()=>{
   for(const hash of ['#portfolio','#xray','#sources']){
-    const p=await page([],hash);assert.equal(p.location.redirect,'/workspace'+hash);assert.equal(p.calls.length,0);
+    const p=await page([],hash);assert.equal(p.location.redirect,hash==='#sources'?'/profile/data/sources':'/portfolio'+hash);assert.equal(p.calls.length,0);
   }
+});
+
+test('new and interrupted spaces continue to security setup; legacy spaces do not',async()=>{
+ const created=await page([reply(),reply({...profile,setup_complete:false})]);
+ await created.submit('create-space');assert.equal(created.location.redirect,'/setup');
+ const resumed=await page([reply({...profile,setup_complete:false})]);assert.equal(resumed.location.redirect,'/setup');
+ const existing=await page([reply(profile)]);assert.equal(existing.location.redirect,undefined);
 });

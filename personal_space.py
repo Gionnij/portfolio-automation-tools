@@ -27,7 +27,10 @@ def read_profile():
             or not isinstance(profile.get('first_name'), str)):
         raise ValueError('This local profile format is not supported. Your portfolio is still available.')
     first_name(profile['first_name'])
-    return {key: profile[key] for key in ('version', 'first_name', 'created_at')}
+    if 'setup_complete' in profile and type(profile['setup_complete']) is not bool:
+        raise ValueError('The setup state could not be read.')
+    return dict({key: profile[key] for key in ('version', 'first_name', 'created_at')},
+                setup_complete=profile.get('setup_complete', True))
 
 
 def summary():
@@ -48,16 +51,17 @@ def api(action, payload):
         profile = read_profile()
         if action == 'bootstrap':
             return {'ok': True, 'profile': profile, 'summary': summary()}
-        if action not in ('create', 'update'):
+        if action not in ('create', 'update', 'complete-setup'):
             raise ValueError('Unknown personal space action.')
         name = first_name(payload.get('first_name', ''))
         if action == 'create':
             if profile is not None:
                 raise ValueError('A space already exists. Reload to open it.')
-            profile = {'version': 1, 'first_name': name, 'created_at': workspace.now()}
+            profile = {'version': 1, 'first_name': name, 'created_at': workspace.now(), 'setup_complete': False}
         else:
             if profile is None:
                 raise ValueError('Create your space first.')
-            profile['first_name'] = name
+            if action == 'complete-setup': profile['setup_complete'] = True
+            else: profile['first_name'] = name
         workspace.atomic_json(workspace.DATA / 'profile.json', profile)
         return {'ok': True, 'profile': profile, 'summary': summary()}

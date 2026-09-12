@@ -10,7 +10,7 @@ function page(){
   const nodes=new Map();
   const node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',dataset:{},innerHTML:'',disabled:false,hidden:false,checked:false,setAttribute(){},addEventListener(){},close(){this.open=false},showModal(){this.open=true},focus(){},classList:{toggle(){}},parentElement:{addEventListener(){}}});return nodes.get(id)};
   node('contribute').value='177.58';node('balance-sort').value='held';
-  const context=vm.createContext({LensDevice:{init:async()=>{},abort(){},headers:()=>({})},Intl,Date,Number,JSON,Math,Boolean,String,Array,Object,Error,Promise,setTimeout,clearTimeout,window:{addEventListener(){}},document:{addEventListener(){},body:{classList:{toggle(){}}},getElementById:node,querySelectorAll:()=>[],querySelector:()=>node('options')}});
+  const context=vm.createContext({location:{pathname:'/invest',assign(){}},LensDevice:{init:async()=>{},abort(){},headers:()=>({})},Intl,Date,Number,JSON,Math,Boolean,String,Array,Object,Error,Promise,setTimeout,clearTimeout,window:{addEventListener(){}},document:{addEventListener(){},body:{classList:{toggle(){}}},getElementById:node,querySelectorAll:()=>[],querySelector:()=>node('options')}});
   vm.runInContext(fs.readFileSync(path.join(__dirname,'../shell.js'),'utf8'),context);
   vm.runInContext(script,context);
   const run=s=>vm.runInContext(s,context);
@@ -257,4 +257,13 @@ test('expired reviews disable both PIN and device submission',async()=>{
  const {node,run}=page();node('confirm-phrase').value='2468';
  run(`selected=()=>[0];REVIEW={...FIXED,expires_at:0,allowed:true,account:'paper',plan_id:DATA.plan_id,selection:'[0]'};request=async()=>{throw Error('MUST NOT REQUEST')};checkConfirm()`);
  assert.equal(node('send-button').disabled,true);await run('executeOrders()');assert.equal(run('FRESH'),true);
+});
+
+test('holdings landing loads saved account context before starting balance refresh',async()=>{
+ const {node,run}=page();
+ run(`location.pathname='/portfolio/holdings';SAVED=DATA;calls=[];MODE=null;SESSION_KEY=null;request=async action=>{calls.push(action);return action==='last'?{ok:true,...SAVED}:${JSON.stringify(response())}}`);
+ await run("followGateway({state:'connected',mode:'paper',session_key:'holdings-session'})");
+ assert.equal(run("calls[0]"),'last');assert.equal(node('panel-balance').hidden,false);
+ assert.equal(run("calls.some(a=>['prepare','execute','review'].includes(a))"),false);
+ assert.equal(run('DATA.plan_id'),'keep-this-approval');
 });

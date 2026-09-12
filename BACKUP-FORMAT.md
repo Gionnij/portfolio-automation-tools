@@ -3,7 +3,7 @@
 Creation is available under Data & backup. Import is intentionally not implemented.
 An encrypted backup contains the same ZIP produced by `/api/data/export`, including
 the manifest and all its exclusions. The optional local profile is included as
-`data/.workspace/profile.json` (version 1: `first_name`, `created_at`). It contains
+`data/.workspace/profile.json` (version 1: `first_name`, `created_at`, optional `setup_complete`). It contains
 no credentials or trading approvals. The `.device-auth.json` authority registry,
 browser sessions and WebAuthn challenges are excluded. `orders_approved.*.json`
 may contain an exact account/order manifest; it is a historical record, never a

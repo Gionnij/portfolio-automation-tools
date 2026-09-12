@@ -40,26 +40,7 @@ async function downloadAllData() {
   }
 }
 
-let dataGatewayBusy = false;
-async function refreshDataGateway() {
-  if (dataGatewayBusy || document.hidden) return;
-  dataGatewayBusy = true;
-  renderGatewayIndicator(null, true);
-  try {
-    const response = await fetch('/api/gateway', {
-      method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'
-    });
-    const data = await response.json();
-    if (!response.ok || !data.ok) throw new Error('Connection status unavailable. Restart Lens after updating.');
-    renderGatewayIndicator(data.connection);
-  } catch (e) {
-    renderGatewayIndicator(null, false, e.message);
-  } finally { dataGatewayBusy = false; }
-}
 document.getElementById('download-data').addEventListener('click', downloadAllData);
-refreshDataGateway();
-setInterval(refreshDataGateway, 30000);
-window.addEventListener('focus', refreshDataGateway);
 
 // Versioned encrypted envelope; see BACKUP-FORMAT.md. Keys never go to the server.
 const MAX_BACKUP_BYTES = 256 * 1024 * 1024;

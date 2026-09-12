@@ -36,6 +36,8 @@ import personal_space
 import approval
 import device_auth
 import activity
+import navigation
+import home
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
@@ -575,7 +577,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self.path = urlsplit(self.path).path
-        assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript', '/theme.js': 'text/javascript',
+        assets = {'/navigation.css': 'text/css', '/navigation.js': 'text/javascript', '/profile.js': 'text/javascript', '/home.js': 'text/javascript', '/shell.css': 'text/css', '/shell.js': 'text/javascript', '/theme.js': 'text/javascript',
                   '/data-backup.js': 'text/javascript', '/personal-space.js': 'text/javascript', '/device-api.js': 'text/javascript',
                   '/activity.js': 'text/javascript', '/device-settings.js': 'text/javascript', '/local-origin.js': 'text/javascript'}
         if self.path in assets:
@@ -588,23 +590,20 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
             return
-        if self.path == '/manual':
-            source = (HERE / 'portfolio_operating_manual.md').read_text()
-            body = ('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">'
-                    '<title>Portfolio operating manual</title><style>body{max-width:1000px;margin:40px auto;padding:20px;'
-                    'font:16px/1.6 system-ui;background:#f7f8f2;color:#24382b}pre{white-space:pre-wrap;overflow-wrap:anywhere;'
-                    'font:14px/1.7 ui-monospace,monospace}a{color:#426348}</style><a href="/">← Your space</a><pre>'
-                    + html.escape(source) + '</pre>').encode()
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html; charset=utf-8')
-            self.send_header('Content-Length', str(len(body)))
+        if self.path in navigation.ALIASES:
+            self.send_response(302)
+            self.send_header('Location', navigation.ALIASES[self.path])
+            self.send_header('Cache-Control', 'no-store')
             self.end_headers()
-            self.wfile.write(body)
             return
-        if self.path in ("/", "/index.html", "/workspace", "/rebalance", "/data-backup", "/device-approval", "/activity"):
-            page = {"/rebalance": "investing.html", "/data-backup": "data-backup.html",
-                    "/workspace": "workspace.html", "/device-approval": "device-approval.html", "/activity": "activity.html"}.get(self.path, "personal-space.html")
-            body = (HERE / page).read_bytes()
+        if self.path in navigation.PAGES:
+            page = navigation.PAGES[self.path]
+            source = (HERE / page).read_text()
+            if self.path == '/invest/rules':
+                try: manual = (HERE / 'portfolio_operating_manual.md').read_text()
+                except OSError: manual = 'No investing manual is saved in this installation.'
+                source = source.replace('<!-- INVESTING_RULES -->', '<pre class="lens-manual">'+html.escape(manual)+'</pre>')
+            body = navigation.render(source, self.path).encode()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             # Without this the browser caches the page heuristically and keeps
@@ -697,9 +696,13 @@ class Handler(BaseHTTPRequestHandler):
                             self._json(device_auth.options(HERE,session,'orders:'+rec['digest']))
                         else:
                             self._json(device_auth.api(HERE,action,payload,session,pin_check))
+            elif self.path == "/api/home":
+                self._json(home.summary(HERE))
             elif self.path == "/api/activity":
                 self._json(activity.listing(HERE, payload.get("account", "all"), payload.get("limit", 100), payload.get("offset", 0)))
             elif self.path.startswith("/api/space/"):
+                if self.path == "/api/space/complete-setup" and not pin_read():
+                    raise ValueError("Create your Lens PIN before finishing setup.")
                 self._json(personal_space.api(self.path.rsplit("/", 1)[-1], payload))
             elif self.path.startswith("/api/workspace/"):
                 self._json(workspace.api(self.path.rsplit("/", 1)[-1], payload))

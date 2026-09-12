@@ -6,7 +6,7 @@ const html=fs.readFileSync(require('node:path').join(__dirname,'../workspace.htm
 const script=html.slice(html.indexOf('let holdings=null'),html.indexOf('function toggleRemoveMode()'));
 function page(){
  const nodes=new Map();const node=id=>{if(!nodes.has(id))nodes.set(id,{textContent:'',dataset:{},setAttribute(){},disabled:false,hidden:false});return nodes.get(id)};
- const ctx=vm.createContext({Date,Number,Object,Math,$:node,rows:[{isin:'FUND',weight:100}],esc:String,pct:v=>v+'%',renderPortfolio(){},window:{addEventListener(){}},document:{hidden:false,getElementById:node,addEventListener(){},body:{classList:{toggle(){}}},querySelectorAll:()=>[]},setInterval(){}});
+ const ctx=vm.createContext({location:{pathname:"/portfolio"},Date,Number,Object,Math,$:node,rows:[{isin:'FUND',weight:100}],esc:String,pct:v=>v+'%',renderPortfolio(){},window:{addEventListener(){}},document:{hidden:false,getElementById:node,addEventListener(){},body:{classList:{toggle(){}}},querySelectorAll:()=>[]},setInterval(){}});
  vm.runInContext(fs.readFileSync(require('node:path').join(__dirname,'../shell.js'),'utf8'),ctx);
  vm.runInContext(script,ctx);return {node,run:s=>vm.runInContext(s,ctx)};
 }
@@ -46,4 +46,9 @@ test('ambiguous connections ask for a choice without retaining any holdings',asy
 
 test('connection indicator sits outside all research views',()=>{
  assert.ok(html.indexOf('id="account-label"')<html.indexOf('<section id="view-portfolio"'));
+});
+
+test('profile data sources does not fetch brokerage holdings',async()=>{
+ const {run}=page();run("location.pathname='/profile/data/sources';api=()=>{throw Error('Broker call')}");
+ await run('loadHoldings()');assert.equal(run('holdings'),null);
 });

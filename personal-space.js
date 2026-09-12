@@ -10,11 +10,11 @@ async function spaceApi(action, payload = {}) {
 }
 function renderSpace(data, focus = false) {
   const profile = data.profile;
+  if(profile && profile.setup_complete === false){location.replace('/setup');return}
   spaceNode('welcome').hidden = !!profile;
   spaceNode('home').hidden = !profile;
   if (profile) {
     spaceNode('home-title').textContent = profile.first_name ? 'Welcome back, ' + profile.first_name + '.' : 'Welcome back.';
-    spaceNode('edit-name').value = profile.first_name;
     const summary = data.summary;
     spaceNode('portfolio-tag').textContent = summary.portfolio_saved ? 'Saved research portfolio' : 'From your operating manual';
     spaceNode('portfolio-summary').textContent = summary.portfolio_saved
@@ -45,19 +45,16 @@ async function saveSpace(event, action, inputId, buttonId) {
   if (button.disabled) return;
   button.disabled = true;
   spaceNode('space-error').textContent = '';
-  spaceNode('profile-status').textContent = '';
   try {
     renderSpace(await spaceApi(action, {first_name: spaceNode(inputId).value}), action === 'create');
-    if (action === 'update') spaceNode('profile-status').textContent = 'Name saved on this computer.';
   } catch (error) { spaceNode('space-error').textContent = error.message; }
   finally { button.disabled = false; }
 }
 spaceNode('create-space').addEventListener('submit', event => saveSpace(event, 'create', 'first-name', 'create-button'));
-spaceNode('edit-profile').addEventListener('submit', event => saveSpace(event, 'update', 'edit-name', 'save-profile'));
 spaceNode('retry-load').addEventListener('click', loadSpace);
 // Preserve bookmarks from when the research workspace lived at the root URL.
 if (['#portfolio', '#xray', '#sources'].includes(location.hash)) {
-  location.replace('/workspace' + location.hash);
+  location.replace(location.hash==='#sources'?'/profile/data/sources':'/portfolio'+location.hash);
 } else {
   loadSpace();
 }

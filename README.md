@@ -81,9 +81,15 @@ python webdash.py
 ```
 
 Open [Lens locally](http://localhost:8642) to create your personal space with an
-optional first name. Return visits open your home directly, with links to your
+optional first name, followed by PIN creation and an optional Touch ID setup.
+Return visits open your home directly, with links to your
 saved research portfolio, X-Ray, operating manual and monthly investing. You can
-change or remove the first name under **Personal details**.
+change or remove the first name under **Profile → Details**.
+
+The sidebar has three destinations: **Home**, **Portfolio**, and **Invest**. Your
+name opens **Profile**, where activity, data, backups and settings live. Portfolio
+and X-Ray link directly to **Data sources**. See [NAVIGATION.md](NAVIGATION.md) for
+the full route map, first-run flow and compatibility behavior.
 
 One profile is saved per Lens installation in the private, Git-ignored
 `.workspace/profile.json`; it is shared across browsers using that installation
@@ -92,7 +98,7 @@ existing portfolio and policy files intact and contacts no broker or provider.
 It adds no login, app lock, file encryption or trading approval. The color theme
 continues to be a per-browser preference. Backup import remains deferred.
 
-Open [Device approval](http://localhost:8642/device-approval) to register a passkey
+Open [Settings → Security](http://localhost:8642/profile/settings) to register a passkey
 using your current Lens PIN. Complete the **no-trade test**, then activate paper
 and live order approval separately. Your browser may offer Touch ID, Windows
 Hello or a device passcode; passkeys may sync through your credential provider.
@@ -121,7 +127,7 @@ before restarting. The private `.device-auth.json` registry is excluded from Git
 and all data exports; order manifests remain historical records in exports.
 See [Device approval design and implementation status](DEVICE-APPROVAL-PLAN.md).
 
-Open **Your portfolio** (at `/workspace#portfolio`) to add tickers or search by ISIN,
+Open **Portfolio → Research** (at `/portfolio#portfolio`) to add tickers or search by ISIN,
 choose the right listing, and enter percentages totaling 100%. Run X-Ray to
 see combined holdings and overlap. **Data sources** lets you verify all fund
 identities with the paper Gateway and refresh supported provider downloads.
@@ -170,7 +176,7 @@ holdings refresh; there is no automatic new preview.
 
 ## Activity
 
-Open **Activity** from your space or the sidebar. It reads local saved records only,
+Open **Activity** from Home or your profile. It reads local saved records only,
 with filters for personal work, paper orders and live orders. Portfolio and X-Ray
 entries represent their latest saved versions; earlier edits are not reconstructed.
 
@@ -191,7 +197,7 @@ or hides the returned receipt. A read failure is shown as incomplete history.
 
 ## Data & backup
 
-Open **Data & backup** in the sidebar to download all saved Lens data as a ZIP.
+Open **Profile → My data → Backups** to download all saved Lens data as a ZIP.
 The export includes the saved research draft, operating manual and policy,
 live/paper/legacy investment records, reports, fund holdings and price data.
 `manifest.json` lists included files with sizes and SHA-256 checksums. Files keep

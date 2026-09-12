@@ -92,6 +92,11 @@ existing portfolio and policy files intact and contacts no broker or provider.
 It adds no login, app lock, file encryption or trading approval. The color theme
 continues to be a per-browser preference. Backup import remains deferred.
 
+The next phase is documented in [Device approval plan](DEVICE-APPROVAL-PLAN.md):
+bind review to final orders and the exact broker account, then prototype browser
+Touch ID / Windows Hello approval. Device approval is not implemented; the PIN
+remains required.
+
 Open **Your portfolio** (at `/workspace#portfolio`) to add tickers or search by ISIN,
 choose the right listing, and enter percentages totaling 100%. Run X-Ray to
 see combined holdings and overlap. **Data sources** lets you verify all fund

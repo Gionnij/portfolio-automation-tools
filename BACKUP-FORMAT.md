@@ -9,6 +9,11 @@ browser sessions and WebAuthn challenges are excluded. `orders_approved.*.json`
 may contain an exact account/order manifest; it is a historical record, never a
 restorable approval. No saved file is changed by backup creation.
 
+Activity files at `data/.workspace/activity/<32-hex-id>.json` are version 1 historical
+records of submission requests and saved outcomes, plus retained earlier receipts.
+They contain no reusable approval. Restore must never execute these records, and
+`requested` or `uncertain` outcomes must never be treated as broker confirmations.
+
 ## Encryption and recovery
 
 The browser generates a fresh random 32-byte key and 16-byte backup ID with

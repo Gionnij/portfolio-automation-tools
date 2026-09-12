@@ -35,6 +35,7 @@ import data_export
 import personal_space
 import approval
 import device_auth
+import activity
 
 HERE = Path(__file__).resolve().parent
 PY = sys.executable or "python3"
@@ -485,6 +486,10 @@ def api_execute(p):
         return {'ok':False, 'not_submitted':True, 'log':str(exc)}
     pp, port = P(account), PORTS[account]
     orders = json.loads(pp['orders'].read_text())
+    try:
+        activity_record = activity.begin(HERE, manifest, rec['method'])
+    except (OSError, ValueError):
+        return {'ok': False, 'not_submitted': True, 'log': 'The activity record could not be saved. No orders were sent. Check storage and review again.'}
     device_auth.atomic_json(pp['approved'], manifest)
     device_auth.atomic_json(pp['result'], [])
     # JSON number 2 has the same representation as the existing pending marker.
@@ -512,6 +517,11 @@ def api_execute(p):
         results = json.loads(pp["result"].read_text())
     except Exception:
         results = []
+    try:
+        activity.finish(HERE, activity_record, ok, not_submitted, results)
+    except (OSError, ValueError):
+        # Execution already happened. Keep its result intact and never suggest retrying.
+        out += '\nThe activity outcome could not be saved. Keep this receipt and check IBKR before any further submission.'
     return {"ok": ok, "not_submitted": not_submitted, "log": out, "results": results, "account": account,
             "sent": len(chosen), "total": len(orders)}
 
@@ -567,7 +577,7 @@ class Handler(BaseHTTPRequestHandler):
         self.path = urlsplit(self.path).path
         assets = {'/shell.css': 'text/css', '/shell.js': 'text/javascript', '/theme.js': 'text/javascript',
                   '/data-backup.js': 'text/javascript', '/personal-space.js': 'text/javascript', '/device-api.js': 'text/javascript',
-                  '/device-settings.js': 'text/javascript', '/local-origin.js': 'text/javascript'}
+                  '/activity.js': 'text/javascript', '/device-settings.js': 'text/javascript', '/local-origin.js': 'text/javascript'}
         if self.path in assets:
             body = (HERE / self.path[1:]).read_bytes()
             self.send_response(200)
@@ -591,9 +601,9 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
             return
-        if self.path in ("/", "/index.html", "/workspace", "/rebalance", "/data-backup", "/device-approval"):
+        if self.path in ("/", "/index.html", "/workspace", "/rebalance", "/data-backup", "/device-approval", "/activity"):
             page = {"/rebalance": "investing.html", "/data-backup": "data-backup.html",
-                    "/workspace": "workspace.html", "/device-approval": "device-approval.html"}.get(self.path, "personal-space.html")
+                    "/workspace": "workspace.html", "/device-approval": "device-approval.html", "/activity": "activity.html"}.get(self.path, "personal-space.html")
             body = (HERE / page).read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -687,6 +697,8 @@ class Handler(BaseHTTPRequestHandler):
                             self._json(device_auth.options(HERE,session,'orders:'+rec['digest']))
                         else:
                             self._json(device_auth.api(HERE,action,payload,session,pin_check))
+            elif self.path == "/api/activity":
+                self._json(activity.listing(HERE, payload.get("account", "all"), payload.get("limit", 100), payload.get("offset", 0)))
             elif self.path.startswith("/api/space/"):
                 self._json(personal_space.api(self.path.rsplit("/", 1)[-1], payload))
             elif self.path.startswith("/api/workspace/"):

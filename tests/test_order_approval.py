@@ -82,7 +82,7 @@ class OrderApprovalTests(unittest.TestCase):
             self.assertFalse(app.api_execute(p)['ok']);run.assert_not_called()
         p=self.approve()
         with patch.object(auth,'atomic_json',side_effect=OSError('disk full')),patch.object(app,'run_step') as run:
-            with self.assertRaises(OSError):app.api_execute(p)
+            self.assertTrue(app.api_execute(p)['not_submitted'])
             run.assert_not_called()
         self.assertFalse(app.api_execute(p)['ok'])
 

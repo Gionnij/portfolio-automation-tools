@@ -37,6 +37,8 @@ def export_paths(root):
             path = Path(folder) / name
             if relative == Path('.'):
                 include = name in ROOT_FILES or bool(RECORD.fullmatch(name))
+            elif relative == Path('.workspace/activity'):
+                include = bool(re.fullmatch(r'[a-f0-9]{32}\.json', name))
             elif relative.parts[0] == '.workspace':
                 include = bool(WORKSPACE_FILE.fullmatch(name))
             else:

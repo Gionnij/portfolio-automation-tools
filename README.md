@@ -168,6 +168,27 @@ can change. Hypothetical budgets remain previewable, but review and submission
 check available funds. After submission, order outcomes remain visible while
 holdings refresh; there is no automatic new preview.
 
+## Activity
+
+Open **Activity** from your space or the sidebar. It reads local saved records only,
+with filters for personal work, paper orders and live orders. Portfolio and X-Ray
+entries represent their latest saved versions; earlier edits are not reconstructed.
+
+Dashboard submission attempts are now retained in `.workspace/activity/` as private
+version 1 JSON records. A request is saved before execution and updated with the
+results afterward. A missing final result remains explicitly unconfirmed. A successful
+executor exit does not mean every order filled: each saved status is shown separately.
+The last receipt from older Lens versions is preserved before a new submission replaces
+it; its date is labeled as the file save time and no account identity is guessed.
+CLI-only activity is not fully archived, and broker updates after the saved receipt
+are not polled. Use IBKR for current status and complete trading history.
+
+Activity records include the reviewed account, quantities, limits, approval method
+and saved results. They contain no passkey proof, challenge, PIN or reusable approval.
+They are included in data exports and encrypted backups. Failure to save the initial
+request prevents submission; failure to save its final outcome never retries execution
+or hides the returned receipt. A read failure is shown as incomplete history.
+
 ## Data & backup
 
 Open **Data & backup** in the sidebar to download all saved Lens data as a ZIP.

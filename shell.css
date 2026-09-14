@@ -3,7 +3,7 @@
 body.live{--ink:#3c2926;--muted:#806e69;--faint:#9d8b85;--accent:#994339;--accent-hover:#7d342c;--accent-soft:#f8ebe6;--accent-tint:#faefeb;--accent-border:#dbb4a8;--accent-muted:#a36557;--bg:#faf6f4;--line:#ebdfd9;--surface-hover:#f7ebe6;--surface-subtle:#fdf9f7;--focus:#c68e7d}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.sidebar{position:fixed;inset:0 auto 0 0;width:226px;padding:36px 23px;background:#fff;border-right:1px solid var(--line);border-bottom:0;display:flex;flex-direction:column;align-items:stretch;gap:0;z-index:5}
+.sidebar{position:fixed;inset:0 auto 0 0;width:226px;padding:36px 23px;background:var(--paper);border-right:1px solid var(--line);border-bottom:0;display:flex;flex-direction:column;align-items:stretch;gap:0;z-index:5}
 .brand{font:43px/1 Georgia,serif;letter-spacing:-2px;display:flex;align-items:center;gap:12px;color:var(--ink);padding:0;margin:0;text-decoration:none}
 .brand:hover{text-decoration:none}
 .brandmark{width:31px;height:31px;border:1.5px solid var(--accent);border-radius:50%;position:relative;display:inline-block;flex-shrink:0}
@@ -32,7 +32,7 @@ body{background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacS
 .gateway-menu[data-state=offline] .gateway-dot,.gateway-menu[data-state=checking] .gateway-dot{background:#929b91}
 .gateway-menu[data-state=attention] .gateway-toggle{background:#fcf4e5;color:#896027;border-color:#eadcc2}
 .gateway-menu[data-state=attention] .gateway-dot{background:#ac7a30}
-.gateway-panel{position:absolute;top:calc(100% + 10px);right:0;width:350px;max-width:calc(100vw - 36px);padding:22px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 38px #24362b20;z-index:30;color:var(--ink);text-align:left}
+.gateway-panel{position:absolute;top:calc(100% + 10px);right:0;width:350px;max-width:calc(100vw - 36px);padding:22px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 38px #24362b20;z-index:30;color:var(--ink);text-align:left}
 .gateway-panel .eyebrow{font:600 9px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .gateway-panel strong{display:block;font-size:14px;font-weight:600}
 .gateway-panel p{margin:9px 0 0;color:var(--muted);font-size:12px;line-height:1.65}
@@ -68,3 +68,55 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 button.primary:hover{background:var(--accent-hover)}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 @media(max-width:620px){.nav{grid-template-columns:repeat(auto-fit,minmax(95px,1fr))}}
+
+/* Theme is independent of account mode; live accounts retain their red palette. */
+:root{color-scheme:light;--on-accent:#fff}
+:root[data-theme=dark]{color-scheme:dark}
+:root[data-theme=dark] body{
+  --ink:#e2eae3;--muted:#adb9af;--faint:#96a499;
+  --accent:#a3c99f;--accent-hover:#b9dbb5;--accent-soft:#293d2e;
+  --accent-tint:#233328;--accent-border:#4c6951;--accent-muted:#abc49c;
+  --bg:#151b18;--paper:#1d2620;--line:#354239;
+  --surface-hover:#2b372e;--surface-subtle:#202b23;--focus:#a3c99f;
+  --chart-track:#354239;--chart-target:#bcc9ad;--flow-track:#39492d;
+  --illustration-light:#344831;--illustration-mid:#69845a;--illustration-strong:#a3c58d;
+  --amber:#e6bd79;--amber-bg:#3a3020;--red:#f0aaa0;--red-bg:#3e2825;
+  --toast-bg:#263d2e;--dialog-shadow:#0008;--dialog-backdrop:#080e0ac0;
+  --on-accent:#142418;--shadow:0 5px 20px #0003
+}
+:root[data-theme=dark] body.live{
+  --ink:#f1e3de;--muted:#c3aca4;--faint:#b59c93;
+  --accent:#efaa9c;--accent-hover:#f7c0b4;--accent-soft:#442d28;
+  --accent-tint:#362622;--accent-border:#80594d;--accent-muted:#d7a395;
+  --bg:#211917;--paper:#2a201d;--line:#4b3731;
+  --surface-hover:#3c2b26;--surface-subtle:#302420;--focus:#efaa9c;
+  --chart-track:#4b3731;--chart-target:#d9b0a3;--flow-track:#58382d;
+  --illustration-light:#53392f;--illustration-mid:#9a6958;--illustration-strong:#dda08b;
+  --toast-bg:#65352d;--on-accent:#321b16
+}
+.theme-select{font:inherit;font-size:11px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:30px;padding:7px 9px;min-height:33px;cursor:pointer;max-width:100px}
+.top-actions{flex-wrap:wrap;justify-content:flex-end}
+dialog{background:var(--paper)}
+button.primary{color:var(--on-accent)}
+button.primary:hover:not(:disabled){background:var(--accent-hover)}
+:root[data-theme=dark] .brandmark:after{background:var(--paper)}
+:root[data-theme=dark] :is(.step.current b,.steps .current b){color:var(--on-accent)}
+:root[data-theme=dark] :is(th,.badge,.fundmark,.source-pill,input.weight,.searchbox input,.field,.balance-tools select){background:var(--surface-subtle);color:var(--ink);border-color:var(--line)}
+:root[data-theme=dark] :is(td,.holdings-note,.side-bottom),:root[data-theme=dark] #portfolio-rows td{border-color:var(--line)}
+:root[data-theme=dark] :is(.isin,.count,.footnote,.map-off-head){color:var(--muted)}
+:root[data-theme=dark] :is(.steps b,.avatar,.ring,.mring,.mring-in,.bartrack,.cur-track,.snap-bar){background:var(--chart-track)}
+:root[data-theme=dark] :is(.tabs button.active,.dimtabs button.active,.frow.on,.mtip.empty,.tip,.source-pill.downloaded,.source-pill.classified,.success,.refresh-progress){background:var(--accent-soft);border-color:var(--accent-border);color:var(--accent)}
+:root[data-theme=dark] .tip h3{color:var(--accent)}
+:root[data-theme=dark] .add-button{background:var(--surface-subtle);border-color:var(--accent-border)}
+:root[data-theme=dark] :is(.notice,.holdings-note.is-stale,.source-pill.missing,.attention){background:var(--amber-bg);border-color:var(--amber);color:var(--amber)}
+:root[data-theme=dark] :is(.attention p,.attention strong,.attention button){color:var(--amber)}
+:root[data-theme=dark] :is(.removebar,tr.picked,.attention.error,.live-strip){background:var(--red-bg);border-color:var(--red)}
+:root[data-theme=dark] :is(.error,.attention.error p,.attention.error strong,.attention.error button,#amount-warn){color:var(--red)}
+:root[data-theme=dark] .notice.success{background:var(--accent-soft);border-color:var(--accent-border);color:var(--accent)}
+:root[data-theme=dark] .cur-tick{background:var(--chart-target)}
+:root[data-theme=dark] .ring-outline :is(path,circle){stroke:var(--ink)}
+:root[data-theme=dark] .map-tag text{fill:var(--ink);stroke:var(--paper)}
+:root[data-theme=dark] .map-tag .map-tag-name{fill:var(--muted)}
+:root[data-theme=dark] .gateway-menu:is([data-state=offline],[data-state=checking]) .gateway-toggle{background:var(--surface-hover);color:var(--muted)}
+:root[data-theme=dark] .gateway-menu[data-state=attention] .gateway-toggle{background:var(--amber-bg);color:var(--amber);border-color:var(--line)}
+:root[data-theme=dark] .gateway-panel #gateway-issue{color:var(--amber)}

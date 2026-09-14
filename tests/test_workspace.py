@@ -96,6 +96,66 @@ class WorkspaceTests(unittest.TestCase):
         self.assertAlmostEqual(r['stats']['holdings_coverage'],100)
         self.assertAlmostEqual(sum(h['weight'] for h in r['exposures']['country']),100)
 
+    def test_xray_survives_reopening_without_reanalysis(self):
+        self.put(A,CSV_A);self.put(B,CSV_B)
+        rows = w.catalog()
+        report = w.api('analyze', {'rows':rows})
+        self.assertTrue((self.cache/'xray.json').exists())
+        with patch.object(w, 'analyze_rows', side_effect=AssertionError('Must restore, not rerun')):
+            reopened = w.api('bootstrap', {})
+        self.assertEqual(reopened['report'], report)
+        self.assertFalse(reopened['report_stale'])
+        self.assertEqual(reopened['origin'], 'manual')
+
+    def test_saved_xray_preserves_unsaved_analysis_without_overwriting_draft(self):
+        self.put(A,CSV_A);self.put(B,CSV_B)
+        w.api('save', {'rows':w.catalog()})
+        report = w.api('analyze', {'rows':[row()]})
+        reopened = w.bootstrap()
+        self.assertEqual(reopened['report'], report)
+        self.assertTrue(reopened['report_stale'])
+        self.assertEqual(len(reopened['rows']), 2)
+        w.api('save', {'rows':[row()]})
+        self.assertFalse(w.bootstrap()['report_stale'])
+
+    def test_xray_detects_changed_source_bytes_metadata_enrichment_and_policy(self):
+        self.put(A,CSV_A)
+        w.api('save', {'rows':[row()]})
+        for path, replacement in [
+                (self.cache/(A+'.csv'), CSV_B),
+                (self.cache/(A+'.json'), b'{"as_of":"2026-09-11"}'),
+                (self.root/'holdings'/'enrich.csv', b'key,country\nApple,IE\n'),
+                (self.root/'manual.json', (self.root/'manual.json').read_bytes()+b'\n')]:
+            with self.subTest(path=path):
+                report = w.api('analyze', {'rows':[row()]})
+                original = path.read_bytes() if path.exists() else None
+                path.write_bytes(replacement)
+                reopened = w.bootstrap()
+                self.assertEqual(reopened['report'], report)
+                self.assertTrue(reopened['report_stale'])
+                if original is None: path.unlink()
+                else: path.write_bytes(original)
+                self.assertFalse(w.bootstrap()['report_stale'])
+
+    def test_failed_xray_keeps_previous_successful_report(self):
+        self.put(A,CSV_A)
+        report = w.api('analyze', {'rows':[row()]})
+        with self.assertRaises(ValueError):
+            w.api('analyze', {'rows':[row(weight=90)]})
+        self.assertEqual(w.bootstrap()['report'], report)
+        self.put(A,CSV_B)
+        updated = w.api('analyze', {'rows':[row()]})
+        self.assertNotEqual(updated['holdings'], report['holdings'])
+        self.assertEqual(w.bootstrap()['report'], updated)
+
+    def test_absent_or_unreadable_xray_does_not_break_bootstrap(self):
+        self.assertIsNone(w.bootstrap()['report'])
+        for value in ['{', 'null', '[]', '{"version":2}',
+                      '{"version":1,"report":{"stats":{}}}']:
+            (self.cache/'xray.json').write_text(value)
+            self.assertIsNone(w.bootstrap()['report'])
+            self.assertEqual(len(w.bootstrap()['rows']), 2)
+
     def test_same_symbol_different_fund_does_not_overwrite_contribution(self):
         self.put(A,CSV_A);self.put(B,CSV_B)
         r=w.analyze_rows([row(A,50,'SAME'),row(B,50,'SAME')])

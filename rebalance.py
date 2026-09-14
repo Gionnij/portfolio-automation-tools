@@ -293,25 +293,19 @@ def _need_ib():
                  "of --ib)")
 
 
-def _check_account(ib, expect):
-    """IBKR paper accounts are DU*/DF*; live are U*/F*. Verify the Gateway is
-    really logged into the account type the caller asked for - a wrong-account
-    order is the one mistake with no undo."""
-    if not expect:
-        return
+def _check_account(ib, expect, expected_id=None):
+    """Require one identified account; the dashboard also pins its exact ID."""
+    import gateway
     accts = [a for a in (ib.managedAccounts() or []) if a]
-    if not accts:
-        return
-    actual = "paper" if all(a.upper().startswith("D") for a in accts) else "live"
-    if actual != expect:
+    try:
+        actual = gateway.account_mode(accts)
+    except ValueError:
         ib.disconnect()
-        sys.exit(f"\nACCOUNT MISMATCH - nothing was done.\n"
-                 f"You asked for the {expect.upper()} account, but IB Gateway "
-                 f"is logged into the {actual.upper()} account "
-                 f"({', '.join(accts)}).\n"
-                 f"Log Gateway out and back in with your {expect.upper()} "
-                 f"credentials, then retry.")
-    print(f"  account: {', '.join(accts)} ({actual})")
+        sys.exit("ACCOUNT MISMATCH - nothing was done. Exactly one identified account is required.")
+    if (expect and actual != expect) or (expected_id and accts[0] != expected_id):
+        ib.disconnect()
+        sys.exit("ACCOUNT MISMATCH - nothing was done. The connected account differs from the reviewed account.")
+    return accts[0]
 
 
 def _connect(ib, host, port, client_id):
@@ -354,6 +348,8 @@ def snapshot_ib(cfg, host, port, client_id, expect_account=None):
     # double-counts them (positions don't include unfilled orders)
     try:
         open_tr = ib.reqAllOpenOrders()
+        if not isinstance(open_tr, list):
+            raise ValueError("Open orders unavailable")
     except Exception:
         open_tr = []
     if open_tr:
@@ -1001,7 +997,8 @@ def write_report(cfg, res, checklist, out_md, contribution):
 # ------------------------------------------------------------------- execute
 
 def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
-            state_path=None, expect_account=None, result_path=None):
+            state_path=None, expect_account=None, result_path=None,
+            expected_account_id=None, approval_digest=None):
     """Two-phase execution, liquidity-first, with per-order results.
 
     Phase 1 - all SELLs, aggressive limits (est - 0.5%); IBKR's price-cap
@@ -1015,17 +1012,28 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
     _need_ib()
     from ib_async import IB, Stock, LimitOrder, Contract
     orders = load_json(orders_path)
+    frozen = isinstance(orders, dict)
+    if frozen or approval_digest:
+        import approval
+        manifest = orders
+        orders = approval.validate_manifest(manifest, approval_digest, expected_account_id)
+        if manifest['account'] != expect_account or manifest['policy_hash'] != approval.digest(cfg):
+            raise ValueError('The policy or account changed since review.')
+        orders = [dict(o, qty=float(o['qty']), est_price=float(o['est_price'])) for o in orders]
     ib = IB()
     _connect(ib, host, port, client_id)
-    _check_account(ib, expect_account)
+    account_id = _check_account(ib, expect_account, expected_account_id)
 
     # hard guard: never execute on top of orders still working at the broker
     # (a slow sell from a previous run, a manual order, ...). Executing now
     # would double-buy/double-sell once both complete.
     try:
         open_tr = ib.reqAllOpenOrders()
+        if not isinstance(open_tr, list):
+            raise ValueError("Open orders unavailable")
     except Exception:
-        open_tr = []
+        ib.disconnect()
+        sys.exit("!! REFUSING to execute - open orders could not be verified.")
     if open_tr:
         print("!! REFUSING to execute - orders are still open at the broker:")
         for t in open_tr:
@@ -1082,6 +1090,8 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         return True
 
     def _contract(o):
+        if frozen:
+            return Contract(conId=o['con_id'], exchange=o['exchange'], currency=o['currency'])
         meta = cfg["sleeves"][o["ticker"]]
         rcon, _ = _resolve(ib, meta, meta.get("ib_symbol", o["ticker"]))
         if rcon is None:
@@ -1090,6 +1100,18 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         # conId + SMART: unambiguous instrument, no direct-route precaution,
         # no localSymbol clashes (BOTZ/XB0T)
         return Contract(conId=rcon.conId, exchange="SMART")
+
+    def _order(o, limit):
+        # Recheck the identity immediately before each placement, not just on connect.
+        try:
+            _check_account(ib, expect_account, account_id)
+        except SystemExit:
+            # Earlier orders may already have reached IBKR. Never label this a
+            # preflight refusal or allow the dashboard to restore old state.
+            raise SystemExit('ACCOUNT CHANGED DURING SUBMISSION - check IBKR before any new plan.') from None
+        return LimitOrder(o['side'], o['qty'], limit, account=account_id,
+                          tif=o['tif'] if frozen else 'DAY', outsideRth=False,
+                          orderRef=o['order_ref'] if frozen else '')
 
     sells = [o for o in orders if o.get("side") == "SELL"]
     buys = [o for o in orders if o.get("side") == "BUY"]
@@ -1105,9 +1127,9 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
             _rec(o, "skipped", note="contract not resolved - check manual.json")
             continue
         raw = o["est_price"] * 0.995
-        lim = _round_tick(raw, _tick_at(con.conId, raw), up=False)
+        lim = float(o['limit_price']) if frozen else _round_tick(raw, _tick_at(con.conId, raw), up=False)
         try:
-            trade = ib.placeOrder(con, LimitOrder("SELL", o["qty"], lim))
+            trade = ib.placeOrder(con, _order(o, lim))
             print(f"  sent (limit {lim}) - waiting for fill...")
             if _await(trade, 120):
                 px = trade.orderStatus.avgFillPrice
@@ -1140,7 +1162,7 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
             _rec(o, "skipped", note="contract not resolved - check manual.json")
             continue
         raw = o["est_price"] * 1.002
-        lim = _round_tick(raw, _tick_at(con.conId, raw), up=True)
+        lim = float(o['limit_price']) if frozen else _round_tick(raw, _tick_at(con.conId, raw), up=True)
         cost = o["qty"] * lim
         avail = _available_eur()
         if avail is None or cash_remaining is None:
@@ -1156,7 +1178,7 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
                       f"needed) - next prepare restages")
             continue
         try:
-            trade = ib.placeOrder(con, LimitOrder("BUY", o["qty"], lim))
+            trade = ib.placeOrder(con, _order(o, lim))
             print(f"  sent (limit {lim})")
             placed.append((o, trade))
             # Account updates can lag order placement. Reserve limit cost and
@@ -1260,6 +1282,8 @@ def main():
     ap.add_argument("--expect-account", choices=["paper", "live"],
                     help="refuse to run unless IB Gateway is logged into this "
                          "account type (paper IDs start with DU)")
+    ap.add_argument("--expect-account-id")
+    ap.add_argument("--approval-digest")
     ap.add_argument("--reset-baseline", action="store_true",
                     help="treat TODAY's portfolio as the new baseline: "
                          "unit price back to 100, drawdown D back to 0, "
@@ -1283,7 +1307,8 @@ def main():
         execute(args.execute, cfg, host, int(port), args.client_id,
                 auto_yes=args.yes, state_path=args.state,
                 expect_account=args.expect_account,
-                result_path=args.result_out)
+                result_path=args.result_out, expected_account_id=args.expect_account_id,
+                approval_digest=args.approval_digest)
         return
 
     state = load_json(args.state, default=json.loads(json.dumps(DEFAULT_STATE)))

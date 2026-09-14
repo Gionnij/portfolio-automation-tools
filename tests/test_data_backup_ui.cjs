@@ -9,7 +9,7 @@ function page(response, crypto=webcrypto){
  const node=id=>{if(!nodes.has(id))nodes.set(id,{disabled:false,textContent:'',value:'',checked:false,open:false,events:{},addEventListener(name,fn){this.events[name]=fn},showModal(){this.open=true},close(){this.open=false;this.events.close?.()}});return nodes.get(id)};
  const ctx=vm.createContext({
   crypto,TextEncoder,Uint8Array,Blob,navigator:{clipboard:{writeText:async()=>{throw Error('denied')}}},
-  document:{hidden:true,getElementById:node,body:{appendChild(){}},createElement:()=>({click(){downloads.push(this.download)},remove(){}})},
+  document:{hidden:false,getElementById:node,body:{appendChild(){}},createElement:()=>({click(){downloads.push(this.download)},remove(){}})},
   window:{addEventListener(){}},setInterval(){},setTimeout(){},renderGatewayIndicator(){},
   URL:{createObjectURL:blob=> {blobs.push(blob);return 'blob:export'},revokeObjectURL(){}},
   fetch:async(url,options)=>{calls.push({url,options});return response}
@@ -89,4 +89,8 @@ test('busy response and unexpected content show errors and allow retry',async()=
   assert.equal(p.downloads.length,0);assert.ok(p.node('download-error').textContent);
   assert.equal(p.node('download-status').textContent,'');assert.equal(p.node('download-data').disabled,false);
  }
+});
+
+test('opening backup settings does not contact the broker or create a download',()=>{
+ const p=page({});assert.equal(p.calls.length,0);assert.equal(p.downloads.length,0);
 });

@@ -5,6 +5,7 @@ legacy holdings. Broker lookups follow the verified connected Gateway.
 """
 import gateway
 import csv
+import hashlib
 import html
 import io
 import json
@@ -375,7 +376,14 @@ def bootstrap():
     rows = draft['rows'] if draft else catalog()
     identities = read_json(DATA/'identities.json', {})
     rows = [{**r, **identities.get(r['isin']+':'+r['currency'], {})} for r in rows]
+    saved_report = read_json(DATA/'xray.json', {})
+    report = saved_report.get('report') if isinstance(saved_report, dict) and saved_report.get('version') == 1 else None
+    if not isinstance(report, dict) or not all(k in report for k in
+            ('stats', 'rows', 'holdings', 'exposures', 'overlap', 'warnings', 'analyzed_at', 'input_signature')):
+        report = None
+    stale = bool(report and report['input_signature'] != analysis_signature(rows))
     return {'ok':True,'rows':[{**r,'source':source_meta(r)} for r in rows],
+            'report':report, 'report_stale':stale,
             'saved_at':draft.get('saved_at') if draft else None,
             'origin':'saved' if draft else 'manual', 'catalog':catalog(),
             'manual_version':read_json(HERE/'manual.json',{}).get('manual_version')}
@@ -453,6 +461,24 @@ def start_verify(rows, mode='auto'):
     return {'ok':True,'job':jid}
 
 
+def analysis_signature(rows):
+    """Identify the allocations, source bytes and policy behind a saved X-Ray."""
+    fields = ('isin', 'ticker', 'weight', 'override', 'ter', 'currency')
+    inputs = []
+    for row in rows:
+        source = source_meta(row)
+        path = snapshot_path(row['isin'])
+        if not path.exists() and source.get('file'):
+            path = HERE/'holdings'/source['file']
+        inputs.append({**{k: row.get(k) for k in fields}, 'weight':float(row['weight']), 'source':source,
+                       'holdings':hashlib.sha256(path.read_bytes()).hexdigest()
+                       if not row.get('override') and path.exists() else None})
+    files = [HERE/'manual.json', HERE/'holdings'/'enrich.csv']
+    payload = {'rows':sorted(inputs, key=lambda r:r['isin']),
+               'files':[hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None for p in files]}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
+
+
 def analyze_rows(rows, auto_fetch=False):
     import pandas as pd
     import xray
@@ -468,7 +494,9 @@ def analyze_rows(rows, auto_fetch=False):
                 return f"{r['ticker']}: automatic download unavailable: {e}"
         with ThreadPoolExecutor(max_workers=3) as pool:
             warnings.extend(w for w in pool.map(missing, rows) if w)
-    with tempfile.TemporaryDirectory() as td:
+    with LOCK, tempfile.TemporaryDirectory() as td:
+        signature = analysis_signature(rows)
+        cfg = read_json(HERE/'manual.json', {})
         directory = Path(td)
         pf = []
         for row in rows:
@@ -514,8 +542,8 @@ def analyze_rows(rows, auto_fetch=False):
     if any(h['weight'] < 0 for h in holdings):
         warnings.append('Small negative cash / derivative balances are retained as signed exposure; charts show positive bars only.')
     from policy import allocation_checks
-    cfg = read_json(HERE/'manual.json', {})
     return {'ok':True,'analyzed_at':now(),'rows':sources,'holdings':holdings,
+        'input_signature':signature,
         'manual_version':cfg.get('manual_version'),
         'policy_checks':allocation_checks(cfg, rows, holdings),
         'exposures':{k:sorted([{'name':n,'weight':float(w)} for n,w in v.items()],key=lambda x:-x['weight'])
@@ -577,7 +605,8 @@ def broker_holdings(mode='auto'):
 
 
 def api(action, p):
-    if action=='bootstrap': return bootstrap()
+    if action=='bootstrap':
+        with LOCK: return bootstrap()
     if action=='search': return search(p.get('query',''),p.get('online',False),'auto')
     if action=='resolve': return resolve(p)
     if action=='save':
@@ -593,5 +622,8 @@ def api(action, p):
             if j is None: raise ValueError('Refresh session expired. Start a new refresh.')
             return {'ok':True,**j}
     if action=='holdings': return broker_holdings('auto')
-    if action=='analyze': return analyze_rows(p.get('rows'), auto_fetch=True)
+    if action=='analyze':
+        report = analyze_rows(p.get('rows'), auto_fetch=True)
+        with LOCK: atomic_json(DATA/'xray.json', {'version':1, 'report':report})
+        return report
     raise ValueError('Unknown workspace action.')

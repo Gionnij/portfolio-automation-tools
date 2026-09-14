@@ -80,10 +80,63 @@ python -m pip install -r requirements.txt
 python webdash.py
 ```
 
-Open [Lens locally](http://127.0.0.1:8642). Add tickers or search by ISIN,
+Open [Lens locally](http://localhost:8642) to create your personal space with an
+optional first name, followed by PIN creation and an optional Touch ID setup.
+Return visits open your home directly, with links to your
+saved research portfolio, X-Ray, operating manual and monthly investing. You can
+change or remove the first name under **Profile → Details**.
+
+The sidebar has three destinations: **Home**, **Portfolio**, and **Invest**. Your
+name opens **Profile**, where activity, data, backups and settings live. Portfolio
+and X-Ray link directly to **Data sources**. See [NAVIGATION.md](NAVIGATION.md) for
+the full route map, first-run flow and compatibility behavior.
+
+One profile is saved per Lens installation in the private, Git-ignored
+`.workspace/profile.json`; it is shared across browsers using that installation
+and included in data exports and encrypted backups. Creating a space keeps all
+existing portfolio and policy files intact and contacts no broker or provider.
+It adds no login, app lock, file encryption or trading approval. The color theme
+continues to be a per-browser preference. Backup import remains deferred.
+
+Open [Settings → Security](http://localhost:8642/profile/settings) to register a passkey
+using your current Lens PIN. Complete the **no-trade test**, then activate paper
+and live order approval separately. Your browser may offer Touch ID, Windows
+Hello or a device passcode; passkeys may sync through your credential provider.
+Lens does not receive biometric data or the private key. Physical device and
+browser compatibility must be checked on your own machine.
+
+For an activated mode, sending orders requires a fresh device assertion; a PIN
+cannot bypass it. The PIN still protects cancellation and PIN management.
+Changing approval mode requires both the PIN and registered device. To replace
+a passkey, return both modes to PIN first, then use **Use a different passkey**.
+An inactive enrollment can be cleared with the current PIN. If you lose access
+to an active credential, submission stays blocked; no automatic recovery or
+backup restore re-enables it. App locking and working-file encryption are separate.
+
+The final review identifies the exact brokerage account, contracts, quantities,
+EUR limit prices and DAY order terms. It expires after two minutes. The executor
+sends the frozen values, checks the account again, and never reuses an approval.
+Edits, account/policy changes, restart or an expired browser session require a new
+review. Browser sessions last 30 minutes; reload Lens when prompted. The first
+version requires EUR listings with an ISIN and available broker price increments.
+Cash checks include a €5 allowance per buy, not a guarantee of actual fees.
+
+The canonical browser address is now `http://localhost:8642`; old IP links move
+there automatically while carrying over the selected theme. Update requirements
+before restarting. The private `.device-auth.json` registry is excluded from Git
+and all data exports; order manifests remain historical records in exports.
+See [Device approval design and implementation status](DEVICE-APPROVAL-PLAN.md).
+
+Open **Portfolio → Research** (at `/portfolio#portfolio`) to add tickers or search by ISIN,
 choose the right listing, and enter percentages totaling 100%. Run X-Ray to
 see combined holdings and overlap. **Data sources** lets you verify all fund
 identities with the paper Gateway and refresh supported provider downloads.
+
+The last completed X-Ray is saved automatically on this computer and restored
+when you return, reload the page or restart Lens. Changes to the saved portfolio,
+holdings data or operating manual mark it as an earlier snapshot; choose
+**Update X-Ray** to replace it. Running an X-Ray does not save portfolio edits:
+use **Save portfolio** to keep those too. The saved X-Ray is included in backups.
 
 Automatic sources currently cover the original iShares, Global X and SPDR
 funds (10 equity ETFs). Other funds retain their existing files or accept a
@@ -98,7 +151,7 @@ The AI advisor questionnaire remains deferred.
 
 ## Monthly investing
 
-Open [Monthly investing](http://127.0.0.1:8642/rebalance). Lens detects your connected Gateway before loading any account data. Port 4001 opens live; port 4002 opens paper.
+Open [Monthly investing](http://localhost:8642/rebalance). Lens detects your connected Gateway before loading any account data. Port 4001 opens live; port 4002 opens paper.
 
 1. Choose a cash budget and press **Generate investment preview**. Optional cash-fund
    deployment, minimum purchases and price updates are under **Plan options**.
@@ -121,9 +174,30 @@ can change. Hypothetical budgets remain previewable, but review and submission
 check available funds. After submission, order outcomes remain visible while
 holdings refresh; there is no automatic new preview.
 
+## Activity
+
+Open **Activity** from Home or your profile. It reads local saved records only,
+with filters for personal work, paper orders and live orders. Portfolio and X-Ray
+entries represent their latest saved versions; earlier edits are not reconstructed.
+
+Dashboard submission attempts are now retained in `.workspace/activity/` as private
+version 1 JSON records. A request is saved before execution and updated with the
+results afterward. A missing final result remains explicitly unconfirmed. A successful
+executor exit does not mean every order filled: each saved status is shown separately.
+The last receipt from older Lens versions is preserved before a new submission replaces
+it; its date is labeled as the file save time and no account identity is guessed.
+CLI-only activity is not fully archived, and broker updates after the saved receipt
+are not polled. Use IBKR for current status and complete trading history.
+
+Activity records include the reviewed account, quantities, limits, approval method
+and saved results. They contain no passkey proof, challenge, PIN or reusable approval.
+They are included in data exports and encrypted backups. Failure to save the initial
+request prevents submission; failure to save its final outcome never retries execution
+or hides the returned receipt. A read failure is shown as incomplete history.
+
 ## Data & backup
 
-Open **Data & backup** in the sidebar to download all saved Lens data as a ZIP.
+Open **Profile → My data → Backups** to download all saved Lens data as a ZIP.
 The export includes the saved research draft, operating manual and policy,
 live/paper/legacy investment records, reports, fund holdings and price data.
 `manifest.json` lists included files with sizes and SHA-256 checksums. Files keep
@@ -166,7 +240,7 @@ Lens checks every 30 seconds while visible, on window focus and on Refresh.
 Status uses the API handshake and does not wait for positions or prices.
 Account changes and disconnections clear the old view, including any in-page
 approval. Monthly investing waits for detection before loading the matching
-snapshot. Orders still require individual selection and PIN approval.
+snapshot. Orders still require individual selection and the configured PIN or device approval.
 
 Holdings reads use a 20-second connection timeout, matching the investing
 engine. A holdings-data failure is reported separately from a disconnected

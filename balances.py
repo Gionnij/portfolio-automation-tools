@@ -123,7 +123,7 @@ def read_broker(ib, cfg, mode):
             raise
         open_orders = None
         warnings.append('Pending orders could not be checked. They may affect spendable cash.')
-    return dict(result, ok=True, account=mode, read_at=datetime.now(timezone.utc).isoformat(),
+    return dict(result, ok=True, account=mode, broker_account=account, read_at=datetime.now(timezone.utc).isoformat(),
                 open_orders=open_orders, warnings=warnings)
 
 

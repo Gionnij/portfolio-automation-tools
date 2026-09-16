@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import rebalance
 
 class ExecutionCashTests(unittest.TestCase):
-    def execute_fixture(self, orders, cash, sell_fails=False):
+    def execute_fixture(self, orders, cash, sell_fails=False, status="Filled"):
         ib = Mock()
         ib.managedAccounts.return_value = ['DU123']
         ib.reqAllOpenOrders.return_value = []
@@ -22,8 +22,8 @@ class ExecutionCashTests(unittest.TestCase):
         ib.accountValues.return_value = values
         def place(contract, order):
             failed = sell_fails and order.action == 'SELL'
-            return Row(orderStatus=Row(status='Cancelled' if failed else 'Filled',
-                       filled=0 if failed else order.totalQuantity,avgFillPrice=10),log=[])
+            return Row(orderStatus=Row(status='Cancelled' if failed else status,
+                       filled=order.totalQuantity if not failed and status=="Filled" else 0,avgFillPrice=10),log=[])
         ib.placeOrder.side_effect = place
         with tempfile.TemporaryDirectory() as folder:
             orders_file=Path(folder)/'orders.json';results_file=Path(folder)/'results.json'
@@ -53,5 +53,13 @@ class ExecutionCashTests(unittest.TestCase):
         self.assertEqual(ib.placeOrder.call_count,1)
         self.assertEqual(ib.placeOrder.call_args.args[1].action,'SELL')
         self.assertEqual(results[-1]['status'],'skipped')
+
+    def test_working_receipts_preserve_acknowledgement_instead_of_guessing(self):
+        for status in ('PendingSubmit','Submitted','PreSubmitted'):
+            with self.subTest(status=status):
+                _,results=self.execute_fixture([dict(ticker='AAA',side='BUY',qty=1,est_price=10)],100,status=status)
+                self.assertEqual(results[0]['status'],'working')
+                self.assertEqual(results[0]['broker_status'],status)
+                self.assertEqual(results[0]['filled'],0)
 
 if __name__=='__main__':unittest.main()

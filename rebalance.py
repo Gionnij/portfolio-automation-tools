@@ -1046,9 +1046,11 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
 
     results = []
 
-    def _rec(o, status, filled=0, note=""):
+    def _rec(o, status, filled=0, note="", broker_status=None):
         results.append(dict(ticker=o["ticker"], side=o["side"], qty=o["qty"],
                             status=status, filled=filled, note=note))
+        if broker_status is not None:
+            results[-1]["broker_status"] = broker_status
 
     def _available_eur():
         try:
@@ -1208,7 +1210,7 @@ def execute(orders_path, cfg, host, port, client_id, auto_yes=False,
         elif st.status in ("PreSubmitted", "Submitted", "PendingSubmit"):
             print(f"  WORKING {o['ticker']} (still open at limit)")
             _rec(o, "working", 0, "order open at limit - fills or expires "
-                                  "end of day")
+                                  "end of day", broker_status=st.status)
         else:
             print(f"  FAILED {o['ticker']} ({st.status})")
             _rec(o, "failed", got, _first_err(t))

@@ -3,6 +3,7 @@
  const node=id=>document.getElementById(id);
  try{
   const r=await fetch('/api/home',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}),d=await r.json();if(!r.ok||!d.ok)throw Error();
+  node('home-next').hidden=!d.needs_attention;
   node('home-next-title').textContent=d.next_step.title;node('home-next-copy').textContent=d.next_step.description;node('home-next-link').textContent=d.next_step.label;node('home-next-link').href=d.next_step.href;
   const titles={portfolio:'Portfolio saved',xray:'X-Ray saved',space:'Your space created',receipt:'Order receipt saved'};
   const phases={requested:'Submission outcome to check',uncertain:'Submission outcome to check',not_submitted:'Submission stopped',completed:'Order results recorded'};

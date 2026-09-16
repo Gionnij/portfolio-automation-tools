@@ -22,23 +22,29 @@ class Elements(HTMLParser):
         if tag=='a':self.links.append(a.get('href'))
 
 class NavigationTests(unittest.TestCase):
-    def test_every_destination_has_unique_ids_and_the_shared_three_primary_links(self):
+    def test_every_destination_has_unique_ids_and_the_shared_four_primary_links(self):
         for route,file in navigation.PAGES.items():
             markup=navigation.render((ROOT/file).read_text(),route)
             parser=Elements();parser.feed(markup)
             self.assertEqual(len(parser.ids),len(set(parser.ids)),route)
             nav=markup.split('aria-label="Main navigation">')[1].split('</nav>')[0]
-            for url in ['href="/"','href="/portfolio/holdings"','href="/invest"']:self.assertIn(url,nav)
-            self.assertEqual(nav.count('<a '),3,route)
-            self.assertIn('href="/profile"',markup)
+            for url in ['href="/"','href="/portfolio/holdings"','href="/invest"','href="/profile"']:self.assertIn(url,nav)
+            self.assertEqual(nav.count('<a '),4,route)
+            for element in ['gateway-menu','lens-menu','theme-select']:
+                self.assertIn(element,parser.ids,route)
+            self.assertEqual(markup.count('class="lens-global-header"'),1,route)
+            self.assertLess(markup.index('class="lens-global-header"'),markup.index('class="lens-page-heading"') if 'class="lens-page-heading"' in markup else len(markup))
             self.assertIn('data-lens-route="'+route+'"',markup)
 
-    def test_profile_sections_and_portfolio_source_shortcut_resolve(self):
+    def test_settings_sections_and_readonly_portfolio_resolve(self):
         source=navigation.render((ROOT/'workspace.html').read_text(),'/portfolio')
-        self.assertIn('href="/profile/data/sources">Data sources ↗',source)
+        self.assertNotIn('id="research-shortcut"',source)
+        self.assertIn('id="nav-portfolio" hidden',source)
+        self.assertIn('id="view-portfolio" class="view" hidden',source)
+        self.assertIn('href="/profile/data/sources"',source)
         for route in ['/profile/activity','/profile/data','/profile/data/sources','/profile/settings']:
             source=navigation.render((ROOT/navigation.PAGES[route]).read_text(),route)
-            self.assertIn('aria-label="Profile sections"',source)
+            self.assertIn('aria-label="Settings sections"',source)
         for target in navigation.ALIASES.values():self.assertIn(target,navigation.PAGES)
 
     def test_http_aliases_and_pages_do_not_mutate_or_contact_broker(self):
@@ -86,11 +92,13 @@ class SetupAndHomeTests(unittest.TestCase):
 
     def test_home_prioritizes_uncertain_submission_and_only_reads_local_files(self):
         with patch.object(webdash.gateway,'status',side_effect=AssertionError('No broker')):
-            self.assertEqual(home.summary(self.root)['next_step']['href'],'/portfolio#portfolio')
+            self.assertEqual(home.summary(self.root)['next_step']['href'],'/portfolio/holdings')
+            self.assertFalse(home.summary(self.root)['needs_attention'])
             self.assertFalse(list(self.root.iterdir()))
             (self.root/'state.paper.pending').write_text('1')
             (self.root/'state.live.pending').write_text('2')
             out=home.summary(self.root)
+            self.assertTrue(out['needs_attention'])
             self.assertIn('live submission',out['next_step']['description'])
             self.assertIn('uncertain',out['next_step']['description'])
             self.assertEqual(out['next_step']['href'],'/invest')

@@ -15,7 +15,13 @@ function renderGatewayIndicator(connection, busy=false, issue='') {
   node('gateway-issue').hidden=!connected||!issue;
   node('gateway-refresh').disabled=busy;
   node('gateway-refresh').textContent=busy?'Checking…':'Refresh connection';
-  document.body.classList.toggle('live',mode==='live');
+  // Preserve the last palette while checking. Fresh account data drives actions.
+  if(connection){
+    document.body.classList.toggle('live',mode==='live');
+    if(document.documentElement)document.documentElement.dataset.account=mode||'none';
+    try{if(mode)localStorage.setItem('lens-account-appearance',mode);else localStorage.removeItem('lens-account-appearance');}catch(_){}
+  }
+  const liveNote=node('live-strip');if(liveNote)liveNote.hidden=mode!=='live';
 }
 function openGatewayMenu(){
   const menu=document.getElementById('gateway-menu');
@@ -29,3 +35,19 @@ document.addEventListener('keydown',event=>{
   const menu=document.getElementById('gateway-menu');
   if(event.key==='Escape'&&menu?.open){menu.open=false;document.getElementById('gateway-toggle').focus();}
 });
+
+/* Local-only pages need connection status, never holdings or investment actions. */
+let lensConnectionBusy=false;
+async function refreshLensConnection(){
+  if(lensConnectionBusy)return;
+  lensConnectionBusy=true;
+  const button=document.getElementById('gateway-refresh');if(button)button.disabled=true;
+  try{
+    const response=await fetch('/api/gateway',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+    const data=await response.json();
+    if(!response.ok||!data.ok||!data.connection)throw Error('Connection unavailable');
+    renderGatewayIndicator(data.connection);
+    window.dispatchEvent(new CustomEvent('lens-connection',{detail:data.connection}));
+  }catch(_){const connection={state:'unavailable',message:'Could not check IB Gateway. Check the connection and try again.'};renderGatewayIndicator(connection);window.dispatchEvent(new CustomEvent('lens-connection',{detail:connection}));}
+  finally{lensConnectionBusy=false;if(button)button.disabled=false;}
+}

@@ -16,10 +16,10 @@ function renderSpace(data, focus = false) {
   if (profile) {
     spaceNode('home-title').textContent = profile.first_name ? 'Welcome back, ' + profile.first_name + '.' : 'Welcome back.';
     const summary = data.summary;
-    spaceNode('portfolio-tag').textContent = summary.portfolio_saved ? 'Saved research portfolio' : 'From your operating manual';
+    spaceNode('portfolio-tag').textContent = summary.portfolio_saved ? 'Saved allocation' : 'From your operating manual';
     spaceNode('portfolio-summary').textContent = summary.portfolio_saved
-      ? summary.fund_count + ' investment' + (summary.fund_count === 1 ? '' : 's') + ' in your saved portfolio. Continue your research or revisit your X-Ray.'
-      : 'Start with the investments in your operating manual. Save your research portfolio to make it your own.';
+      ? summary.fund_count + ' investment' + (summary.fund_count === 1 ? '' : 's') + ' in your saved allocation. The portfolio breakdown explains what it contains.'
+      : 'Your portfolio breakdown uses the allocation in your operating manual.';
     const date = summary.saved_at ? new Date(summary.saved_at) : null;
     const validDate = date && !Number.isNaN(date.getTime());
     spaceNode('portfolio-time').hidden = !validDate;

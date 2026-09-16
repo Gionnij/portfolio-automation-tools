@@ -27,16 +27,26 @@
 <div class="privacy"><h2>At home on your computer</h2><p>Your profile, saved portfolio and plan stay here. Lens contacts data providers for market updates and sends approved orders to your broker. Creating your space does neither.</p><p>This space does not lock the app or encrypt its saved files. Anyone with access to this Lens installation can open it. <a href="/data-backup">More about data &amp; backup →</a></p></div>
 </section>
 <section id="home" class="home" hidden aria-labelledby="home-title">
-<div class="hero"><span class="eyebrow">Your space</span><h1 id="home-title" tabindex="-1">Welcome back.</h1><p>Your portfolio and plan, ready when you are.</p></div>
-<article class="space-card home-next"><p class="tag">Your next step</p><h2 id="home-next-title">Your portfolio, ready when you are.</h2><p id="home-next-copy">Continue with your saved work.</p><a id="home-next-link" class="action" href="/portfolio">Open your portfolio</a></article>
-<div class="space-grid">
-<article class="space-card"><p class="tag" id="portfolio-tag">Your portfolio</p><h2>Your portfolio, in focus</h2><p id="portfolio-summary"></p><p id="portfolio-time" class="small" hidden></p><div class="card-links"><a class="action" href="/workspace#portfolio">Open your portfolio</a><a href="/workspace#xray">Portfolio X-Ray →</a></div></article>
-<article class="space-card"><p class="tag">Your plan</p><h2>A steady way forward</h2><p>Your operating manual holds the rules for monthly investing. Research portfolio edits stay separate from those rules.</p><div class="card-links"><a id="manual-link" href="/manual">Read your operating manual →</a><a href="/rebalance">Monthly investing →</a></div><p id="manual-missing" class="small" hidden>No operating manual is saved in this installation.</p></article>
+<div class="hero"><h1 id="home-title" tabindex="-1">Welcome back.</h1><p>Your portfolio overview.</p></div>
+<section class="home-performance" aria-label="Holdings value and gain or loss">
+<div class="home-metrics">
+<article class="space-card home-metric"><h2>Invested in holdings</h2><strong id="home-holdings-cost">—</strong><p>Cost of the investments you still hold</p></article>
+<article class="space-card home-metric"><h2>Holdings value</h2><strong id="home-holdings-value">—</strong><p>Estimated value today</p></article>
+<article class="space-card home-metric" id="home-gain-card" data-direction="unknown"><h2>Gain / loss</h2><strong id="home-gain-loss">—</strong><span id="home-gain-percent">—</span><p>On investments still held · unrealized</p></article>
 </div>
-<article class="space-card home-recent"><p class="tag">Recently in your space</p><div id="home-recent-list"></div><p id="home-recent-status" class="small" role="status"></p><div class="card-links"><a href="/profile/activity">All activity →</a></div></article>
-<div class="privacy"><h2>Yours to keep</h2><p>Your space is remembered in this Lens installation, across visits and browsers. Your working files are stored locally and are not encrypted by Lens. Market updates use data providers; approved orders go to your broker. <a href="/data-backup">Manage your data &amp; backups →</a></p></div>
-<p><a href="/profile">Personal details & settings →</a></p>
+<div class="home-metrics-status"><p id="home-metrics-status" role="status">Checking your account…</p><button id="home-metrics-refresh" type="button" disabled>Refresh</button></div>
+<p id="home-metrics-error" class="small" role="status"></p>
+<details class="home-metrics-help"><summary>What these figures include</summary><p>Only investments in your Lens investing policy. Gain/loss is their current value minus IBKR’s recorded purchase cost; the percentage compares that change with the purchase cost. This is not a lifetime or annualized return. Cash deposits, sold investments, dividends and interest are excluded. Prices may be delayed.</p><p id="home-metrics-fx" hidden>Foreign-currency holdings use the same current exchange rate for value and cost. These figures exclude gains or losses from historical exchange-rate changes.</p></details>
+</section>
+<article class="space-card home-next" id="home-next" hidden><p class="tag">Plan status</p><h2 id="home-next-title">Your portfolio, ready when you are.</h2><p id="home-next-copy">Continue with your saved work.</p><a id="home-next-link" class="action" href="/portfolio">Open your portfolio</a></article>
+<div class="space-grid">
+<article class="space-card"><p class="tag" id="portfolio-tag" hidden>Your portfolio</p><h2>Saved allocation</h2><p id="portfolio-summary"></p><p id="portfolio-time" class="small" hidden></p><div class="card-links"><a class="action" href="/workspace#portfolio">Open your portfolio</a><a href="/workspace#xray">Portfolio breakdown →</a></div></article>
+<article class="space-card"><h2>Investing rules</h2><p>Your operating manual defines investment targets and planning rules.</p><div class="card-links"><a id="manual-link" href="/manual">Read your operating manual →</a><a href="/rebalance">Investment plan →</a></div><p id="manual-missing" class="small" hidden>No operating manual is saved in this installation.</p></article>
+</div>
+<article class="space-card home-recent"><p class="tag">Recent activity</p><div id="home-recent-list"></div><p id="home-recent-status" class="small" role="status"></p><div class="card-links"><a href="/profile/activity">All activity →</a></div></article>
+<div class="privacy" hidden><h2>Yours to keep</h2><p>Your space is remembered in this Lens installation, across visits and browsers. Your working files are stored locally and are not encrypted by Lens. Market updates use data providers; approved orders go to your broker. <a href="/data-backup">Manage your data &amp; backups →</a></p></div>
+
 </section>
 <noscript><p>Enable JavaScript to open your space. <a href="/manual">Read your operating manual</a>.</p></noscript>
-</main><script src="/personal-space.js"></script><script src="/home.js"></script>
+</main><script src="/personal-space.js"></script><script src="/home.js"></script><script src="/home-performance.js"></script>
 </body></html>

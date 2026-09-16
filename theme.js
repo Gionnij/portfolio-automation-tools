@@ -1,5 +1,7 @@
 /* Apply before the page paints, then keep the preference in sync across tabs. */
 (() => {
+  // Cached account mode is a paint preference only, never trading authority.
+  try {const mode=localStorage.getItem('lens-account-appearance');if(['live','paper'].includes(mode))document.documentElement.dataset.account=mode;} catch (_) {}
   const key = 'lens-theme';
   const system = window.matchMedia('(prefers-color-scheme: dark)');
   const valid = value => ['light', 'dark'].includes(value) ? value : 'system';

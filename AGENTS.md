@@ -6,3 +6,8 @@
 - Preserve all existing edits. If edits were made on `main` accidentally, move them to the daily branch before further work; never discard them to switch branches.
 - Keep each completed change in a focused commit with relevant validation. Merge through review; do not push or merge unless requested.
 - Never commit private portfolio state, orders, credentials, or backups.
+
+## Numeric input preference
+
+- Numbers are entered by typing. Use text inputs with the appropriate inputmode and format/range validation; do not use native number spinners, increment/decrement buttons, sliders, or wheel/arrow-key value adjustments anywhere in Lens.
+- Preserve normal text editing, decimal precision where needed, and validation of investment amounts and allocations.

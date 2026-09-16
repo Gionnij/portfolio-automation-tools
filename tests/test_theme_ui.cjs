@@ -34,11 +34,21 @@ test('other tabs synchronize changes and clearing storage restores system mode',
   assert.equal(p.root.dataset.theme,'light');assert.equal(p.select.value,'light');
   p.windowEvents.storage({key:null,newValue:null});assert.equal(p.select.value,'system');
 });
-test('every app page initializes theme in its head and exposes the same control',()=>{
+test('every app page initializes theme before paint; navigation supplies the shared control',()=>{
   for(const file of ['workspace.html','investing.html','data-backup.html','personal-space.html','device-approval.html','activity.html','profile.html']){
     const html=fs.readFileSync(path.join(__dirname,'..',file),'utf8');
     assert.match(html,/<head>[\s\S]*?<script src="\/theme.js"><\/script>[\s\S]*?<\/head>/);
-    assert.match(html,/<select id="theme-select"[^>]+aria-label="Color theme"/);
-    for(const value of ['system','light','dark'])assert.ok(html.includes(`<option value="${value}">`));
+
   }
+});
+
+test('the last account palette is applied before page paint without changing the theme',()=>{
+ const root={dataset:{}},events={};
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../theme.js'),'utf8'),{
+  localStorage:{getItem:key=>key==='lens-account-appearance'?'live':'light'},
+  window:{matchMedia:()=>({matches:false,addEventListener(){}}),addEventListener(){}},
+  document:{documentElement:root,getElementById:()=>null,addEventListener:(key,fn)=>{events[key]=fn}}
+ });
+ assert.equal(root.dataset.account,'live');
+ assert.equal(root.dataset.theme,'light');
 });

@@ -577,7 +577,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self.path = urlsplit(self.path).path
-        assets = {'/navigation.css': 'text/css', '/navigation.js': 'text/javascript', '/profile.js': 'text/javascript', '/home.js': 'text/javascript', '/shell.css': 'text/css', '/shell.js': 'text/javascript', '/theme.js': 'text/javascript',
+        assets = {'/navigation.css': 'text/css', '/navigation.js': 'text/javascript', '/profile.js': 'text/javascript', '/home.js': 'text/javascript', '/home-performance.js': 'text/javascript', '/shell.css': 'text/css', '/shell.js': 'text/javascript', '/theme.js': 'text/javascript',
                   '/data-backup.js': 'text/javascript', '/personal-space.js': 'text/javascript', '/device-api.js': 'text/javascript',
                   '/activity.js': 'text/javascript', '/device-settings.js': 'text/javascript', '/local-origin.js': 'text/javascript'}
         if self.path in assets:

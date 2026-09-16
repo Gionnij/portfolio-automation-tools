@@ -51,7 +51,7 @@ def summarize(cfg, values, account, positions, complete=True):
     sleeves = cfg.get('sleeves', {})
     policy_isins = {s.get('isin') for s in sleeves.values() if s.get('isin')}
     identified = complete and all(p.get('isin') for p in positions)
-    totals = {isin: {'shares': 0.0, 'value': 0.0} for isin in policy_isins}
+    totals = {isin: {'shares': 0.0, 'value': 0.0, 'cost': 0.0} for isin in policy_isins}
     for pos in positions:
         isin = pos.get('isin')
         if isin not in policy_isins:
@@ -61,8 +61,22 @@ def summarize(cfg, values, account, positions, complete=True):
         total['shares'] = total['shares'] + qty if total['shares'] is not None and qty is not None else None
         value = number(qty * px) if qty is not None and px is not None and px > 0 else None
         total['value'] = total['value'] + value if total['value'] is not None and value is not None else None
+        unit_cost = number(pos.get('average_cost_eur'))
+        # Long ETF/ETC positions only. Missing/zero costs must not imply a 100% gain.
+        cost = number(qty * unit_cost) if qty is not None and qty > 0 and unit_cost is not None and unit_cost > 0 else None
+        total['cost'] = total['cost'] + cost if total['cost'] is not None and cost is not None else None
     nav = sum(t['value'] for t in totals.values()) if identified and all(t['value'] is not None for t in totals.values()) else None
     nav = nav if nav is not None and nav >= 0 else None
+    cost = sum(t['cost'] for t in totals.values()) if identified and all(t['cost'] is not None for t in totals.values()) else None
+    cost = number(cost)
+    gain = number(nav - cost) if nav is not None and cost is not None else None
+    performance = {
+        'cost_basis': round(cost, 2) if cost is not None else None,
+        'unrealized_pnl': round(gain, 2) if gain is not None else None,
+        'unrealized_pct': gain / cost * 100 if gain is not None and cost and cost > 0 else None,
+        'scope': 'policy_holdings',
+        'foreign_currency': any(p.get('isin') in policy_isins and p.get('foreign_currency') for p in positions),
+    }
     holdings = []
     for ticker, sleeve in sleeves.items():
         total = totals.get(sleeve.get('isin'), {}) if identified else {}
@@ -76,7 +90,7 @@ def summarize(cfg, values, account, positions, complete=True):
     return {
         'currency': 'EUR', 'cash': cash,
         'nav': round(nav, 2) if nav is not None else None,
-        'holdings': holdings,
+        'holdings': holdings, 'performance': performance,
         'xeon': {'value': xeon.get('value'),
                  'shares': xeon.get('shares'),
                  'target_pct': xeon.get('target_pct'),
@@ -108,8 +122,15 @@ def read_broker(ib, cfg, mode):
         ccy = item.contract.currency
         rate = 1 if ccy == 'EUR' else ledger_value(values, account, 'ExchangeRate', ccy) if base == 'EUR' else None
         px = number(item.marketPrice)
+        # IBKR's average cost for STK (ETF/ETC) shares is in listing currency.
+        # Convert price and cost using the same current FX rate; historical FX
+        # performance, distributions and closed positions are not measured here.
+        # https://www.interactivebrokers.com/docs/tws-api/doc/account-portfolio-data/account-updates/account-value-keys
+        avg = number(getattr(item, 'averageCost', None)) if getattr(item.contract, 'secType', '') == 'STK' else None
         positions.append({'isin': isin, 'shares': item.position,
-                          'price_eur': px * rate if px is not None and rate is not None and rate > 0 else None})
+                          'price_eur': px * rate if px is not None and rate is not None and rate > 0 else None,
+                          'average_cost_eur': avg * rate if avg is not None and rate is not None and rate > 0 else None,
+                          'foreign_currency': ccy != 'EUR'})
     result = summarize(cfg, values, account, positions, complete)
     if result['nav'] is None:
         warnings.append('Some holdings could not be valued or identified. Portfolio percentages and XEON target amounts are unavailable until all policy holdings can be checked.')

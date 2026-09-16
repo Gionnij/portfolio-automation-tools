@@ -267,3 +267,67 @@ test('holdings landing loads saved account context before starting balance refre
  assert.equal(run("calls.some(a=>['prepare','execute','review'].includes(a))"),false);
  assert.equal(run('DATA.plan_id'),'keep-this-approval');
 });
+
+test('a stale preview leaves only the composer; a fresh preview restores the order card',()=>{
+ const {node,run}=page();
+ run('FRESH=false;renderPlan()');
+ assert.equal(node('preview-card').hidden,true);
+ assert.equal(node('preview-card').innerHTML,'');
+ assert.match(node('preview-hint').textContent,/saved preview/);
+ run('FRESH=true;renderPlan()');
+ assert.equal(node('preview-card').hidden,false);
+ assert.match(node('preview-card').innerHTML,/Proposed orders/);
+});
+test('balance shortcuts leave Invest for Holdings and cannot reveal a duplicate panel',()=>{
+ const {node,run}=page();
+ run("location.assign=url=>{location.destination=url};switchTab('balance')");
+ assert.equal(run('location.destination'),'/portfolio/holdings');
+ run("location.pathname='/portfolio/holdings';switchTab('balance',false)");
+ assert.equal(node('panel-balance').hidden,false);
+ assert.equal(node('panel-plan').hidden,true);
+});
+
+test('funding bar shows shortfall independently of holdings and handles zero, debit and unknown cash',()=>{
+ const {node,run}=page();node('contribute').value='1000';
+ run(`BALANCES=${JSON.stringify({...response(),nav:1000000,cash:700})};renderPortfolioHeader()`);
+ assert.match(node('snap-bar').innerHTML,/width:70\.00%/);
+ assert.match(node('snap-bar').innerHTML,/cash-shortfall.*width:30\.00%/);
+ assert.match(node('snap-plan').innerHTML,/€300.00/);
+ for(const cash of [0,-20]){
+  run(`BALANCES.cash=${cash};renderPortfolioHeader()`);
+  assert.match(node('snap-bar').innerHTML,/cash-shortfall.*width:100\.00%/);
+  assert.match(node('snap-plan').innerHTML,cash===0?/€1,000.00/:/€1,020.00/);
+  assert.doesNotMatch(node('snap-plan').innerHTML,/NaN|Infinity/);
+ }
+ run('BALANCES.cash=null;renderPortfolioHeader()');assert.equal(node('snap-bar').hidden,true);
+ assert.match(node('snap-plan').textContent,/unavailable/);
+ run('BALANCES.cash=1200;renderPortfolioHeader()');assert.doesNotMatch(node('snap-bar').innerHTML,/cash-shortfall/);
+ assert.match(node('snap-plan').innerHTML,/€200.00/);
+});
+test('typing an exact budget preserves cents and invalidates approval',()=>{
+ const {node,run}=page();node('contribute').value='50.46';
+ run('inputsChanged()');assert.equal(run('currentInputs().contribute'),50.46);assert.equal(run('REVIEW'),null);assert.equal(run('FRESH'),false);
+});
+test('mushrooms require a fresh, confirmed placement and do not replay with receipts',async()=>{
+ for(const mode of ['paper','live']){
+  const {node,run}=page();node('confirm-phrase').value='2468';
+  run(`MODE='${mode}';GATEWAY.mode=MODE;selected=()=>[0];REVIEW={...FIXED,allowed:true,account:MODE,plan_id:DATA.plan_id,selection:'[0]'};bursts=0;shroomBurst=()=>bursts++;refreshBalances=()=>{};request=async()=>({ok:true,results:[{ticker:'4COP',side:'BUY',qty:2,filled:2,status:'filled'}]})`);
+  await run('executeOrders()');assert.equal(run('bursts'),1);
+  run('renderOutcomes();renderAll()');assert.equal(run('bursts'),1);
+ }
+ const {run}=page();run('bursts=0;shroomBurst=()=>bursts++');
+ for(const response of [
+  {ok:false,results:[{status:'filled',filled:2}]},
+  {ok:true,not_submitted:true,results:[{status:'filled',filled:2}]},
+  {ok:true,results:[]},
+  {ok:true,results:[{status:'failed'}]},
+  {ok:true,results:[{status:'working',broker_status:'PendingSubmit'}]},
+  {ok:true,results:[{status:'working'}]},
+ ])run(`celebratePlacement(${JSON.stringify(response)})`);
+ assert.equal(run('bursts'),0);
+ run("celebratePlacement({ok:true,results:[{status:'working',broker_status:'Submitted'}]})");assert.equal(run('bursts'),1);
+ run("celebratePlacement({ok:true,results:[{status:'filled',filled:1},{status:'skipped'}]})");assert.equal(run('bursts'),2);
+});
+test('reduced motion skips the mushroom particles',()=>{
+ const {run}=page();run("created=0;window.matchMedia=()=>({matches:true});document.createElement=()=>{created++;throw Error('Unexpected animation')};shroomBurst()");assert.equal(run('created'),0);
+});

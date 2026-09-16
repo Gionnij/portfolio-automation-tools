@@ -11,11 +11,11 @@
 .lens-eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:1.6px;font-size:10px;margin:0 0 12px}
 .lens-page-heading,.lens-profile-heading{margin:20px 0 25px}.lens-page-heading h1,.lens-profile-heading h1{font:42px/1.2 Georgia,serif;letter-spacing:-1px;margin:0;overflow-wrap:anywhere}
 .lens-shortcut{display:flex;justify-content:flex-end;gap:20px;font-size:12px;margin:0 0 22px}.lens-shortcut a{color:var(--accent)}
-body[data-lens-route] .topbar .theme-select{display:none}
-body[data-lens-route^="/profile"] .main>.hero,body[data-lens-route^="/profile"] .main>.topbar{display:none}
-body[data-lens-route="/profile/data/sources"] #portfolio-navigation,body[data-lens-route="/profile/data/sources"] .main>.topbar,body[data-lens-route="/profile/data/sources"] #research-heading,body[data-lens-route="/profile/data/sources"] #research-shortcut{display:none}
+body[data-lens-route^="/profile"] .main>.hero{display:none}
+body[data-lens-route="/profile/data/sources"] #portfolio-navigation,body[data-lens-route="/profile/data/sources"] #research-heading{display:none}
 body[data-lens-route="/portfolio/holdings"] #account-content>.tabs,body[data-lens-route="/portfolio/holdings"] #panel-plan{display:none!important}
 body[data-lens-route="/portfolio/holdings"] .footer{display:none}
+body[data-lens-route="/invest"] #panel-balance{display:none!important}
 .lens-form-card{max-width:650px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px;margin:0 0 22px}.lens-form-card h2{font:26px/1.3 Georgia,serif;margin:0 0 12px}.lens-form-card p{color:var(--muted);font-size:13px;line-height:1.75}.lens-form-card label{display:block;margin:20px 0 8px;font-size:13px}.lens-form-card input,.lens-form-card select{font:inherit;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-subtle);color:var(--ink);max-width:100%;width:320px}.lens-form-card button,.lens-form-card .action{font:inherit;padding:11px 16px;min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--accent);color:var(--on-accent);cursor:pointer;display:inline-block;text-decoration:none}.lens-form-card input{display:block;margin-bottom:20px}.lens-form-card a{color:var(--accent)}
 .lens-form-card .action{color:var(--on-accent)}.lens-form-card button:disabled{opacity:.6;cursor:wait}#profile-error,#connection-error{color:var(--red)}.lens-manual{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.8 ui-monospace,monospace;background:var(--paper);padding:28px;border:1px solid var(--line);border-radius:14px}
 .setup-progress{display:flex;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:25px 0}.setup-progress .current{color:var(--accent);font-weight:600}.setup-finish{margin:25px 0;padding:24px;border-top:1px solid var(--line)}.setup-finish button{margin-right:10px;min-height:44px}
@@ -26,3 +26,33 @@ body[data-lens-route="/setup"] .lens-sidebar{display:none}body[data-lens-route="
 body[data-lens-route="/"] .topbar{min-height:28px;height:auto;margin-bottom:15px}
 body[data-lens-route="/profile/data/sources"] .lens-page-heading h2{font:28px Georgia,serif}
 body[data-lens-route]{margin:0}body[data-lens-route] *{box-sizing:border-box}
+
+/* One shared header and compact page rhythm, on every destination. */
+.lens-global-header{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:flex-end;gap:10px;min-height:58px;margin:-10px 0 22px;padding:10px 0;background:var(--bg)}
+.lens-global-header .gateway-panel{right:0}
+.lens-menu{position:relative;font-size:13px}
+.lens-menu>summary{display:grid;place-items:center;list-style:none;cursor:pointer;min-width:40px;min-height:40px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);letter-spacing:2px}
+.lens-menu>summary::-webkit-details-marker{display:none}
+.lens-menu-panel{position:absolute;right:0;top:calc(100% + 10px);width:230px;padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 38px #0002;color:var(--ink)}
+.lens-menu-panel label{display:block;font-size:12px;font-weight:600;margin:0 0 10px}
+.lens-menu-panel .theme-select{width:100%;max-width:none;border-radius:8px;min-height:40px;font-size:13px}
+.lens-menu-panel button{display:block;width:100%;margin-top:15px;text-align:left;font:inherit;min-height:40px;padding:9px 10px;background:var(--surface-subtle);border:1px solid var(--line);border-radius:8px;color:var(--ink);cursor:pointer}
+.lens-page-heading{margin:0 0 22px}.lens-page-heading h1{font:40px/1.2 Georgia,serif;font-weight:400;letter-spacing:-1px;margin:0}.lens-page-heading p{font-size:13px;color:var(--muted);margin:8px 0 0}
+.lens-tabs{margin-bottom:22px;gap:6px}.lens-profile{font-size:13px}.lens-sidebar .nav{margin-bottom:24px}
+body[data-lens-route="/portfolio/holdings"] .section-head{justify-content:flex-end;margin-bottom:14px}
+body[data-lens-route="/portfolio/holdings"] #panel-balance{margin-top:0}
+body[data-lens-route="/"] .home>.hero{margin:0 0 24px}
+body[data-lens-route="/"] .home>.hero h1{font-size:40px;margin:0}
+body[data-lens-route="/"] .home>.hero p{margin:8px 0 0;font-size:13px}
+body[data-lens-route="/setup"] .lens-global-header{display:none}
+@media(max-width:800px){.lens-sidebar{grid-template-columns:auto 1fr}.lens-profile{display:none}.lens-sidebar .nav{margin:0}.lens-sidebar .nav a{padding:10px}.lens-global-header{margin-top:-8px}}
+@media(max-width:620px){.lens-sidebar{grid-template-columns:1fr}.lens-sidebar .brand{justify-self:center}.lens-sidebar .nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px}.lens-sidebar .nav a{justify-content:center;font-size:13px;padding:10px 4px}.lens-page-heading h1,body[data-lens-route="/"] .home>.hero h1{font-size:32px}.lens-global-header{margin-bottom:18px}.lens-global-header .gateway-panel{right:-50px;max-width:calc(100vw - 36px)}.lens-global-header .gateway-toggle{min-height:40px;font-size:11px}.lens-tabs a{padding:8px 10px}.balance-tools{width:100%;flex-wrap:wrap}.balance-tools input{flex:1;min-width:120px}}
+
+#account-content>.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:22px}
+#account-content>.tabs .tab{padding:9px 15px;border:0;border-radius:8px;min-height:40px;font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--muted);background:transparent}
+#account-content>.tabs .tab:hover{background:var(--surface-hover)}
+#account-content>.tabs .tab[aria-selected=true]{background:var(--accent-soft);color:var(--accent)}
+
+.home-performance{margin:0 0 28px}.home-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.home-metric{padding:24px;min-width:0}.home-metric h2{font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0 0 14px;color:var(--muted)}.home-metric>strong{display:block;font-size:clamp(24px,2.8vw,36px);font-weight:550;letter-spacing:-1px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.home-metric>span{display:block;font-size:14px;margin-top:4px}.home-metric p{font-size:11px;line-height:1.6;margin:12px 0 0}.home-metrics-status{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px}.home-metrics-status p{font-size:11px;margin:0}.home-metrics-status button{font-size:12px;padding:6px 12px;min-height:36px}.home-metrics-help{font-size:12px;color:var(--muted);margin-top:8px}.home-metrics-help summary{cursor:pointer}.home-metrics-help p{margin:10px 0 0;font-size:12px}.home-performance #home-metrics-error{font-size:12px;color:var(--amber,#896027);margin:8px 0}.home-performance #home-metrics-error:empty{display:none}
+#home-gain-card[data-direction=gain]>:is(strong,span){color:#25653b}#home-gain-card[data-direction=loss]>:is(strong,span){color:#a33e35}:root[data-theme=dark] #home-gain-card[data-direction=gain]>:is(strong,span){color:#a3c99f}:root[data-theme=dark] #home-gain-card[data-direction=loss]>:is(strong,span){color:#f0aaa0}
+@media(max-width:1050px){.home-metric{padding:20px}.home-metric>strong{font-size:26px}}@media(max-width:620px){.home-metrics{grid-template-columns:1fr;gap:12px}.home-metric{padding:20px}.home-metric>strong{font-size:32px}.home-metric h2{margin-bottom:8px}.home-metric p{margin-top:8px}}

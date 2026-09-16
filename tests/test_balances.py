@@ -203,5 +203,52 @@ class BalanceTests(unittest.TestCase):
             self.assertEqual(before, {p.name: (p.read_bytes(), p.stat().st_mtime_ns) for p in root.iterdir()})
 
 
+class PerformanceTests(unittest.TestCase):
+    def test_open_position_gain_cost_and_percentage_exclude_cash_and_unrelated_assets(self):
+        positions = [dict(position('LU-XEON', 2, 150), average_cost_eur=100),
+                     dict(position('LU-XEON', 1, 150), average_cost_eur=120),
+                     dict(position('IE-FUND', 2, 80), average_cost_eur=100),
+                     dict(position('UNRELATED', 100, 999), average_cost_eur=1)]
+        d = balances.summarize(CONFIG, [value('CashBalance', 100000)], 'DU123', positions)
+        self.assertEqual(d['nav'], 610)
+        self.assertEqual(d['performance']['cost_basis'], 520)
+        self.assertEqual(d['performance']['unrealized_pnl'], 90)
+        self.assertAlmostEqual(d['performance']['unrealized_pct'], 90/520*100)
+        positions[0]['price_eur'] = 50
+        self.assertEqual(balances.summarize(CONFIG, [], 'DU123', positions)['performance']['unrealized_pnl'], -110)
+
+    def test_missing_cost_price_sync_or_identity_never_looks_like_zero_gain(self):
+        good = dict(position('IE-FUND', 2, 100), average_cost_eur=80)
+        cases = [dict(good, average_cost_eur=None), dict(good, average_cost_eur=0),
+                 dict(good, average_cost_eur=float('nan')), dict(good, price_eur=None),
+                 dict(good, shares=-2), dict(good, isin=None)]
+        for pos in cases:
+            with self.subTest(pos=pos):
+                self.assertIsNone(balances.summarize(CONFIG, [], 'DU123', [pos])['performance']['unrealized_pnl'])
+        self.assertIsNone(balances.summarize(CONFIG, [], 'DU123', [good], complete=False)['performance']['cost_basis'])
+        empty = balances.summarize(CONFIG, [], 'DU123', [])['performance']
+        self.assertEqual(empty['cost_basis'], 0)
+        self.assertEqual(empty['unrealized_pnl'], 0)
+        self.assertIsNone(empty['unrealized_pct'])
+
+    def test_broker_cost_currency_and_contract_type_are_checked(self):
+        ib = Mock();ib.managedAccounts.return_value=['DU123']
+        c=Row(conId=12,currency='USD',secType='STK')
+        ib.portfolio.return_value=[Row(contract=c,position=2,marketPrice=150,averageCost=100)]
+        ib.positions.return_value=[Row(contract=c,position=2)]
+        ib.reqContractDetails.return_value=[Row(contract=c,secIdList=[Row(tag='ISIN',value='IE-FUND')])]
+        ib.reqAllOpenOrders.return_value=[]
+        ib.accountValues.return_value=[value('RealCurrency','EUR','BASE'),value('ExchangeRate',.9,'USD')]
+        d=balances.read_broker(ib,CONFIG,'paper')['performance']
+        self.assertEqual(d['cost_basis'],180)
+        self.assertEqual(d['unrealized_pnl'],90)
+        self.assertEqual(d['unrealized_pct'],50)
+        self.assertTrue(d['foreign_currency'])
+        ib.accountValues.return_value=[]
+        self.assertIsNone(balances.read_broker(ib,CONFIG,'paper')['performance']['unrealized_pnl'])
+        c.currency='EUR';c.secType='OPT'
+        self.assertIsNone(balances.read_broker(ib,CONFIG,'paper')['performance']['cost_basis'])
+        ib.placeOrder.assert_not_called();ib.cancelOrder.assert_not_called()
+
 if __name__ == '__main__':
     unittest.main()
